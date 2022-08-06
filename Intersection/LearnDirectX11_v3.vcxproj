@@ -155,15 +155,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Box.cpp" />
     <ClCompile Include="Buffer.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="DefaultVertexShader.cpp" />
-    <ClCompile Include="DirectLightSource.cpp" />
-    <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Graphics.cpp" />
     <ClCompile Include="IDrawable.cpp" />
-    <ClCompile Include="MainWindow.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="ModeledObject.cpp" />
@@ -175,56 +171,41 @@
     <ClCompile Include="RenderWindow.cpp" />
     <ClCompile Include="SampleState.cpp" />
     <ClCompile Include="ShadersContent.cpp" />
-    <ClCompile Include="Shape.cpp" />
     <ClCompile Include="SkySphere.cpp" />
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="Sphere.cpp" />
     <ClCompile Include="Spherenic.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="TexturesContent.cpp" />
-    <ClCompile Include="Transform.cpp" />
     <ClCompile Include="Transformable.cpp" />
-    <ClCompile Include="TwoBalls.cpp" />
     <ClCompile Include="VertexShader.cpp" />
     <ClCompile Include="VSLightSource.cpp" />
-    <ClCompile Include="WindowBase.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Box.h" />
     <ClInclude Include="Buffer.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="DefaultVertexShader.h" />
-    <ClInclude Include="DirectLightSource.h" />
-    <ClInclude Include="GameObject.h" />
     <ClInclude Include="Graphics.h" />
     <ClInclude Include="IDrawable.h" />
-    <ClInclude Include="MainWindow.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="Model.h" />
     <ClInclude Include="ModeledObject.h" />
     <ClInclude Include="ModelsContent.h" />
-    <ClInclude Include="mymath.h" />
     <ClInclude Include="PixelShader.h" />
     <ClInclude Include="PointLight.h" />
+    <ClInclude Include="RenderState.h" />
     <ClInclude Include="RenderTarget.h" />
     <ClInclude Include="RenderWindow.h" />
     <ClInclude Include="SampleState.h" />
     <ClInclude Include="ShadersContent.h" />
-    <ClInclude Include="Shape.h" />
     <ClInclude Include="SkySphere.h" />
-    <ClInclude Include="SomeObject.h" />
     <ClInclude Include="Sphere.h" />
     <ClInclude Include="Spherenic.h" />
     <ClInclude Include="Texture.h" />
-    <ClInclude Include="Texture2D.h" />
     <ClInclude Include="TexturesContent.h" />
-    <ClInclude Include="Transform.h" />
     <ClInclude Include="Transformable.h" />
-    <ClInclude Include="RenderState.h" />
-    <ClInclude Include="TwoBalls.h" />
     <ClInclude Include="VertexShader.h" />
     <ClInclude Include="VSLightSource.h" />
-    <ClInclude Include="WindowBase.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="PixelShader.hlsl">
