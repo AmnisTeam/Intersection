@@ -1,20 +1,15 @@
 #include "MainWindow.h"
 #include "Graphics.h"
-#include "Shape.h"
-#include "Box.h"
 #include "DirectLightSource.h"
 #include "Model.h"
 #include "Camera.h"
 #include "DirectLightSource.h"
 #include "PointLight.h"
-#include "GameObject.h"
 #include "Sphere.h"
-#include "TwoBalls.h"
 #include <chrono>
 #include "Spherenic.h"
 #include "ModeledObject.h"
 #include "SkySphere.h"
-#include <Test.h>
 
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLine, int nCmdShow)
 {
@@ -27,7 +22,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLin
 
 	ModeledObject* tree = new ModeledObject(renderWindow, renderWindow->modelsContent->tree);
 	tree->setTexture(renderWindow->graphics->texturesContent->flatNormalMap, 1);
-	//tree->setTexture(renderWindow->graphics->texturesContent->ghosthzAlbedo, 0);
+	////tree->setTexture(renderWindow->graphics->texturesContent->ghosthzAlbedo, 0);
 	tree->setRotation({-3.14 / 2, 0, 0});
 	tree->setScale({1, 1, 1});
 
