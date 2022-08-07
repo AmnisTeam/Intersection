@@ -19,7 +19,7 @@ struct float3
 
 	float3 operator/(float val)
 	{
-		return float3{ x / val, y / val, z / val};
+		return float3{ x / val, y / val, z / val };
 	}
 
 	float3 operator*(float val)

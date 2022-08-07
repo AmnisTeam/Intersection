@@ -1,12 +1,13 @@
 #pragma once
 #include <windows.h>
+#include "decl.h"
 
 class WindowBase
 {
 public:
-	HWND hwnd;
-	static LRESULT wndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
-	void create(
+    HWND hwnd;
+   DECL static LRESULT wndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+   DECL void create(
         LPCWSTR lpWindowName,
         DWORD dwStyle = WS_OVERLAPPEDWINDOW,
         int nWidth = CW_USEDEFAULT,
@@ -18,7 +19,8 @@ public:
         HMENU hMenu = NULL,
         HINSTANCE hInstance = NULL);
 private:
-	LRESULT virtual handleMessage(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) = 0;
-	LPCWSTR virtual getClassName() = 0;
+    DECL LRESULT virtual handleMessage(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) = 0;
+    DECL LPCWSTR virtual getClassName() = 0;
 };
+
 

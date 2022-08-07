@@ -14,7 +14,7 @@ LRESULT WindowBase::wndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	else
 	{
 		pThis = (WindowBase*)GetWindowLongPtr(hwnd, GWLP_USERDATA);
-		if(pThis)
+		if (pThis)
 			return pThis->handleMessage(hwnd, uMsg, wParam, lParam);
 	}
 	return DefWindowProc(hwnd, uMsg, wParam, lParam);
