@@ -1,9 +1,7 @@
 #include "MainWindow.h"
 #include "Graphics.h"
-#include "DirectLightSource.h"
 #include "Model.h"
 #include "Camera.h"
-#include "DirectLightSource.h"
 #include "PointLight.h"
 #include "Sphere.h"
 #include <chrono>

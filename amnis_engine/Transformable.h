@@ -1,6 +1,6 @@
 #pragma once
 #include "mymath.h"
-#include "DirectXMath.h"
+#include <DirectXMath.h>
 
 class Transformable
 {
