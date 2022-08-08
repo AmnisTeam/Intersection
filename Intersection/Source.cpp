@@ -20,7 +20,6 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLin
 
 	ModeledObject* tree = new ModeledObject(renderWindow, renderWindow->modelsContent->tree);
 	tree->setTexture(renderWindow->graphics->texturesContent->flatNormalMap, 1);
-	////tree->setTexture(renderWindow->graphics->texturesContent->ghosthzAlbedo, 0);
 	tree->setRotation({-3.14 / 2, 0, 0});
 	tree->setScale({1, 1, 1});
 
