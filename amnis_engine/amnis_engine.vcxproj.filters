@@ -222,11 +222,4 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <FxCompile Include="PixelShader.hlsl" />
-    <FxCompile Include="PSDirectLight.hlsl" />
-    <FxCompile Include="PSLightSource.hlsl" />
-    <FxCompile Include="VertexShader.hlsl" />
-    <FxCompile Include="VSLightSourse.hlsl" />
-  </ItemGroup>
 </Project>
