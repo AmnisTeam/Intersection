@@ -21,6 +21,7 @@ public:
 	bool drawDepthStencil = true;
 	Model(Graphics* graphics, char* modelPath);
 	Model(Graphics* graphics, char* modelPath, VertexShader* vertexShader, PixelShader* pixelShader);
+	~Model();
 	void setTexture(Texture* texture, unsigned int slot);
 	void deleteTexture(unsigned int slot);
 	std::vector<Texture*> loadMaterialTextures(Graphics* graphics, aiMaterial* mat, aiTextureType type);

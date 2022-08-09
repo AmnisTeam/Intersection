@@ -11,5 +11,7 @@ public:
 
 	ModelsContent(RenderWindow* renderWindow);
 	~ModelsContent();
+
+
 };
 

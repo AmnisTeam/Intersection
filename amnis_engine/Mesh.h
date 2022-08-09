@@ -26,6 +26,7 @@ public:
 	float someAngle;
 	bool drawDepthStencil = false;
 	Mesh(Graphics* graphics, std::vector<Vertex> vertices, std::vector<int> indices, VertexShader* vertexShader, PixelShader* pixelShader);
+	~Mesh();
 	void setTexture(Texture* texture, int slot);
 	void draw(Graphics* graphics, Camera* camera);
 	void draw(Graphics* graphics, Camera* camera, DirectX::XMMATRIX modelMatrix);
