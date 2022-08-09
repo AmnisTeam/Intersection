@@ -63,13 +63,10 @@
     <ClInclude Include="Mesh.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Model.h">
+    <ClInclude Include="AmnModel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ModeledObject.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ModelsContent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="PixelShader.h">
@@ -90,22 +87,7 @@
     <ClInclude Include="SampleState.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ShadersContent.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SkySphere.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Sphere.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Spherenic.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Texture.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="TexturesContent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Transformable.h">
@@ -115,6 +97,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="VSLightSource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ShadersContent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -158,13 +143,10 @@
     <ClCompile Include="Mesh.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Model.cpp">
+    <ClCompile Include="AmnModel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ModeledObject.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ModelsContent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="PixelShader.cpp">
@@ -185,22 +167,7 @@
     <ClCompile Include="SampleState.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ShadersContent.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SkySphere.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Sphere.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Spherenic.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Texture.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="TexturesContent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Transformable.cpp">
@@ -210,6 +177,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="VSLightSource.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ShadersContent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

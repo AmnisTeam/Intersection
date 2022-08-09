@@ -2,17 +2,17 @@
 #include "ModeledObject.h"
 #include "RenderWindow.h"
 
-ModeledObject::ModeledObject(RenderWindow* const renderWindow, Model* const model)
+ModeledObject::ModeledObject(RenderWindow* const renderWindow, AmnModel* const model)
 {
 	constructor(renderWindow, model, renderWindow->graphics->shadersContent->defaultVS, renderWindow->graphics->shadersContent->defaultPS);
 }
 
-ModeledObject::ModeledObject(RenderWindow* const renderWindow, Model* const model, VertexShader* vertexShader, PixelShader* pixelShader)
+ModeledObject::ModeledObject(RenderWindow* const renderWindow, AmnModel* const model, VertexShader* vertexShader, PixelShader* pixelShader)
 {
 	constructor(renderWindow, model, vertexShader, pixelShader);
 }
 
-void ModeledObject::constructor(RenderWindow* const renderWindow, Model* const model, VertexShader* vertexShader, PixelShader* pixelShader)
+void ModeledObject::constructor(RenderWindow* const renderWindow, AmnModel* const model, VertexShader* vertexShader, PixelShader* pixelShader)
 {
 	this->renderWindow = renderWindow;
 	this->model = model;
@@ -25,12 +25,12 @@ ModeledObject::~ModeledObject()
 	// nothing
 }
 
-void ModeledObject::setModel(Model* model)
+void ModeledObject::setModel(AmnModel* model)
 {
 	this->model = model;
 }
 
-Model* ModeledObject::getModel() const
+AmnModel* ModeledObject::getModel() const
 {
 	return model;
 }

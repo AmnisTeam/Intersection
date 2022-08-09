@@ -1,6 +1,6 @@
 #include "Entity.h"
 
-Entity::Entity(RenderWindow* renderWindow, Model* model)
+Entity::Entity(RenderWindow* renderWindow, AmnModel* model)
 {
 	this->model = new ModeledObject(renderWindow, model);
 }

@@ -8,6 +8,6 @@ class Entity : public Transformable, public IDrawable
 {
 public:
 	ModeledObject* model;
-	Entity(RenderWindow* renderWindow, Model* model);
+	Entity(RenderWindow* renderWindow, AmnModel* model);
 	virtual void draw(RenderTarget* renderTarget, RenderState state) override;
 };

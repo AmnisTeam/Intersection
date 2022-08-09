@@ -5,7 +5,6 @@
 #pragma comment(lib, "d3dcompiler.lib")
 #include <iostream>
 #include "ShadersContent.h"
-#include "TexturesContent.h"
 #include <vector>
 #include "RenderTarget.h"
 #include "PointLight.h"
@@ -24,7 +23,6 @@ public:
 	ID3D11Texture2D* depthStencilTexture;
 	ID3D11DepthStencilView* depthStencilView;
 	ShadersContent* shadersContent;
-	TexturesContent* texturesContent;
 	HWND hwnd;
 	std::vector<PointLight*> pointLights2;
 	int maxPointLightsCount = 500;
@@ -37,7 +35,6 @@ public:
 	DECL Graphics();
 	DECL void initDirectX11(HWND outputWindow, int backWidth = -1, int backHeight = -1);
 	DECL void initDepthStencil();
-	DECL void initTexturesContent();
 	DECL void setFirstOldClockAndDeltaTime();
 	DECL void updateDeltaTime();
 	DECL void updatePointLights();

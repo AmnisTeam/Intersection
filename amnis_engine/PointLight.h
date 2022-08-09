@@ -27,7 +27,7 @@ public:
 	bool turnedOn = true;
 
 
-	DECL PointLight(RenderWindow* renderWindow, Model* model, bool bind = true);
+	DECL PointLight(RenderWindow* renderWindow, AmnModel* model, bool bind = true);
 	DECL ~PointLight();
 	DECL void bind(RenderWindow* renderWindow);
 	DECL virtual void setPosition(float3 position) override;

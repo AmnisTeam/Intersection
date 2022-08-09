@@ -3,11 +3,9 @@
 #include "RenderWindow.h"
 #include "ModeledObject.h"
 
-PointLight::PointLight(RenderWindow* renderWindow, Model* model, bool bind)
+PointLight::PointLight(RenderWindow* renderWindow, AmnModel* model, bool bind)
 {
 	this->model = new ModeledObject(renderWindow, model, renderWindow->graphics->shadersContent->defaultVS, renderWindow->graphics->shadersContent->lightSourcePS);
-	this->model->setTexture(renderWindow->graphics->texturesContent->stoneWallAlbedo, 0);
-	this->model->setTexture(renderWindow->graphics->texturesContent->stoneWallNormalMap, 1);
 
 	if (bind)
 		this->bind(renderWindow);

@@ -5,13 +5,13 @@
 #include "decl.h"
 
 class IDrawable;
-class Model;
+class AmnModel;
 
 class RenderTarget
 {
 public:
 	ID3D11RenderTargetView* renderTarget;
 	DECL RenderTarget();
-	DECL void draw(Model* model, RenderState state);
+	DECL void draw(AmnModel* model, RenderState state);
 	DECL void draw(IDrawable* drawable, RenderState renderState);
 };

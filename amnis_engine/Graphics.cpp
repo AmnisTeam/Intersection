@@ -108,11 +108,6 @@ void Graphics::initDepthStencil()
     oldClock = clock();
 }
 
-void Graphics::initTexturesContent()
-{
-    texturesContent = new TexturesContent(this);
-}
-
 void Graphics::setFirstOldClockAndDeltaTime()
 {
     oldClock = clock();
