@@ -174,11 +174,9 @@
     <ClInclude Include="SampleState.h" />
     <ClInclude Include="ShadersContent.h" />
     <ClInclude Include="SkySphere.h" />
-    <ClInclude Include="SomeObject.h" />
     <ClInclude Include="Sphere.h" />
     <ClInclude Include="Spherenic.h" />
     <ClInclude Include="Texture.h" />
-    <ClInclude Include="Texture2D.h" />
     <ClInclude Include="TexturesContent.h" />
     <ClInclude Include="Transformable.h" />
     <ClInclude Include="VertexShader.h" />

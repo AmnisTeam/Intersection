@@ -1,9 +1,10 @@
 #pragma once
 #include "VertexShader.h"
+#include "decl.h"
 
 class DefaultVertexShader : public VertexShader
 {
 public:
-	DefaultVertexShader(Graphics* graphics, LPCWSTR shaderPath);
+	DECL DefaultVertexShader(Graphics* graphics, LPCWSTR shaderPath);
 };
 

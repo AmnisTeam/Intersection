@@ -3,6 +3,7 @@
 #include <d3d11.h>
 #include "RenderState.h"
 #include "decl.h"
+
 class IDrawable;
 class Model;
 

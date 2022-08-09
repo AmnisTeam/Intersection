@@ -1,9 +1,10 @@
 #pragma once
 #include "VertexShader.h"
+#include "decl.h"
 
 class VSLightSource : public VertexShader
 {
 public:
-	VSLightSource(Graphics* graphics, LPCWSTR VSLightSourcePath);
+	DECL VSLightSource(Graphics* graphics, LPCWSTR VSLightSourcePath);
 };
 

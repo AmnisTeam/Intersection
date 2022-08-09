@@ -1,4 +1,5 @@
 #pragma once
+#include "decl.h"
 
 class Graphics;
 class Texture;
@@ -14,7 +15,7 @@ public:
 	Texture* wheelRobotNormal;
 	Texture* bugAlbedo;
 	Texture* ghosthzAlbedo;
-	TexturesContent(Graphics* graphics);
-	~TexturesContent();
+	DECL TexturesContent(Graphics* graphics);
+	DECL ~TexturesContent();
 };
 
