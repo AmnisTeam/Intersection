@@ -167,6 +167,7 @@
     <ClCompile Include="entities\Entity.cpp" />
     <ClCompile Include="entities\EntityTree.cpp" />
     <ClCompile Include="ModelsContent.cpp" />
+    <ClCompile Include="ShadersContent.cpp" />
     <ClCompile Include="SkySphere.cpp" />
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="Sphere.cpp" />
@@ -222,6 +223,7 @@
     <ClInclude Include="entities\Entity.h" />
     <ClInclude Include="entities\EntityTree.h" />
     <ClInclude Include="ModelsContent.h" />
+    <ClInclude Include="ShadersContent.h" />
     <ClInclude Include="SkySphere.h" />
     <ClInclude Include="Sphere.h" />
     <ClInclude Include="Spherenic.h" />

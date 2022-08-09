@@ -5,7 +5,7 @@
 
 PointLight::PointLight(RenderWindow* renderWindow, AmnModel* model, bool bind)
 {
-	this->model = new ModeledObject(renderWindow, model, renderWindow->graphics->shadersContent->defaultVS, renderWindow->graphics->shadersContent->lightSourcePS);
+	this->model = new ModeledObject(renderWindow, model, renderWindow->graphics->defaultVS, renderWindow->graphics->defaultPS);
 
 	if (bind)
 		this->bind(renderWindow);

@@ -18,8 +18,8 @@ void ModelsContent::load(RenderWindow* renderWindow)
 
 	WideCharToMultiByte(0, 0, path.c_str(), path.size(), &str[0], path.size(), NULL, NULL);
 
-	sphere = new AmnModel(renderWindow->graphics, (char*)(str + "Models\\sphere.obj").c_str(), renderWindow->graphics->shadersContent->defaultVS, renderWindow->graphics->shadersContent->defaultPS);
-	plane = new AmnModel(renderWindow->graphics, (char*)(str + "Models\\Plane.obj").c_str(), renderWindow->graphics->shadersContent->defaultVS, renderWindow->graphics->shadersContent->defaultPS);
-	tree = new AmnModel(renderWindow->graphics, (char*)(str + "Models\\Tree\\source\\tree2.fbx").c_str(), renderWindow->graphics->shadersContent->defaultVS, renderWindow->graphics->shadersContent->defaultPS);
-	ghosthz = new AmnModel(renderWindow->graphics, (char*)(str + "Models\\ghosthz\\source\\ghosthz.fbx").c_str(), renderWindow->graphics->shadersContent->defaultVS, renderWindow->graphics->shadersContent->defaultPS);
+	sphere = new AmnModel(renderWindow->graphics, (char*)(str + "Models\\sphere.obj").c_str(), renderWindow->graphics->defaultVS, renderWindow->graphics->defaultPS);
+	plane = new AmnModel(renderWindow->graphics, (char*)(str + "Models\\Plane.obj").c_str(), renderWindow->graphics->defaultVS, renderWindow->graphics->defaultPS);
+	tree = new AmnModel(renderWindow->graphics, (char*)(str + "Models\\Tree\\source\\tree2.fbx").c_str(), renderWindow->graphics->defaultVS, renderWindow->graphics->defaultPS);
+	ghosthz = new AmnModel(renderWindow->graphics, (char*)(str + "Models\\ghosthz\\source\\ghosthz.fbx").c_str(), renderWindow->graphics->defaultVS, renderWindow->graphics->defaultPS);
 }

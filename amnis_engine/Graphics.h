@@ -4,14 +4,16 @@
 #pragma comment(lib, "d3d11.lib")
 #pragma comment(lib, "d3dcompiler.lib")
 #include <iostream>
-#include "ShadersContent.h"
 #include <vector>
 #include "RenderTarget.h"
 #include "PointLight.h"
 #include "decl.h"
 
+
 class Camera;
 class PointLight;
+class VertexShader;
+class PixelShader;
 class Graphics
 {
 public:
@@ -22,13 +24,14 @@ public:
 	RenderTarget* renderTarget;
 	ID3D11Texture2D* depthStencilTexture;
 	ID3D11DepthStencilView* depthStencilView;
-	ShadersContent* shadersContent;
 	HWND hwnd;
 	std::vector<PointLight*> pointLights2;
 	int maxPointLightsCount = 500;
 	ID3D11Buffer* pointLightsBuffer;
 	ID3D11ShaderResourceView* pointLightsSRV;
 	ID3D11Buffer* lightsCountsBuffer;
+	VertexShader* defaultVS;
+	PixelShader* defaultPS;
 	int resWidth;
 	int resHeight;
 	double deltaTime = 1 / 60.0;

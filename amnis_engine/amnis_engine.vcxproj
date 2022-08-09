@@ -171,7 +171,6 @@
     <ClInclude Include="RenderTarget.h" />
     <ClInclude Include="RenderWindow.h" />
     <ClInclude Include="SampleState.h" />
-    <ClInclude Include="ShadersContent.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Transformable.h" />
     <ClInclude Include="VertexShader.h" />
@@ -202,7 +201,6 @@
     <ClCompile Include="RenderTarget.cpp" />
     <ClCompile Include="RenderWindow.cpp" />
     <ClCompile Include="SampleState.cpp" />
-    <ClCompile Include="ShadersContent.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Transformable.cpp" />
     <ClCompile Include="VertexShader.cpp" />

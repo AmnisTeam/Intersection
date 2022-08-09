@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "Graphics.h"
 #include "PointLight.h"
+#include "VertexShader.h"
+#include "PixelShader.h"
 
 Graphics::Graphics()
 {
@@ -54,8 +56,6 @@ void Graphics::initDirectX11(HWND outputWindow, int backWidth, int backHeight)
     viewPort.Height = clientRect.bottom;
     deviceCon->RSSetViewports(1, &viewPort);
 
-    shadersContent = new ShadersContent(this);
-
     D3D11_BUFFER_DESC pointLightsBufferDesc{};
     pointLightsBufferDesc.ByteWidth = sizeof(PointLight::PointLightDesc) * maxPointLightsCount;
     pointLightsBufferDesc.Usage = D3D11_USAGE_DYNAMIC; // Here may be an error
@@ -86,6 +86,17 @@ void Graphics::initDirectX11(HWND outputWindow, int backWidth, int backHeight)
 
     hr = device->CreateBuffer(&lightsCountsBufferDesc, NULL, &lightsCountsBuffer);
     if (FAILED(hr)) throw;
+
+    D3D11_INPUT_ELEMENT_DESC defaultVertexShaderIED[5]
+    { {"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT , 0, D3D11_APPEND_ALIGNED_ELEMENT , D3D11_INPUT_PER_VERTEX_DATA, 0},
+      {"TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT , 0, D3D11_APPEND_ALIGNED_ELEMENT , D3D11_INPUT_PER_VERTEX_DATA, 0},
+      {"NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT , 0, D3D11_APPEND_ALIGNED_ELEMENT , D3D11_INPUT_PER_VERTEX_DATA, 0},
+      {"TANGENT", 0, DXGI_FORMAT_R32G32B32_FLOAT , 0, D3D11_APPEND_ALIGNED_ELEMENT , D3D11_INPUT_PER_VERTEX_DATA, 0},
+      {"BITANGENT", 0, DXGI_FORMAT_R32G32B32_FLOAT , 0, D3D11_APPEND_ALIGNED_ELEMENT , D3D11_INPUT_PER_VERTEX_DATA, 0},
+    };
+
+    defaultVS = new VertexShader(this, L"Shaders//VertexShaders//DefaultVertexShader.hlsl", defaultVertexShaderIED, 5);
+    defaultPS = new PixelShader(this, L"Shaders//PixelShaders//DefaultPixelShader.hlsl");
 }
 
 void Graphics::initDepthStencil()

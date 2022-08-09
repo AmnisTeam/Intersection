@@ -4,7 +4,7 @@
 
 ModeledObject::ModeledObject(RenderWindow* const renderWindow, AmnModel* const model)
 {
-	constructor(renderWindow, model, renderWindow->graphics->shadersContent->defaultVS, renderWindow->graphics->shadersContent->defaultPS);
+	constructor(renderWindow, model, renderWindow->graphics->defaultVS, renderWindow->graphics->defaultPS);
 }
 
 ModeledObject::ModeledObject(RenderWindow* const renderWindow, AmnModel* const model, VertexShader* vertexShader, PixelShader* pixelShader)

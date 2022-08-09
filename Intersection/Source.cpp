@@ -11,6 +11,7 @@
 #include "entities/EntityTree.h"
 #include "ModelsContent.h"
 #include "TexturesContent.h"
+#include "ShadersContent.h"
 
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLine, int nCmdShow)
 {
@@ -21,6 +22,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLin
 
 	TexturesContent::load(renderWindow);
 	ModelsContent::load(renderWindow);
+	ShadersContent::load(renderWindow);
 
 	Sphere* sphere = new Sphere(renderWindow);
 	//EntityTree* entityTree = new EntityTree(renderWindow);
