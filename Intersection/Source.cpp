@@ -19,6 +19,9 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLin
 
 	Sphere* sphere = new Sphere(renderWindow);
 	EntityTree* entityTree = new EntityTree(renderWindow);
+	entityTree->addMoveTarget({0, 0, 2});
+	entityTree->addMoveTarget({5, 0, 5});
+	entityTree->addMoveTarget({5, 5, 5});
 
 	//ModeledObject* tree = new ModeledObject(renderWindow, renderWindow->modelsContent->tree);
 	//tree->setTexture(renderWindow->graphics->texturesContent->flatNormalMap, 1);
@@ -45,7 +48,6 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLin
 		renderWindow->Draw(sphere);
 		renderWindow->Draw(pointLight);
 		renderWindow->Draw(entityTree);
-		//renderWindow->Draw(tree);
 
 		renderWindow->display();
 		renderWindow->endDeltaTime();

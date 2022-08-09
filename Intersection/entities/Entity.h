@@ -9,11 +9,23 @@ class Entity : public Transformable, public IDrawable
 public:
 	ModeledObject* model;
 	float3 viewDirecton = {0, 0, 1};
-	double3 velocity = {};
-	double moveSpeed = 1;
+	float3 velocity = {};
+	double moveSpeed = 2;
 	double turningSpeed = PI * 0.5;
-	double3 pointsToGoTo;
-	Entity(RenderWindow* renderWindow, Model* model);
+	std::vector<float3> moveTargets;
+	Entity(RenderWindow* const renderWindow, Model* const model);
 	void goToPosition(float3 position);
+	void addMoveTarget(float3 position);
+	void clearMoveTargets();
+	void rotateViewDirectionTo(float3 dir);
+	virtual void update();
 	virtual void draw(RenderTarget* renderTarget, RenderState state) override;
+private:
+	RenderWindow* renderWindow;
+	float radiusToStop = 0.01f;
+	float3 oldPosition;
+	void movementToTargets();
+	void movementToTargets2();
+	void moveTo(float3 const position);
+	void addVectorIn(float3 const vectro, float time);
 };

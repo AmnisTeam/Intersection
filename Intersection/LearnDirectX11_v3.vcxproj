@@ -98,7 +98,7 @@
       <AdditionalDependencies>$(CoreLibraryDependencies);%(AdditionalDependencies);amnis_engine.lib</AdditionalDependencies>
     </Link>
     <PreBuildEvent>
-      <Command>xcopy /y /d "$(SolutionDir)DLLs\" "$(OutDir)"</Command>
+      <Command>xcopy /y /d "$(SolutionDir)dlls\" "$(OutDir)"</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -120,7 +120,7 @@
       <AdditionalDependencies>$(CoreLibraryDependencies);%(AdditionalDependencies);amnis_engine.lib</AdditionalDependencies>
     </Link>
     <PreBuildEvent>
-      <Command>xcopy /y /d "$(SolutionDir)DLLs\" "$(OutDir)"</Command>
+      <Command>xcopy /y /d "$(SolutionDir)dlls\" "$(OutDir)"</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -138,7 +138,7 @@
       <AdditionalDependencies>assimp-vc143-mtd.lib;%(AdditionalDependencies);amnis_engine.lib</AdditionalDependencies>
     </Link>
     <PreBuildEvent>
-      <Command>xcopy /y /d "$(SolutionDir)DLLs\" "$(OutDir)"</Command>
+      <Command>xcopy /y /d "$(SolutionDir)dlls\" "$(OutDir)"</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -160,7 +160,7 @@
       <AdditionalDependencies>$(CoreLibraryDependencies);%(AdditionalDependencies);amnis_engine.lib</AdditionalDependencies>
     </Link>
     <PreBuildEvent>
-      <Command>xcopy /y /d "$(SolutionDir)DLLs\" "$(OutDir)"</Command>
+      <Command>xcopy /y /d "$(SolutionDir)dlls\" "$(OutDir)"</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
