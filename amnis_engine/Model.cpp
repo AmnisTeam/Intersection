@@ -11,11 +11,6 @@ Model::Model(Graphics* graphics, char* modelPath, VertexShader* vertexShader, Pi
 	loadModel(graphics, modelPath, vertexShader, pixelShader);
 }
 
-Model::~Model()
-{
-
-}
-
 void Model::setTexture(Texture* texture, unsigned int slot)
 {
 	//textures[slot] = texture;

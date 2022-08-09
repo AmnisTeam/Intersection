@@ -27,11 +27,6 @@ Buffer::Buffer(Graphics* graphics, UINT BindFlags, void* pData, UINT ByteWidth, 
     if (FAILED(hr)) throw;
 }
 
-Buffer::~Buffer()
-{
-    buffer->Release();
-}
-
 ID3D11Buffer* Buffer::get()
 {
     return buffer;

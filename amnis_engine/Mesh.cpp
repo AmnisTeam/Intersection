@@ -9,13 +9,6 @@ Mesh::Mesh(Graphics* graphics, std::vector<Vertex> vertices, std::vector<int> in
 	setupMesh(graphics, vertexShader, pixelShader);
 }
 
-Mesh::~Mesh()
-{
-	delete vertexBuffer;
-	delete constantBuffer;
-	delete indexBuffer;
-}
-
 void Mesh::setupMesh(Graphics* graphics, VertexShader* vertexShader, PixelShader* pixelShader)
 {
 	for (int i = 0; i < indices.size(); i += 3)
