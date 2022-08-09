@@ -18,7 +18,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLin
 	renderWindow->setCamera(mainCamera);
 
 	Sphere* sphere = new Sphere(renderWindow);
-	//EntityTree* entityTree = new EntityTree(renderWindow);
+	EntityTree* entityTree = new EntityTree(renderWindow);
 
 	//ModeledObject* tree = new ModeledObject(renderWindow, renderWindow->modelsContent->tree);
 	//tree->setTexture(renderWindow->graphics->texturesContent->flatNormalMap, 1);
@@ -44,7 +44,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLin
 		renderWindow->Draw(skySphere, false);
 		renderWindow->Draw(sphere);
 		renderWindow->Draw(pointLight);
-		//renderWindow->Draw(entityTree);
+		renderWindow->Draw(entityTree);
 		//renderWindow->Draw(tree);
 
 		renderWindow->display();
