@@ -10,13 +10,14 @@ RenderWindow* ModelsContent::renderWindow;
 
 void ModelsContent::load(RenderWindow* renderWindow)
 {
-	wchar_t fileName[1000];
-	GetModuleFileName(NULL, fileName, 1000);
-	std::wstring directory = std::wstring(fileName);
-	std::wstring path = directory.substr(0, directory.find_last_of('\\')) + L"\\";
-	std::string str = std::string(path.size(), 0);
+	//wchar_t fileName[1000];
+	//GetModuleFileName(NULL, fileName, 1000);
+	//std::wstring directory = std::wstring(fileName);
+	//std::wstring path = directory.substr(0, directory.find_last_of('\\')) + L"\\";
+	//std::string str = std::string(path.size(), 0);
 
-	WideCharToMultiByte(0, 0, path.c_str(), path.size(), &str[0], path.size(), NULL, NULL);
+	//WideCharToMultiByte(0, 0, path.c_str(), path.size(), &str[0], path.size(), NULL, NULL);
+	std::string str;
 
 	sphere = new AmnModel(renderWindow->graphics, (char*)(str + "Models\\sphere.obj").c_str(), renderWindow->graphics->defaultVS, renderWindow->graphics->defaultPS);
 	plane = new AmnModel(renderWindow->graphics, (char*)(str + "Models\\Plane.obj").c_str(), renderWindow->graphics->defaultVS, renderWindow->graphics->defaultPS);

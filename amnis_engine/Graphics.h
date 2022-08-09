@@ -32,6 +32,7 @@ public:
 	ID3D11Buffer* lightsCountsBuffer;
 	VertexShader* defaultVS;
 	PixelShader* defaultPS;
+	PixelShader* lightPS;
 	int resWidth;
 	int resHeight;
 	double deltaTime = 1 / 60.0;

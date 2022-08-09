@@ -13,10 +13,12 @@ Texture* TexturesContent::ghosthzAlbedo;
 
 void TexturesContent::load(RenderWindow* renderWindow)
 {
-	wchar_t fileName[1000];
-	GetModuleFileName(NULL, fileName, 1000);
-	std::wstring directory = std::wstring(fileName);
-	std::wstring path = directory.substr(0, directory.find_last_of('\\')) + L"\\";
+	//wchar_t fileName[1000];
+	//GetModuleFileName(NULL, fileName, 1000);
+	//std::wstring directory = std::wstring(fileName);
+	//std::wstring path = directory.substr(0, directory.find_last_of('\\')) + L"\\";
+
+	std::wstring path;
 
 	textureSky = new Texture(renderWindow->graphics, (path + L"Textures\\texturify_pano-1-2.jpg").c_str());
 	stoneWallNormalMap = new Texture(renderWindow->graphics, (path + L"Textures\\Wall_Stone_017_Normal.jpg").c_str());

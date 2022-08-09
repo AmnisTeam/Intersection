@@ -97,6 +97,7 @@ void Graphics::initDirectX11(HWND outputWindow, int backWidth, int backHeight)
 
     defaultVS = new VertexShader(this, L"Shaders//VertexShaders//DefaultVertexShader.hlsl", defaultVertexShaderIED, 5);
     defaultPS = new PixelShader(this, L"Shaders//PixelShaders//DefaultPixelShader.hlsl");
+    lightPS = new PixelShader(this, L"Shaders//PixelShaders//LightSourcePS.hlsl");
 }
 
 void Graphics::initDepthStencil()
