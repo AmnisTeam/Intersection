@@ -1,7 +1,6 @@
 #include "MainWindow.h"
 #include "Graphics.h"
 #include "Model.h"
-#include "Camera.h"
 #include "PointLight.h"
 #include "Sphere.h"
 #include <chrono>
@@ -12,6 +11,7 @@
 #include "ModelsContent.h"
 #include "TexturesContent.h"
 #include "ShadersContent.h"
+#include "StrategyCamera.h"
 
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLine, int nCmdShow)
 {
@@ -20,11 +20,17 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLin
 	mainCamera->position = { 0, 3, -10 };
 	renderWindow->setCamera(mainCamera);
 
+	StrategyCamera* strategyCamera = new StrategyCamera({ 0, 10, 0 }, { 3.14 / 3, 0, 0 });
+	renderWindow->setCamera(strategyCamera);
+
 	TexturesContent::load(renderWindow);
 	ModelsContent::load(renderWindow);
 	ShadersContent::load(renderWindow);
 
 	Sphere* sphere = new Sphere(renderWindow);
+	ModeledObject* plane = new ModeledObject(renderWindow, ModelsContent::plane);
+	plane->setScale({100, 1, 100});
+
 	//EntityTree* entityTree = new EntityTree(renderWindow);
 
 	//ModeledObject* tree = new ModeledObject(renderWindow, renderWindow->modelsContent->tree);
@@ -51,6 +57,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLin
 		renderWindow->Draw(skySphere, false);
 		renderWindow->Draw(sphere);
 		renderWindow->Draw(pointLight);
+		renderWindow->Draw(plane);
 		//renderWindow->Draw(entityTree);
 		//renderWindow->Draw(tree);
 
