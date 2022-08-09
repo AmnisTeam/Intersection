@@ -1,6 +1,6 @@
 #pragma once
 #include <DirectXMath.h>
-
+#include "decl.h"
 class RenderWindow;
 
 class RenderState
@@ -10,5 +10,5 @@ public:
 	RenderWindow* renderWindow;
 	bool depthStencilOn = true;
 
-	RenderState(RenderWindow* renderWindow);
+	DECL RenderState(RenderWindow* renderWindow);
 };

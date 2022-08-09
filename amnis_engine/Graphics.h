@@ -9,6 +9,7 @@
 #include <vector>
 #include "RenderTarget.h"
 #include "PointLight.h"
+#include "decl.h"
 
 class Camera;
 class PointLight;
@@ -33,13 +34,13 @@ public:
 	int resWidth;
 	int resHeight;
 	double deltaTime = 1 / 60.0;
-	Graphics();
-	void initDirectX11(HWND outputWindow, int backWidth = -1, int backHeight = -1);
-	void initDepthStencil();
-	void initTexturesContent();
-	void setFirstOldClockAndDeltaTime();
-	void updateDeltaTime();
-	void updatePointLights();
+	DECL Graphics();
+	DECL void initDirectX11(HWND outputWindow, int backWidth = -1, int backHeight = -1);
+	DECL void initDepthStencil();
+	DECL void initTexturesContent();
+	DECL void setFirstOldClockAndDeltaTime();
+	DECL void updateDeltaTime();
+	DECL void updatePointLights();
 private:
 	long long oldClock;
 };

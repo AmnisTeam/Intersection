@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include "decl.h"
 
 class VertexShader;
 class PixelShader;
@@ -12,8 +13,8 @@ public:
 	PixelShader* defaultPS;
 	PixelShader* lightSourcePS;
 	PixelShader* skyPS;
-	ShadersContent(Graphics* graphics);
-	void loadShaders();
+	DECL ShadersContent(Graphics* graphics);
+	DECL void loadShaders();
 private:
 	Graphics* graphics;
 };

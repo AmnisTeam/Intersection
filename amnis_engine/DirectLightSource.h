@@ -1,8 +1,10 @@
 #pragma once
 #include "Model.h"
+#include "decl.h"
+
 class DirectLightSource : public Model
 {
 public:
-	DirectLightSource(Graphics* graphics, char* modelPath);
+	DECL DirectLightSource(Graphics* graphics, char* modelPath);
 };
 
