@@ -9,9 +9,7 @@ public:
 	Model* tree;
 	Model* ghosthz;
 
-	ModelsContent(RenderWindow* renderWindow);
-	~ModelsContent();
-
-
+	DECL ModelsContent(RenderWindow* renderWindow);
+	DECL ~ModelsContent();
 };
 

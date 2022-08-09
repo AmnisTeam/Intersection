@@ -1,12 +1,13 @@
 #pragma once
 #include "Graphics.h"
+#include "decl.h"
+
 class Buffer
 {
 public:
-	Buffer(Graphics* graphics, UINT BindFlags, void* pData, UINT ByteWidth, D3D11_USAGE usage = D3D11_USAGE_DEFAULT, UINT CPUAccessFlags = 0, UINT MiscFlags = 0, UINT StructureByteStride = 0);
-	~Buffer();
-	ID3D11Buffer* get();
-	ID3D11Buffer** getpp();
+	DECL Buffer(Graphics* graphics, UINT BindFlags, void* pData, UINT ByteWidth, D3D11_USAGE usage = D3D11_USAGE_DEFAULT, UINT CPUAccessFlags = 0, UINT MiscFlags = 0, UINT StructureByteStride = 0);
+	DECL ID3D11Buffer* get();
+	DECL ID3D11Buffer** getpp();
 private:
 	ID3D11Buffer* buffer;
 };

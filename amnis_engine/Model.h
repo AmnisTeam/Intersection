@@ -19,21 +19,20 @@ public:
 	std::map<unsigned int, Texture*> textures;
 	std::string extension;
 	bool drawDepthStencil = true;
-	Model(Graphics* graphics, char* modelPath);
-	Model(Graphics* graphics, char* modelPath, VertexShader* vertexShader, PixelShader* pixelShader);
-	~Model();
-	void setTexture(Texture* texture, unsigned int slot);
-	void deleteTexture(unsigned int slot);
-	std::vector<Texture*> loadMaterialTextures(Graphics* graphics, aiMaterial* mat, aiTextureType type);
-	virtual void draw(Graphics* graphics, Camera* camera);
-	virtual void draw(Graphics* graphics, Camera* camera, DirectX::XMMATRIX modelMatrix);
-	void draw(RenderTarget* renderTarget, RenderState renderState);
+	DECL Model(Graphics* graphics, char* modelPath);
+	DECL Model(Graphics* graphics, char* modelPath, VertexShader* vertexShader, PixelShader* pixelShader);
+	DECL void setTexture(Texture* texture, unsigned int slot);
+	DECL void deleteTexture(unsigned int slot);
+	DECL std::vector<Texture*> loadMaterialTextures(Graphics* graphics, aiMaterial* mat, aiTextureType type);
+	DECL virtual void draw(Graphics* graphics, Camera* camera);
+	DECL virtual void draw(Graphics* graphics, Camera* camera, DirectX::XMMATRIX modelMatrix);
+	DECL void draw(RenderTarget* renderTarget, RenderState renderState);
 	//void draw(Graphics* graphics, Camera* camera, Transform* transform);
 private:
 	std::vector<Mesh> meshes;
 	std::string directory;
-	void loadModel(Graphics* graphics, std::string path, VertexShader* vertexShader, PixelShader* pixelShader);
-	void processNode(Graphics* graphics, aiNode* node, const aiScene* scene, VertexShader* vertexShader, PixelShader* pixelShader);
-	Mesh processMesh(Graphics* graphics, const aiScene* scene, aiMesh* mesh, VertexShader* vertexShader, PixelShader* pixelShader);
+	DECL void loadModel(Graphics* graphics, std::string path, VertexShader* vertexShader, PixelShader* pixelShader);
+	DECL void processNode(Graphics* graphics, aiNode* node, const aiScene* scene, VertexShader* vertexShader, PixelShader* pixelShader);
+	DECL Mesh processMesh(Graphics* graphics, const aiScene* scene, aiMesh* mesh, VertexShader* vertexShader, PixelShader* pixelShader);
 };
 

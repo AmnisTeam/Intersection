@@ -1,10 +1,12 @@
 #pragma once
 #include "Graphics.h"
+#include "decl.h"
+
 class SampleState
 {
 public:
 	ID3D11SamplerState* sampleState;
-	SampleState(Graphics* graphics);
-	void set(Graphics* graphics);
+	DECL SampleState(Graphics* graphics);
+	DECL void set(Graphics* graphics);
 };
 
