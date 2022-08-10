@@ -138,7 +138,7 @@
       <AdditionalDependencies>assimp-vc143-mtd.lib;%(AdditionalDependencies);amnis_engine.lib</AdditionalDependencies>
     </Link>
     <PreBuildEvent>
-      <Command>xcopy /y /d "$(SolutionDir)DLLs\" "$(OutDir)"</Command>
+      <Command>xcopy /y /d "$(SolutionDir)DLLs" "$(OutDir)"</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
