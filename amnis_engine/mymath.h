@@ -159,7 +159,7 @@ public:
 		*vec = normalize(*vec) * length;
 	}
 
-	static bool rayCrossPoint(float3 origin, float3 end, float3 point)
+	static bool rayCrossPointRayed(float3 origin, float3 end, float3 point)
 	{
 		float3 vec = end - origin;
 		float3 normal = mymath::normalize(vec);
@@ -179,6 +179,108 @@ public:
 			return true;
 		else
 			return false;
+	}
+
+	static bool pointIntersected(float3 origin, float3 end, float3 point, float pointRadius)
+	{
+		float denomX = (end.x - origin.x);
+		float denomY = (end.y - origin.y);
+		float denomZ = (end.z - origin.z);
+
+
+		if (denomX == 0)
+			if (point.x != end.x)
+				return false;
+
+		if (denomY == 0)
+			if (point.y != end.y)
+				return false;
+
+		if (denomZ == 0)
+			if (point.z != end.z)
+				return false;
+
+		float tx = 0;
+		float ty = 0;
+		float tz = 0;
+		float t = 0;
+
+
+		// x y z
+		// 0 0 0 S8
+		// 0 0 1 S4
+		// 0 1 0 S5
+		// 0 1 1 S1
+		// 1 0 0 S6
+		// 1 0 1 S2
+		// 1 1 0 S3
+		// 1 1 1 S7
+
+		if (denomX == 0 && denomY == 0 && denomZ == 0) // 0 0 0 S8
+			return false;
+
+		if (denomX == 0 && denomY != 0 && denomZ != 0) // 0 1 1 S1
+		{
+			ty = (point.y - origin.y) / denomY;
+			tz = (point.z - origin.z) / denomZ;
+			t = ty;
+		}
+
+		if (denomX != 0 && denomY == 0 && denomZ != 0) // 1 0 1 S2
+		{
+			tx = (point.x - origin.x) / denomX;
+			tz = (point.z - origin.z) / denomZ;
+			t = tx;
+		}
+
+		if (denomX != 0 && denomY != 0 && denomZ == 0) // 1 1 0 S3
+		{
+			tx = (point.x - origin.x) / denomX;
+			ty = (point.y - origin.y) / denomY;
+			t = tx;
+		}
+
+		if (denomX == 0 && denomY == 0 && denomZ != 0) // 0 0 1 S4
+		{
+			tz = (point.z - origin.z) / denomZ;
+			t = tz;
+		}
+
+		if (denomX == 0 && denomY != 0 && denomZ == 0) // 0 1 0 S5
+		{
+			ty = (point.y - origin.y) / denomY;
+			t = ty;
+		}
+
+		if (denomX != 0 && denomY == 0 && denomZ == 0) // 1 0 0 S6
+		{
+			tx = (point.x - origin.x) / denomX;
+			t = tx;
+		}
+
+		if (denomX != 0 && denomY != 0 && denomZ != 0) // 1 1 1 S7
+		{
+			tx = (point.x - origin.x) / denomX;
+			ty = (point.y - origin.y) / denomY;
+			tz = (point.z - origin.z) / denomZ;
+			t = tx;
+		}
+
+		float3 foundPoint = origin + (end - origin) * t;
+		float distance = mymath::getLength(point - foundPoint);
+		if (distance <= pointRadius)
+			if (t >= 0 && t <= 1)
+				return true;
+
+		//if (!(tx == ty && ty == tz))
+		//	return false;
+		//else
+		//{
+		//	if (tx >= 0 && tx <= 1)
+		//		return true;
+		//	else
+		//		return false;
+		//}
 	}
 
 	static float addIn(float resultValue, float time, double deltaTime)

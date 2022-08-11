@@ -48,7 +48,7 @@ void Entity::movementToTargets2()
 		float3 entityPosition = getPosition();
 		float3 diff = moveTargets[0] - entityPosition;
 		float distance = mymath::getLength(diff);
-		if (distance <= radiusToStop)
+		if (distance <= radiusOfPoint)
 			moveTargets.erase(moveTargets.begin());
 		else
 			moveTo(moveTargets[0]);
@@ -62,21 +62,18 @@ void Entity::movementToTargets()
 		float3 target = moveTargets[0];
 		float3 entityPosition = getPosition();
 		float3 diff = target - entityPosition;
-		float3 moveDirection = mymath::normalize(diff);
-
-		//if(moveDirection.x != viewDirecton.x &&  )
-
-
 		float distance = mymath::getLength(diff);
-		if (mymath::rayCrossPoint(oldPosition, entityPosition, target))
-			bool check = 0;
-		if (mymath::rayCrossPoint(oldPosition, entityPosition, target))
+
+		if (mymath::pointIntersected(oldPosition, entityPosition, target, radiusOfPoint))
 		{
-			float3 moveDirection2 = mymath::normalize(entityPosition - target);
+			float3 moveDirection = mymath::normalize(entityPosition - oldPosition);
 			oldPosition = entityPosition;
 			setPosition(target);
 			moveTargets.erase(moveTargets.begin());
-			velocity -= moveDirection2 * moveSpeed;
+			if (moveSpeed <= maxMoveSpeedToNotLoseVelocity)
+				velocity -= moveDirection * moveSpeed;
+			else
+				velocity = {};
 		}
 		else
 		{

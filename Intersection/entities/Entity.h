@@ -22,10 +22,10 @@ public:
 	virtual void draw(RenderTarget* renderTarget, RenderState state) override;
 private:
 	RenderWindow* renderWindow;
-	float radiusToStop = 0.01f;
+	float radiusOfPoint = 0.01f;
+	const double maxMoveSpeedToNotLoseVelocity = 900000;
 	float3 oldPosition;
 	void movementToTargets();
 	void movementToTargets2();
 	void moveTo(float3 const position);
-	void addVectorIn(float3 const vectro, float time);
 };
