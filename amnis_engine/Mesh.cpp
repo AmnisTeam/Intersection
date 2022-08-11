@@ -114,6 +114,30 @@ void Mesh::update(Graphics* graphics, Camera* camera, DirectX::XMMATRIX modelMat
 	graphics->deviceCon->Unmap(constantBuffer->get(), NULL);
 }
 
+void Mesh::update(RenderTarget* renderTarget, RenderState state)
+{
+	Camera* camera = state.renderWindow->boundCamera;
+	Graphics* graphics = state.renderWindow->graphics;
+	DirectX::XMMATRIX modelMatrix = state.modelMatrix;
+
+	if(state.viewMatrixOn == true)
+		MVP = DirectX::XMMatrixTranspose(modelMatrix * camera->viewMatrix * camera->projectionMatrix);
+	else
+		MVP = DirectX::XMMatrixTranspose(modelMatrix * camera->projectionMatrix);
+
+	modelMatrix = DirectX::XMMatrixTranspose(modelMatrix);
+
+	D3D11_MAPPED_SUBRESOURCE ms{};
+	graphics->deviceCon->Map(constantBuffer->get(), NULL, D3D11_MAP_WRITE_DISCARD, NULL, &ms);
+
+	memcpy(ms.pData, &modelMatrix, sizeof(modelMatrix));
+	char* lastPos = (char*)ms.pData + sizeof(modelMatrix);
+	memcpy(lastPos, &MVP, sizeof(MVP));
+	lastPos = lastPos + sizeof(MVP);
+	memcpy(lastPos, &camera->position, sizeof(float4));
+	graphics->deviceCon->Unmap(constantBuffer->get(), NULL);
+}
+
 void Mesh::draw(Graphics* graphics, Camera* camera)
 {
 	update(graphics, camera);
@@ -168,7 +192,8 @@ void Mesh::draw(Graphics* graphics, Camera* camera, DirectX::XMMATRIX modelMatri
 
 void Mesh::draw(RenderTarget* renderTarget, RenderState state)
 {
-	update(state.renderWindow->graphics, state.renderWindow->boundCamera, state.modelMatrix);
+	update(renderTarget, state);
+	//update(state.renderWindow->graphics, state.renderWindow->boundCamera, state.modelMatrix);
 
 	for (auto i = textures.begin(); i != textures.end(); i++)
 		i->second->bind(i->first);

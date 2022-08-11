@@ -9,12 +9,14 @@
 #include "ModeledObject.h"
 #include "SkySphere.h"
 #include "entities/EntityTree.h"
+#include <UI/UIElement.h>
 
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLine, int nCmdShow)
 {
 	RenderWindow* renderWindow = new RenderWindow();
 	Camera* mainCamera = new Camera(true);
-	mainCamera->position = { 0, 3, -10 };
+	//mainCamera->position = { 0, 3, -10 };
+	mainCamera->position = { 0, 0, 0 };
 	renderWindow->setCamera(mainCamera);
 
 	Sphere* sphere = new Sphere(renderWindow);
@@ -23,10 +25,8 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLin
 	entityTree->addMoveTarget({5, 0, 5});
 	entityTree->addMoveTarget({5, 5, 5});
 
-	//ModeledObject* tree = new ModeledObject(renderWindow, renderWindow->modelsContent->tree);
-	//tree->setTexture(renderWindow->graphics->texturesContent->flatNormalMap, 1);
-	//tree->setRotation({-3.14 / 2, 0, 0});
-	//tree->setScale({1, 1, 1});
+	UIElement* testUIElement = new UIElement(renderWindow);
+	testUIElement->setScale({0.2, 1, 0.05f});
 
 	PointLight* pointLight = new PointLight(renderWindow, renderWindow->modelsContent->sphere);
 	pointLight->setPosition(float3{ 0, 1, -3 });
@@ -48,6 +48,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLin
 		renderWindow->Draw(sphere);
 		renderWindow->Draw(pointLight);
 		renderWindow->Draw(entityTree);
+		renderWindow->Draw(testUIElement, false, false);
 
 		renderWindow->display();
 		renderWindow->endDeltaTime();

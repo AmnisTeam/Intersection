@@ -45,11 +45,12 @@ RenderWindow::~RenderWindow()
 //{
 //}
 
-void RenderWindow::Draw(IDrawable* object, bool depthStencilOn)
+void RenderWindow::Draw(IDrawable* object, bool depthStencilOn, bool viewMatrixOn)
 {
 	RenderState renderState = RenderState(this);
 	renderState.modelMatrix = DirectX::XMMatrixIdentity();
 	renderState.depthStencilOn = depthStencilOn;
+	renderState.viewMatrixOn = viewMatrixOn;
 	object->draw(graphics->renderTarget, renderState);
 }
 

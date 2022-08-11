@@ -30,6 +30,7 @@
     <FxCompile Include="Shaders\PixelShaders\DefaultPixelShader.hlsl" />
     <FxCompile Include="Shaders\PixelShaders\LightSourcePS.hlsl" />
     <FxCompile Include="Shaders\PixelShaders\SkyPS.hlsl" />
+    <FxCompile Include="Shaders\PixelShaders\OnlyTexturePS.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

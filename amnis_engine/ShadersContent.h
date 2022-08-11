@@ -13,6 +13,7 @@ public:
 	PixelShader* defaultPS;
 	PixelShader* lightSourcePS;
 	PixelShader* skyPS;
+	PixelShader* onlyTexturePS;
 	DECL ShadersContent(Graphics* graphics);
 	DECL void loadShaders();
 private:

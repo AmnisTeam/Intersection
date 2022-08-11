@@ -153,6 +153,8 @@
   <ItemGroup>
     <ClInclude Include="Buffer.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="UI\UIElement.h" />
+    <ClInclude Include="UI\Canvas.h" />
     <ClInclude Include="decl.h" />
     <ClInclude Include="DefaultVertexShader.h" />
     <ClInclude Include="DirectLightSource.h" />
@@ -186,6 +188,8 @@
   <ItemGroup>
     <ClCompile Include="Buffer.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="UI\UIElement.cpp" />
+    <ClCompile Include="UI\Canvas.cpp" />
     <ClCompile Include="DefaultVertexShader.cpp" />
     <ClCompile Include="DirectLightSource.cpp" />
     <ClCompile Include="dllmain.cpp" />
@@ -220,6 +224,7 @@
     <ClCompile Include="WindowBase.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="cpp.hint" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

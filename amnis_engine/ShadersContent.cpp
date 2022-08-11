@@ -19,6 +19,7 @@ ShadersContent::ShadersContent(Graphics* graphics)
     defaultPS = new PixelShader(graphics, L"Shaders//PixelShaders//DefaultPixelShader.hlsl");
     lightSourcePS = new PixelShader(graphics, L"Shaders//PixelShaders//LightSourcePS.hlsl");
     skyPS = new PixelShader(graphics, L"Shaders//PixelShaders//SkyPS.hlsl");
+    onlyTexturePS = new PixelShader(graphics, L"Shaders//PixelShaders//OnlyTexturePS.hlsl");
 }
 
 void ShadersContent::loadShaders()

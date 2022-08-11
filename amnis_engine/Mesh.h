@@ -45,6 +45,7 @@ private:
 	DECL void setupMesh(Graphics* graphics, VertexShader* vertexShader, PixelShader* pixelShader);
 	DECL void update(Graphics* graphics, Camera* camera);
 	DECL void update(Graphics* graphics, Camera* camera, DirectX::XMMATRIX modelMatrix);
+	DECL void update(RenderTarget* renderTarget, RenderState state);
 	//void update(Graphics* graphics, Camera* camera, Transform* transform);
 };
 
