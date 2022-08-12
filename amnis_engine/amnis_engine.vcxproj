@@ -151,8 +151,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="AMNFormat.h" />
     <ClInclude Include="Buffer.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="ConstantBuffer.h" />
     <ClInclude Include="UI\UIElement.h" />
     <ClInclude Include="UI\Canvas.h" />
     <ClInclude Include="decl.h" />
@@ -182,6 +184,7 @@
   <ItemGroup>
     <ClCompile Include="Buffer.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="ConstantBuffer.cpp" />
     <ClCompile Include="UI\UIElement.cpp" />
     <ClCompile Include="UI\Canvas.cpp" />
     <ClCompile Include="DefaultVertexShader.cpp" />

@@ -5,7 +5,7 @@ Entity::Entity(RenderWindow* renderWindow, AmnModel* model)
 	this->renderWindow = renderWindow;
 	this->model = new ModeledObject(renderWindow, model);
 	oldPosition = getPosition();
-	this->model->setTexture(renderWindow->graphics->texturesContent->flatNormalMap, 1);
+	this->model->setTexture(TexturesContent::flatNormalMap, 1);
 }
 
 void Entity::moveTo(float3 const position)

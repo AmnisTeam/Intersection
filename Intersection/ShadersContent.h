@@ -13,6 +13,7 @@ public:
 	static PixelShader* defaultPS;
 	static PixelShader* lightSourcePS;
 	static PixelShader* skyPS;
+	static PixelShader* onlyTexturePS;
 
 	static void load(RenderWindow* renderWindow);
 

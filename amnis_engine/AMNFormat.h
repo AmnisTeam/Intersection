@@ -1,0 +1,10 @@
+#pragma once
+
+enum AMNFormat
+{
+	AMN_FORMAT_FLOAT = 0,
+	AMN_FORMAT_FLOAT2 = 1,
+	AMN_FORMAT_FLOAT3 = 2,
+	AMN_FORMAT_FLOAT4 = 3,
+	AMN_FORMAT_MATRIX4X4 = 4
+};

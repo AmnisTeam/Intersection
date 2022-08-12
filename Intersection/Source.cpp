@@ -12,6 +12,7 @@
 #include "TexturesContent.h"
 #include "ShadersContent.h"
 #include "StrategyCamera.h"
+#include "UI/UIElement.h"
 
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLine, int nCmdShow)
 {
@@ -34,9 +35,9 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLin
 
 	//EntityTree* entityTree = new EntityTree(renderWindow);
 
-	UIElement* testUIElement = new UIElement(renderWindow);
+	UIElement* testUIElement = new UIElement(renderWindow, ShadersContent::defaultVS, ShadersContent::onlyTexturePS);
 	testUIElement->setPosition({0, 0, 1});
-	testUIElement->setScale({0.2, 1, 0.05f});
+	testUIElement->setScale({0.5f, 0.5f, 1});
 
 	PointLight* pointLight = new PointLight(renderWindow, ModelsContent::sphere);
 	pointLight->setPosition(float3{ 0, 1, -3 });
@@ -44,7 +45,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLin
 	pointLight->setFactors(float3{ 1, 0.014f, 0.0007f });
 
 	SkySphere* skySphere = new SkySphere(renderWindow, TexturesContent::textureSky);
-
+	float a = 0;
 	while (renderWindow->isOpen)
 	{
 		renderWindow->startDeltaTime();

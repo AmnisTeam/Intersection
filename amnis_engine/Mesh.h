@@ -15,6 +15,8 @@
 #include <map>
 #include "Texture.h"
 #include "Transformable.h"
+#include "ConstantBuffer.h"
+#include <map>
 
 class Mesh : public Transformable
 {
@@ -27,13 +29,24 @@ public:
 	bool drawDepthStencil = false;
 	DECL Mesh(Graphics* graphics, std::vector<Vertex> vertices, std::vector<int> indices, VertexShader* vertexShader, PixelShader* pixelShader);
 	DECL void setTexture(Texture* texture, int slot);
-	DECL void draw(Graphics* graphics, Camera* camera);
-	DECL void draw(Graphics* graphics, Camera* camera, DirectX::XMMATRIX modelMatrix);
+
+	DECL void VSConstBufSet(ConstantBuffer* constantBuffer, unsigned int const slot);
+	DECL void PSConstBufSet(ConstantBuffer* constantBuffer, unsigned int const slot);
+	DECL void VSConstBufAdd(unsigned int const slot);
+	DECL void PSConstBufAdd(unsigned int const slot);
+	DECL void VSConstBufAddValue(unsigned int slot, void* value, const char* key, unsigned int const size);
+	DECL void PSConstBufAddValue(unsigned int slot, void* value, const char* key, unsigned int const size);
+	DECL void VSConstBufUpdateValue(unsigned int const slot, unsigned int dataID, void* data);
+	DECL void PSConstBufUpdateValue(unsigned int const slot, unsigned int dataID, void* data);
+	DECL void VSConstBufInit(unsigned int const slot);
+	DECL void PSConstBufInit(unsigned int const slot);
+
 	DECL void draw(RenderTarget* renderTarget, RenderState renderState);
-	//void draw(Graphics* graphics, Camera* camera, Transform* transform);
 private:
+	Graphics* graphics;
 	Buffer* vertexBuffer;
-	Buffer* constantBuffer;
+	std::map<unsigned int, ConstantBuffer*> constantBuffersVS;
+	std::map<unsigned int, ConstantBuffer*> constantBuffersPS;
 	Buffer* indexBuffer;
 	DefaultVertexShader* defaultVertexShader;
 	VertexShader* vertexShader;
@@ -43,9 +56,6 @@ private:
 	DirectX::XMMATRIX MVP;
 	ID3D11ShaderResourceView* SRVnormalMap;
 	DECL void setupMesh(Graphics* graphics, VertexShader* vertexShader, PixelShader* pixelShader);
-	DECL void update(Graphics* graphics, Camera* camera);
-	DECL void update(Graphics* graphics, Camera* camera, DirectX::XMMATRIX modelMatrix);
 	DECL void update(RenderTarget* renderTarget, RenderState state);
-	//void update(Graphics* graphics, Camera* camera, Transform* transform);
 };
 

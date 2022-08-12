@@ -56,6 +56,56 @@ void ModeledObject::bindAllTextures()
 		it->second->bind(it->first);
 }
 
+void ModeledObject::PSConstBufSet(ConstantBuffer* constantBuffer, unsigned int const slot)
+{
+	model->PSConstBufSet(constantBuffer, slot);
+}
+
+void ModeledObject::VSConstBufAdd(unsigned int const slot)
+{
+	model->VSConstBufAdd(slot);
+}
+
+void ModeledObject::PSConstBufAdd(unsigned int const slot)
+{
+	model->PSConstBufAdd(slot);
+}
+
+void ModeledObject::VSConstBufAddValue(unsigned int slot, void* value, const char* key, unsigned int const size)
+{
+	model->VSConstBufAddValue(slot, value, key, size);
+}
+
+void ModeledObject::PSConstBufAddValue(unsigned int slot, void* value, const char* key, unsigned int const size)
+{
+	model->PSConstBufAddValue(slot, value, key, size);
+}
+
+void ModeledObject::VSConstBufSet(ConstantBuffer* constantBuffer, unsigned int const slot)
+{
+	model->VSConstBufSet(constantBuffer, slot);
+}
+
+void ModeledObject::VSConstBufUpdateValue(unsigned int const slot, unsigned int dataID, void* data)
+{
+	model->VSConstBufUpdateValue(slot, dataID, data);
+}
+
+void ModeledObject::PSConstBufUpdateValue(unsigned int const slot, unsigned int dataID, void* data)
+{
+	model->PSConstBufUpdateValue(slot, dataID, data);
+}
+
+void ModeledObject::VSConstBufInit(unsigned int const slot)
+{
+	model->VSConstBufInit(slot);
+}
+
+void ModeledObject::PSConstBufInit(unsigned int const slot)
+{
+	model->PSConstBufInit(slot);
+}
+
 void ModeledObject::draw(RenderTarget* renderTarget, RenderState state)
 {
 	state.modelMatrix = modelMatrix * state.modelMatrix;

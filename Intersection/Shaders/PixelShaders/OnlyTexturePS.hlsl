@@ -16,6 +16,11 @@ cbuffer lightsCount : register(b9)
 	unsigned int pointLightsCount;
 };
 
+cbuffer colorValue : register(b0)
+{
+	float4 constantColor;
+};
+
 Texture2D texture0 : register(t0);
 Texture2D normalMap : register(t1);
 Texture2D textureSky : register(t2);
@@ -97,5 +102,5 @@ float3 myReflect(float3 i, float3 n)
 float4 main(Input input) : SV_TARGET
 {
 	float4 texColor = float4(texture0.Sample(samplerState, input.texCoord.xy).xyz, 1);
-	return float4(1, 1, 1, 1);
+	return constantColor;
 }

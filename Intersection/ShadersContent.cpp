@@ -8,6 +8,7 @@ VertexShader* ShadersContent::defaultVS;
 PixelShader* ShadersContent::defaultPS;
 PixelShader* ShadersContent::lightSourcePS;
 PixelShader* ShadersContent::skyPS;
+PixelShader* ShadersContent::onlyTexturePS;
 
 void ShadersContent::load(RenderWindow* renderWindow)
 {
@@ -23,5 +24,5 @@ void ShadersContent::load(RenderWindow* renderWindow)
     defaultPS = new PixelShader(renderWindow->graphics, L"Shaders//PixelShaders//DefaultPixelShader.hlsl");
     lightSourcePS = new PixelShader(renderWindow->graphics, L"Shaders//PixelShaders//LightSourcePS.hlsl");
     skyPS = new PixelShader(renderWindow->graphics, L"Shaders//PixelShaders//SkyPS.hlsl");
-    onlyTexturePS = new PixelShader(graphics, L"Shaders//PixelShaders//OnlyTexturePS.hlsl");
+    onlyTexturePS = new PixelShader(renderWindow->graphics, L"Shaders//PixelShaders//OnlyTexturePS.hlsl");
 }

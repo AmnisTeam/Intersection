@@ -3,6 +3,7 @@
 #include <IDrawable.h>
 #include <ModeledObject.h>
 #include <RenderWindow.h>
+#include "../TexturesContent.h"
 
 class Entity : public Transformable, public IDrawable
 {
