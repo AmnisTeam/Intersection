@@ -4,21 +4,21 @@ GridElement::GridElement()
 {
 }
 
-void GridElement::setBuild(void* build)
+void GridElement::setBuilding(Building* building)
 {
-	this->build = build;
-	haveObstacle = build != nullptr;
+	this->building = building;
+	haveObstacle = building != nullptr;
 }
 
 void GridElement::setObstacle(bool haveObstacle)
 {
-	if (build == nullptr)
+	if (building == nullptr)
 		this->haveObstacle = haveObstacle;
 }
 
-void* GridElement::getBuild() const
+void* GridElement::getBuilding() const
 {
-	return build;
+	return building;
 }
 
 bool GridElement::getObstacle() const

@@ -1,16 +1,17 @@
 #pragma once
+#include "../Building.h"
 class GridElement
 {
 public:
 	GridElement();
 
-	void setBuild(void* build);
+	void setBuilding(Building* building);
 	void setObstacle(bool haveObstacle);
 
-	void* getBuild() const;
+	void* getBuilding() const;
 	bool getObstacle() const;
 private:
-	void* build = nullptr;
+	Building* building = nullptr;
 	bool haveObstacle = false;
 
 };

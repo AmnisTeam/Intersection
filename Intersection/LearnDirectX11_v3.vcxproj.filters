@@ -45,10 +45,16 @@
     <ClCompile Include="StrategyCamera.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="grids\Grid.cpp">
+    <ClCompile Include="builds\grids\Grid.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="grids\GridElement.cpp">
+    <ClCompile Include="builds\grids\GridElement.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="Building.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="Inventory.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
@@ -89,13 +95,22 @@
     <ClInclude Include="StrategyCamera.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="grids\Grid.h">
+    <ClInclude Include="builds\grids\Grid.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="grids\GridElement.h">
+    <ClInclude Include="builds\grids\GridElement.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="grids\IBuild.h">
+    <ClInclude Include="builds\grids\IBuild.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="InventoryItem.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Building.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Inventory.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>
