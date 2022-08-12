@@ -18,7 +18,7 @@ public:
 
 	DECL RenderWindow();
 	DECL ~RenderWindow();
-	DECL void Draw(IDrawable* object, bool depthStencilOn = true, bool viewMatrixOn = true);
+	DECL void Draw(IDrawable* object, bool depthStencilOn = true, bool viewMatrixOn = true, bool projectionMatrix = true);
 	DECL void display();
 	DECL void update();
 	DECL void dispatchEvents();

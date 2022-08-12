@@ -26,6 +26,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLin
 	entityTree->addMoveTarget({5, 5, 5});
 
 	UIElement* testUIElement = new UIElement(renderWindow);
+	testUIElement->setPosition({0, 0, 1});
 	testUIElement->setScale({0.2, 1, 0.05f});
 
 	PointLight* pointLight = new PointLight(renderWindow, renderWindow->modelsContent->sphere);
@@ -48,7 +49,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLin
 		renderWindow->Draw(sphere);
 		renderWindow->Draw(pointLight);
 		renderWindow->Draw(entityTree);
-		renderWindow->Draw(testUIElement, false, false);
+		renderWindow->Draw(testUIElement, false, false, false);
 
 		renderWindow->display();
 		renderWindow->endDeltaTime();

@@ -10,6 +10,7 @@ public:
 	RenderWindow* renderWindow;
 	bool depthStencilOn = true;
 	bool viewMatrixOn = true;
+	bool projectionMatrixOn = true;
 
 	DECL RenderState(RenderWindow* renderWindow);
 };

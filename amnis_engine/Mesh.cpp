@@ -67,10 +67,6 @@ void Mesh::setupMesh(Graphics* graphics, VertexShader* vertexShader, PixelShader
 	sampleState = new SampleState(graphics);
 	this->vertexShader = vertexShader;
 	this->pixelShader = pixelShader;
-	//HRESULT hr = DirectX::CreateWICTextureFromFile(graphics->device, L"Wall_Stone_017_BaseColor.jpg", nullptr, &SRVMink);
-	//if (FAILED(hr)) throw;
-	//hr = DirectX::CreateWICTextureFromFile(graphics->device, L"Textures\\14015-normal.jpg", nullptr, &SRVnormalMap);
-	//if (FAILED(hr)) throw;
 }
 
 void Mesh::setTexture(Texture* texture, int slot)
@@ -119,12 +115,15 @@ void Mesh::update(RenderTarget* renderTarget, RenderState state)
 	Camera* camera = state.renderWindow->boundCamera;
 	Graphics* graphics = state.renderWindow->graphics;
 	DirectX::XMMATRIX modelMatrix = state.modelMatrix;
+	DirectX::XMMATRIX preTransopesedMVP = DirectX::XMMatrixIdentity();
 
-	if(state.viewMatrixOn == true)
-		MVP = DirectX::XMMatrixTranspose(modelMatrix * camera->viewMatrix * camera->projectionMatrix);
-	else
-		MVP = DirectX::XMMatrixTranspose(modelMatrix * camera->projectionMatrix);
+	preTransopesedMVP *= modelMatrix;
+	if (state.viewMatrixOn == true)
+		preTransopesedMVP *= camera->viewMatrix;
+	if(state.projectionMatrixOn == true)
+		preTransopesedMVP *= camera->projectionMatrix;
 
+	MVP = DirectX::XMMatrixTranspose(preTransopesedMVP);
 	modelMatrix = DirectX::XMMatrixTranspose(modelMatrix);
 
 	D3D11_MAPPED_SUBRESOURCE ms{};
@@ -145,8 +144,6 @@ void Mesh::draw(Graphics* graphics, Camera* camera)
 	for (auto i = textures.begin(); i != textures.end(); i++)
 		i->second->bind(i->first);
 
-	//graphics->deviceCon->PSSetShaderResources(0, 1, &SRVMink);
-	//graphics->deviceCon->PSSetShaderResources(1, 1, &SRVnormalMap);
 	UINT strides = sizeof(Vertex);
 	UINT offset = 0;
 	if(drawDepthStencil)
@@ -157,8 +154,6 @@ void Mesh::draw(Graphics* graphics, Camera* camera)
 	graphics->deviceCon->IASetVertexBuffers(0, 1, vertexBuffer->getpp(), &strides, &offset);
 	graphics->deviceCon->VSSetConstantBuffers(0, 1, constantBuffer->getpp());
 	graphics->deviceCon->IASetIndexBuffer(indexBuffer->get(), DXGI_FORMAT_R32_UINT, 0);
-	//vertexShader->setVertexShader(graphics);
-	//graphics->deviceCon->PSSetShader(pixelShader->get(), NULL, NULL);
 	vertexShader->setLayout(graphics);
 	graphics->deviceCon->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	graphics->deviceCon->DrawIndexed(indices.size(), 0, 0);
@@ -171,8 +166,6 @@ void Mesh::draw(Graphics* graphics, Camera* camera, DirectX::XMMATRIX modelMatri
 	for (auto i = textures.begin(); i != textures.end(); i++)
 		i->second->bind(i->first);
 
-	//graphics->deviceCon->PSSetShaderResources(0, 1, &SRVMink);
-	//graphics->deviceCon->PSSetShaderResources(1, 1, &SRVnormalMap);
 	UINT strides = sizeof(Vertex);
 	UINT offset = 0;
 	if (drawDepthStencil)
@@ -183,8 +176,6 @@ void Mesh::draw(Graphics* graphics, Camera* camera, DirectX::XMMATRIX modelMatri
 	graphics->deviceCon->IASetVertexBuffers(0, 1, vertexBuffer->getpp(), &strides, &offset);
 	graphics->deviceCon->VSSetConstantBuffers(0, 1, constantBuffer->getpp());
 	graphics->deviceCon->IASetIndexBuffer(indexBuffer->get(), DXGI_FORMAT_R32_UINT, 0);
-	//vertexShader->setVertexShader(graphics);
-	//graphics->deviceCon->PSSetShader(pixelShader->get(), NULL, NULL);
 	vertexShader->setLayout(graphics);
 	graphics->deviceCon->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	graphics->deviceCon->DrawIndexed(indices.size(), 0, 0);
@@ -193,7 +184,6 @@ void Mesh::draw(Graphics* graphics, Camera* camera, DirectX::XMMATRIX modelMatri
 void Mesh::draw(RenderTarget* renderTarget, RenderState state)
 {
 	update(renderTarget, state);
-	//update(state.renderWindow->graphics, state.renderWindow->boundCamera, state.modelMatrix);
 
 	for (auto i = textures.begin(); i != textures.end(); i++)
 		i->second->bind(i->first);
@@ -208,8 +198,6 @@ void Mesh::draw(RenderTarget* renderTarget, RenderState state)
 	state.renderWindow->graphics->deviceCon->IASetVertexBuffers(0, 1, vertexBuffer->getpp(), &strides, &offset);
 	state.renderWindow->graphics->deviceCon->VSSetConstantBuffers(0, 1, constantBuffer->getpp());
 	state.renderWindow->graphics->deviceCon->IASetIndexBuffer(indexBuffer->get(), DXGI_FORMAT_R32_UINT, 0);
-	//vertexShader->setVertexShader(graphics);
-	//graphics->deviceCon->PSSetShader(pixelShader->get(), NULL, NULL);
 	vertexShader->setLayout(state.renderWindow->graphics);
 	state.renderWindow->graphics->deviceCon->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	state.renderWindow->graphics->deviceCon->DrawIndexed(indices.size(), 0, 0);
