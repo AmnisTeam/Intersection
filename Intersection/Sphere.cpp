@@ -1,14 +1,14 @@
-#include "pch.h"
 #include "Sphere.h"
+#include "TexturesContent.h"
 
 Sphere::Sphere(RenderWindow* renderWindow)
 {
 	this->renderWindow = renderWindow;
 	Graphics* graphics = renderWindow->graphics;
 
-	model = new ModeledObject(renderWindow, renderWindow->modelsContent->sphere);
-	model->setTexture(graphics->texturesContent->stoneWallAlbedo, 0);
-	model->setTexture(graphics->texturesContent->stoneWallNormalMap, 1);
+	model = new ModeledObject(renderWindow, ModelsContent::sphere);
+	model->setTexture(TexturesContent::stoneWallAlbedo, 0);
+	model->setTexture(TexturesContent::stoneWallNormalMap, 1);
 }
 
 RenderWindow* Sphere::getRenderWindow()

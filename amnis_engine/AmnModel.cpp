@@ -1,29 +1,29 @@
 #include "pch.h"
-#include "Model.h"
+#include "AmnModel.h"
 
-Model::Model(Graphics* graphics, char* modelPath)
+AmnModel::AmnModel(Graphics* graphics, char* modelPath)
 {
 	loadModel(graphics, modelPath, new DefaultVertexShader(graphics, L"VertexShader.hlsl"), new PixelShader(graphics, L"PixelShader.hlsl"));
 }
 
-Model::Model(Graphics* graphics, char* modelPath, VertexShader* vertexShader, PixelShader* pixelShader)
+AmnModel::AmnModel(Graphics* graphics, char* modelPath, VertexShader* vertexShader, PixelShader* pixelShader)
 {
 	loadModel(graphics, modelPath, vertexShader, pixelShader);
 }
 
-void Model::setTexture(Texture* texture, unsigned int slot)
+void AmnModel::setTexture(Texture* texture, unsigned int slot)
 {
 	//textures[slot] = texture;
 	//textures.push_back(new TextureStruct{ texture, slot });
 	textures[slot] = texture;
 }
 
-void Model::deleteTexture(unsigned int slot)
+void AmnModel::deleteTexture(unsigned int slot)
 {
 	//textures[slot] = nullptr;
 }
 
-std::vector<Texture*> Model::loadMaterialTextures(Graphics* graphics, aiMaterial* mat, aiTextureType type)
+std::vector<Texture*> AmnModel::loadMaterialTextures(Graphics* graphics, aiMaterial* mat, aiTextureType type)
 {
 	std::vector<Texture*> textures;
 	for (unsigned int i = 0; i < mat->GetTextureCount(type); i++)
@@ -69,7 +69,7 @@ std::vector<Texture*> Model::loadMaterialTextures(Graphics* graphics, aiMaterial
 	return textures;
 }
 
-void Model::draw(Graphics* graphics, Camera* camera)
+void AmnModel::draw(Graphics* graphics, Camera* camera)
 {
 	//for (int i = 0; i < textures.size(); i++)
 	//	textures[i]->texture->bind(textures[i]->slot);
@@ -87,7 +87,7 @@ void Model::draw(Graphics* graphics, Camera* camera)
 	}
 }
 
-void Model::draw(Graphics* graphics, Camera* camera, DirectX::XMMATRIX modelMatrix)
+void AmnModel::draw(Graphics* graphics, Camera* camera, DirectX::XMMATRIX modelMatrix)
 {
 	for (auto it = textures.begin(); it != textures.end(); it++)
 		it->second->bind(it->first);
@@ -99,7 +99,7 @@ void Model::draw(Graphics* graphics, Camera* camera, DirectX::XMMATRIX modelMatr
 	}
 }
 
-void Model::draw(RenderTarget* renderTarget, RenderState renderState)
+void AmnModel::draw(RenderTarget* renderTarget, RenderState renderState)
 {
 	for (auto it = textures.begin(); it != textures.end(); it++)
 		it->second->bind(it->first);
@@ -126,7 +126,7 @@ void Model::draw(RenderTarget* renderTarget, RenderState renderState)
 //	}
 //}
 
-void Model::loadModel(Graphics* graphics, std::string path, VertexShader* vertexShader, PixelShader* pixelShader)
+void AmnModel::loadModel(Graphics* graphics, std::string path, VertexShader* vertexShader, PixelShader* pixelShader)
 {
 
 	extension = path.substr(path.find_last_of('.') + 1, path.size());
@@ -140,7 +140,7 @@ void Model::loadModel(Graphics* graphics, std::string path, VertexShader* vertex
 	processNode(graphics, scene->mRootNode, scene, vertexShader, pixelShader);
 }
 
-void Model::processNode(Graphics* graphics, aiNode* node, const aiScene* scene, VertexShader* vertexShader, PixelShader* pixelShader)
+void AmnModel::processNode(Graphics* graphics, aiNode* node, const aiScene* scene, VertexShader* vertexShader, PixelShader* pixelShader)
 {
 	for (int i = 0; i < node->mNumMeshes; i++)
 	{
@@ -155,7 +155,7 @@ void Model::processNode(Graphics* graphics, aiNode* node, const aiScene* scene, 
 	}
 }
 
-Mesh Model::processMesh(Graphics* graphics, const aiScene* scene, aiMesh* mesh, VertexShader* vertexShader, PixelShader* pixelShader)
+Mesh AmnModel::processMesh(Graphics* graphics, const aiScene* scene, aiMesh* mesh, VertexShader* vertexShader, PixelShader* pixelShader)
 {
 	std::vector<Vertex> vertices;
 	std::vector<int> indices;

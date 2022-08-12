@@ -138,7 +138,7 @@
       <AdditionalDependencies>assimp-vc143-mtd.lib;%(AdditionalDependencies);amnis_engine.lib</AdditionalDependencies>
     </Link>
     <PreBuildEvent>
-      <Command>xcopy /y /d "$(SolutionDir)dlls\" "$(OutDir)"</Command>
+      <Command>xcopy /y /d "$(SolutionDir)dlls" "$(OutDir)"</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -166,7 +166,14 @@
   <ItemGroup>
     <ClCompile Include="entities\Entity.cpp" />
     <ClCompile Include="entities\EntityTree.cpp" />
+    <ClCompile Include="ModelsContent.cpp" />
+    <ClCompile Include="ShadersContent.cpp" />
+    <ClCompile Include="SkySphere.cpp" />
     <ClCompile Include="Source.cpp" />
+    <ClCompile Include="Sphere.cpp" />
+    <ClCompile Include="Spherenic.cpp" />
+    <ClCompile Include="StrategyCamera.cpp" />
+    <ClCompile Include="TexturesContent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shaders\PixelShaders\DefaultPixelShader.hlsl">
@@ -226,6 +233,13 @@
   <ItemGroup>
     <ClInclude Include="entities\Entity.h" />
     <ClInclude Include="entities\EntityTree.h" />
+    <ClInclude Include="ModelsContent.h" />
+    <ClInclude Include="ShadersContent.h" />
+    <ClInclude Include="SkySphere.h" />
+    <ClInclude Include="Sphere.h" />
+    <ClInclude Include="Spherenic.h" />
+    <ClInclude Include="StrategyCamera.h" />
+    <ClInclude Include="TexturesContent.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

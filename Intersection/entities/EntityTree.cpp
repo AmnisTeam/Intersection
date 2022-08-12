@@ -1,6 +1,6 @@
 #include "EntityTree.h"
 
-EntityTree::EntityTree(RenderWindow* renderWindow) : Entity(renderWindow, renderWindow->modelsContent->tree)
+EntityTree::EntityTree(RenderWindow* renderWindow) : Entity(renderWindow, ModelsContent::tree)
 {
 }
 

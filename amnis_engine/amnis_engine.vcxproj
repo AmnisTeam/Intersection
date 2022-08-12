@@ -163,9 +163,8 @@
     <ClInclude Include="IDrawable.h" />
     <ClInclude Include="MainWindow.h" />
     <ClInclude Include="Mesh.h" />
-    <ClInclude Include="Model.h" />
+    <ClInclude Include="AmnModel.h" />
     <ClInclude Include="ModeledObject.h" />
-    <ClInclude Include="ModelsContent.h" />
     <ClInclude Include="mymath.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="PixelShader.h" />
@@ -174,12 +173,7 @@
     <ClInclude Include="RenderTarget.h" />
     <ClInclude Include="RenderWindow.h" />
     <ClInclude Include="SampleState.h" />
-    <ClInclude Include="ShadersContent.h" />
-    <ClInclude Include="SkySphere.h" />
-    <ClInclude Include="Sphere.h" />
-    <ClInclude Include="Spherenic.h" />
     <ClInclude Include="Texture.h" />
-    <ClInclude Include="TexturesContent.h" />
     <ClInclude Include="Transformable.h" />
     <ClInclude Include="VertexShader.h" />
     <ClInclude Include="VSLightSource.h" />
@@ -197,9 +191,8 @@
     <ClCompile Include="IDrawable.cpp" />
     <ClCompile Include="MainWindow.cpp" />
     <ClCompile Include="Mesh.cpp" />
-    <ClCompile Include="Model.cpp" />
+    <ClCompile Include="AmnModel.cpp" />
     <ClCompile Include="ModeledObject.cpp" />
-    <ClCompile Include="ModelsContent.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -212,12 +205,7 @@
     <ClCompile Include="RenderTarget.cpp" />
     <ClCompile Include="RenderWindow.cpp" />
     <ClCompile Include="SampleState.cpp" />
-    <ClCompile Include="ShadersContent.cpp" />
-    <ClCompile Include="SkySphere.cpp" />
-    <ClCompile Include="Sphere.cpp" />
-    <ClCompile Include="Spherenic.cpp" />
     <ClCompile Include="Texture.cpp" />
-    <ClCompile Include="TexturesContent.cpp" />
     <ClCompile Include="Transformable.cpp" />
     <ClCompile Include="VertexShader.cpp" />
     <ClCompile Include="VSLightSource.cpp" />

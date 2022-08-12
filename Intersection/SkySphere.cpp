@@ -1,12 +1,13 @@
 #include "pch.h"
 #include "SkySphere.h"
+#include "ShadersContent.h"
 
 
 SkySphere::SkySphere(RenderWindow* renderWindow, Texture* texture)
 {
 	this->renderWindow = renderWindow;
 	sphere = new Sphere(renderWindow);
-	sphere->model->setPixelShader(renderWindow->graphics->shadersContent->skyPS);
+	sphere->model->setPixelShader(ShadersContent::skyPS);
 	sphere->model->setTexture(texture, 0);
 	sphere->setScale({-1, -1, -1});
 	sphere->setPosition(renderWindow->boundCamera->position);

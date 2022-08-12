@@ -8,7 +8,7 @@
 #include <vector>
 #include "Transformable.h"
 
-class Model : public Transformable
+class AmnModel : public Transformable
 {
 public:
 	struct TextureStruct
@@ -19,8 +19,8 @@ public:
 	std::map<unsigned int, Texture*> textures;
 	std::string extension;
 	bool drawDepthStencil = true;
-	DECL Model(Graphics* graphics, char* modelPath);
-	DECL Model(Graphics* graphics, char* modelPath, VertexShader* vertexShader, PixelShader* pixelShader);
+	DECL AmnModel(Graphics* graphics, char* modelPath);
+	DECL AmnModel(Graphics* graphics, char* modelPath, VertexShader* vertexShader, PixelShader* pixelShader);
 	DECL void setTexture(Texture* texture, unsigned int slot);
 	DECL void deleteTexture(unsigned int slot);
 	DECL std::vector<Texture*> loadMaterialTextures(Graphics* graphics, aiMaterial* mat, aiTextureType type);

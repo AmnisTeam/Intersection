@@ -4,7 +4,6 @@
 #include "IDrawable.h"
 #include "RenderTarget.h"
 #include <chrono>
-#include "ModelsContent.h"
 #include "decl.h"
 
 class RenderWindow
@@ -13,7 +12,6 @@ public:
 	MainWindow* window;
 	Graphics* graphics;
 	Camera* boundCamera;
-	ModelsContent* modelsContent;
 	bool isOpen = true;
 
 	DECL RenderWindow();
