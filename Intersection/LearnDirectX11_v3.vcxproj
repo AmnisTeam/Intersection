@@ -166,6 +166,8 @@
   <ItemGroup>
     <ClCompile Include="entities\Entity.cpp" />
     <ClCompile Include="entities\EntityTree.cpp" />
+    <ClCompile Include="grids\GridElement.cpp" />
+    <ClCompile Include="grids\Grid.cpp" />
     <ClCompile Include="ModelsContent.cpp" />
     <ClCompile Include="ShadersContent.cpp" />
     <ClCompile Include="SkySphere.cpp" />
@@ -223,6 +225,9 @@
   <ItemGroup>
     <ClInclude Include="entities\Entity.h" />
     <ClInclude Include="entities\EntityTree.h" />
+    <ClInclude Include="grids\GridElement.h" />
+    <ClInclude Include="grids\Grid.h" />
+    <ClInclude Include="grids\IBuild.h" />
     <ClInclude Include="ModelsContent.h" />
     <ClInclude Include="ShadersContent.h" />
     <ClInclude Include="SkySphere.h" />

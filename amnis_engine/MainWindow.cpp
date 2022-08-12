@@ -98,7 +98,7 @@ void MainWindow::freeCursor()
 
 void MainWindow::hideCursor()
 {
-    while (ShowCursor(false) >= 0);
+    //while (ShowCursor(false) >= 0);
 }
 
 void MainWindow::showCursor()
