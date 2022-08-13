@@ -12,6 +12,7 @@
 #include "TexturesContent.h"
 #include "ShadersContent.h"
 #include "StrategyCamera.h"
+#include "World.h"
 #include "UI/UIElement.h"
 
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLine, int nCmdShow)
@@ -45,6 +46,9 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLin
 	pointLight->setFactors(float3{ 1, 0.014f, 0.0007f });
 
 	SkySphere* skySphere = new SkySphere(renderWindow, TexturesContent::textureSky);
+
+	World* world = new World(renderWindow, 100, 100, 1, 1);
+
 	float a = 0;
 	while (renderWindow->isOpen)
 	{
@@ -59,6 +63,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLin
 		renderWindow->Draw(sphere);
 		renderWindow->Draw(pointLight);
 		renderWindow->Draw(plane);
+		renderWindow->Draw(world);
 		//renderWindow->Draw(entityTree);
 		//renderWindow->Draw(tree);
 		renderWindow->Draw(testUIElement, false, false, false);
