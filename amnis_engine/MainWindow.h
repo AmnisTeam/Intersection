@@ -9,6 +9,12 @@ class MainWindow : public WindowBase
 {
 public:
 	long2 rawMouseDelta;
+	bool rawMouseLeftButtonDown;
+	bool rawMouseRightButtonDown;
+	bool rawMouseLeftButtonUp;
+	bool rawMouseRightButtonUp;
+	bool rawMouseRightButtonPressed;
+	bool rawMouseLeftButtonPressed;
 	float2 mousePos;
 	DECL virtual LRESULT handleMessage(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) override;
 	virtual LPCWSTR getClassName() override { return L"MAIN_WINDOW";};

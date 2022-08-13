@@ -153,6 +153,9 @@
   <ItemGroup>
     <ClInclude Include="AMNFormat.h" />
     <ClInclude Include="Buffer.h" />
+    <ClInclude Include="Event.h" />
+    <ClInclude Include="UI\Toggle.h" />
+    <ClInclude Include="UI\Button.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="ConstantBuffer.h" />
     <ClInclude Include="UI\UIElement.h" />
@@ -183,6 +186,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Buffer.cpp" />
+    <ClCompile Include="Event.cpp" />
+    <ClCompile Include="UI\Toggle.cpp" />
+    <ClCompile Include="UI\Button.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="ConstantBuffer.cpp" />
     <ClCompile Include="UI\UIElement.cpp" />

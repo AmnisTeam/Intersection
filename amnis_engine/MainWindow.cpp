@@ -23,6 +23,30 @@ LRESULT MainWindow::handleMessage(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lP
                     rawMouseDelta.y += rawInput->data.mouse.lLastY;
                 }
 
+                if (rawInput->data.mouse.usButtonFlags & RI_MOUSE_LEFT_BUTTON_DOWN)
+                {
+                    rawMouseLeftButtonDown = true;
+                    rawMouseLeftButtonPressed = true;
+                }
+
+                if (rawInput->data.mouse.usButtonFlags & RI_MOUSE_RIGHT_BUTTON_DOWN)
+                {
+                    rawMouseRightButtonDown = true;
+                    rawMouseRightButtonPressed = true;
+                }
+
+                if (rawInput->data.mouse.usButtonFlags & RI_MOUSE_LEFT_BUTTON_UP)
+                {
+                    rawMouseLeftButtonUp = true;
+                    rawMouseLeftButtonPressed = false;
+                }
+
+                if (rawInput->data.mouse.usButtonFlags & RI_MOUSE_RIGHT_BUTTON_UP)
+                {
+                    rawMouseRightButtonUp = true;
+                    rawMouseRightButtonPressed = false;
+                }
+
             }
             else if (rawInput->header.dwType == RIM_TYPEKEYBOARD)
             {

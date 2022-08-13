@@ -251,6 +251,7 @@
     <ClInclude Include="Buildings\grids\Grid.h" />
     <ClInclude Include="Buildings\Inventory.h" />
     <ClInclude Include="Buildings\InventoryItem.h" />
+    <ClInclude Include="EventSwitchValue.h" />
     <ClInclude Include="ModelsContent.h" />
     <ClInclude Include="ShadersContent.h" />
     <ClInclude Include="SkySphere.h" />

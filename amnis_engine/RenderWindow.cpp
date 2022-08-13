@@ -56,6 +56,10 @@ void RenderWindow::display()
 {
 	graphics->deviceCon->ClearDepthStencilView(graphics->depthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1, 0);
 	window->rawMouseDelta = {};
+	window->rawMouseLeftButtonDown = false;
+	window->rawMouseRightButtonDown = false;
+	window->rawMouseLeftButtonUp = false;
+	window->rawMouseRightButtonUp = false;
 	graphics->swapChain->Present(0, 0);
 }
 
