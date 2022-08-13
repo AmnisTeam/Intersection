@@ -49,6 +49,11 @@ LRESULT MainWindow::handleMessage(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lP
             }
             break;
         }
+        case WM_MOUSEMOVE:
+        {
+            mousePos = { (float)GET_X_LPARAM(lParam), (float)GET_Y_LPARAM(lParam) };
+            break;
+        }
         case WM_CLOSE:
         {
             PostQuitMessage(0);
@@ -93,7 +98,7 @@ void MainWindow::freeCursor()
 
 void MainWindow::hideCursor()
 {
-    while (ShowCursor(false) >= 0);
+    //while (ShowCursor(false) >= 0);
 }
 
 void MainWindow::showCursor()

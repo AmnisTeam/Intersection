@@ -4,15 +4,16 @@
 #pragma comment(lib, "d3d11.lib")
 #pragma comment(lib, "d3dcompiler.lib")
 #include <iostream>
-#include "ShadersContent.h"
-#include "TexturesContent.h"
 #include <vector>
 #include "RenderTarget.h"
 #include "PointLight.h"
 #include "decl.h"
 
+
 class Camera;
 class PointLight;
+class VertexShader;
+class PixelShader;
 class Graphics
 {
 public:
@@ -23,21 +24,21 @@ public:
 	RenderTarget* renderTarget;
 	ID3D11Texture2D* depthStencilTexture;
 	ID3D11DepthStencilView* depthStencilView;
-	ShadersContent* shadersContent;
-	TexturesContent* texturesContent;
 	HWND hwnd;
 	std::vector<PointLight*> pointLights2;
 	int maxPointLightsCount = 500;
 	ID3D11Buffer* pointLightsBuffer;
 	ID3D11ShaderResourceView* pointLightsSRV;
 	ID3D11Buffer* lightsCountsBuffer;
+	VertexShader* defaultVS;
+	PixelShader* defaultPS;
+	PixelShader* lightPS;
 	int resWidth;
 	int resHeight;
 	double deltaTime = 1 / 60.0;
 	DECL Graphics();
 	DECL void initDirectX11(HWND outputWindow, int backWidth = -1, int backHeight = -1);
 	DECL void initDepthStencil();
-	DECL void initTexturesContent();
 	DECL void setFirstOldClockAndDeltaTime();
 	DECL void updateDeltaTime();
 	DECL void updatePointLights();

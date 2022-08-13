@@ -21,6 +21,6 @@ public:
 	DECL Camera(float3 camPos, float3 camRotation, bool responded);
 	DECL Camera(bool responded = true);
 	DECL void update(Graphics* graphics);
-	DECL void responseInput(Graphics* graphics, MainWindow* mainWindow);
+	DECL virtual void responseInput(Graphics* graphics, MainWindow* mainWindow);
 };
 

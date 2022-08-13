@@ -138,7 +138,7 @@
       <AdditionalDependencies>assimp-vc143-mtd.lib;%(AdditionalDependencies);amnis_engine.lib</AdditionalDependencies>
     </Link>
     <PreBuildEvent>
-      <Command>xcopy /y /d "$(SolutionDir)dlls\" "$(OutDir)"</Command>
+      <Command>xcopy /y /d "$(SolutionDir)dlls" "$(OutDir)"</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -164,9 +164,22 @@
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Buildings\Building.cpp" />
+    <ClCompile Include="EnergyOrderer.cpp" />
     <ClCompile Include="entities\Entity.cpp" />
     <ClCompile Include="entities\EntityTree.cpp" />
+    <ClCompile Include="Buildings\grids\GridElement.cpp" />
+    <ClCompile Include="Buildings\grids\Grid.cpp" />
+    <ClCompile Include="Buildings\Inventory.cpp" />
+    <ClCompile Include="ModelsContent.cpp" />
+    <ClCompile Include="ShadersContent.cpp" />
+    <ClCompile Include="SkySphere.cpp" />
     <ClCompile Include="Source.cpp" />
+    <ClCompile Include="Sphere.cpp" />
+    <ClCompile Include="Spherenic.cpp" />
+    <ClCompile Include="StrategyCamera.cpp" />
+    <ClCompile Include="TexturesContent.cpp" />
+    <ClCompile Include="World.cpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shaders\PixelShaders\DefaultPixelShader.hlsl">
@@ -214,8 +227,22 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Buildings\Building.h" />
+    <ClInclude Include="EnergyOrderer.h" />
     <ClInclude Include="entities\Entity.h" />
     <ClInclude Include="entities\EntityTree.h" />
+    <ClInclude Include="Buildings\grids\GridElement.h" />
+    <ClInclude Include="Buildings\grids\Grid.h" />
+    <ClInclude Include="Buildings\Inventory.h" />
+    <ClInclude Include="Buildings\InventoryItem.h" />
+    <ClInclude Include="ModelsContent.h" />
+    <ClInclude Include="ShadersContent.h" />
+    <ClInclude Include="SkySphere.h" />
+    <ClInclude Include="Sphere.h" />
+    <ClInclude Include="Spherenic.h" />
+    <ClInclude Include="StrategyCamera.h" />
+    <ClInclude Include="TexturesContent.h" />
+    <ClInclude Include="World.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

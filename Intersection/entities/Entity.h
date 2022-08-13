@@ -13,7 +13,7 @@ public:
 	double moveSpeed = 2;
 	double turningSpeed = PI * 0.5;
 	std::vector<float3> moveTargets;
-	Entity(RenderWindow* const renderWindow, Model* const model);
+	Entity(RenderWindow* renderWindow, AmnModel* model);
 	void goToPosition(float3 position);
 	void addMoveTarget(float3 position);
 	void clearMoveTargets();

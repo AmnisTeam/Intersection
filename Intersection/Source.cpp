@@ -1,7 +1,6 @@
 #include "MainWindow.h"
 #include "Graphics.h"
 #include "Model.h"
-#include "Camera.h"
 #include "PointLight.h"
 #include "Sphere.h"
 #include <chrono>
@@ -9,6 +8,11 @@
 #include "ModeledObject.h"
 #include "SkySphere.h"
 #include "entities/EntityTree.h"
+#include "ModelsContent.h"
+#include "TexturesContent.h"
+#include "ShadersContent.h"
+#include "StrategyCamera.h"
+#include "World.h"
 
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLine, int nCmdShow)
 {
@@ -17,23 +21,32 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLin
 	mainCamera->position = { 0, 3, -10 };
 	renderWindow->setCamera(mainCamera);
 
+	StrategyCamera* strategyCamera = new StrategyCamera({ 0, 10, 0 }, { 3.14 / 3, 0, 0 });
+	renderWindow->setCamera(strategyCamera);
+
+	TexturesContent::load(renderWindow);
+	ModelsContent::load(renderWindow);
+	ShadersContent::load(renderWindow);
+
 	Sphere* sphere = new Sphere(renderWindow);
-	EntityTree* entityTree = new EntityTree(renderWindow);
-	entityTree->addMoveTarget({0, 0, 2});
-	entityTree->addMoveTarget({5, 0, 5});
-	entityTree->addMoveTarget({5, 5, 5});
+	ModeledObject* plane = new ModeledObject(renderWindow, ModelsContent::plane);
+	plane->setScale({100, 1, 100});
+
+	//EntityTree* entityTree = new EntityTree(renderWindow);
 
 	//ModeledObject* tree = new ModeledObject(renderWindow, renderWindow->modelsContent->tree);
 	//tree->setTexture(renderWindow->graphics->texturesContent->flatNormalMap, 1);
 	//tree->setRotation({-3.14 / 2, 0, 0});
 	//tree->setScale({1, 1, 1});
 
-	PointLight* pointLight = new PointLight(renderWindow, renderWindow->modelsContent->sphere);
+	PointLight* pointLight = new PointLight(renderWindow, ModelsContent::sphere);
 	pointLight->setPosition(float3{ 0, 1, -3 });
 	pointLight->setColor(float4{ 1, 1, 1, 1 });
 	pointLight->setFactors(float3{ 1, 0.014f, 0.0007f });
 
-	SkySphere* skySphere = new SkySphere(renderWindow, renderWindow->graphics->texturesContent->textureSky);
+	SkySphere* skySphere = new SkySphere(renderWindow, TexturesContent::textureSky);
+
+	World* world = new World(renderWindow, 100, 100, 1, 1);
 
 	while (renderWindow->isOpen)
 	{
@@ -47,7 +60,10 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLin
 		renderWindow->Draw(skySphere, false);
 		renderWindow->Draw(sphere);
 		renderWindow->Draw(pointLight);
-		renderWindow->Draw(entityTree);
+		renderWindow->Draw(plane);
+		renderWindow->Draw(world);
+		//renderWindow->Draw(entityTree);
+		//renderWindow->Draw(tree);
 
 		renderWindow->display();
 		renderWindow->endDeltaTime();

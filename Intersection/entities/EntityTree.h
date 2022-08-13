@@ -1,5 +1,6 @@
 #pragma once
 #include "Entity.h"
+#include "..//ModelsContent.h"
 
 class EntityTree : public Entity
 {
