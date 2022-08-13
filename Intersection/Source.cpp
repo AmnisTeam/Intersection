@@ -49,11 +49,11 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLin
 	bool pointLightTurnOn = true;
 	EventSwitchValue<bool> switchingEvent = EventSwitchValue<bool>(&pointLightTurnOn, true, false);
 
-	Button* testUIElement = new Button(renderWindow, ShadersContent::defaultVS, ShadersContent::onlyTexturePS);
-	testUIElement->color = { 0.18f, 0.18f, 0.18f };
-	testUIElement->hoverColor = { 0.239f, 0.239f, 0.239f };
-	testUIElement->pressColor = { 0.266f, 0.266f, 0.266f };
-	testUIElement->addEvent(&switchingEvent);
+	Button* button = new Button(renderWindow, ShadersContent::defaultVS, ShadersContent::onlyTexturePS);
+	button->color = { 0.18f, 0.18f, 0.18f };
+	button->hoverColor = { 0.239f, 0.239f, 0.239f };
+	button->pressColor = { 0.266f, 0.266f, 0.266f };
+	button->addEvent(&switchingEvent);
 
 	Toggle* toggle1 = new Toggle(renderWindow, ShadersContent::defaultVS, ShadersContent::onlyTexturePS);
 	toggle1->setSizeInPixels({ 20, 20 });
@@ -97,8 +97,8 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLin
 		renderWindow->Draw(plane);
 		renderWindow->Draw(world);
 
-		testUIElement->setSizeInPixels({ 200, 50 });
-		renderWindow->Draw(testUIElement, false, false, false);
+		button->setSizeInPixels({ 200, 50 });
+		renderWindow->Draw(button, false, false, false);
 		renderWindow->Draw(toggle1, false, false, false);
 		renderWindow->Draw(toggle2, false, false, false);
 		renderWindow->Draw(toggle3, false, false, false);
