@@ -154,6 +154,7 @@
     <ClInclude Include="AMNFormat.h" />
     <ClInclude Include="Buffer.h" />
     <ClInclude Include="Event.h" />
+    <ClInclude Include="UI\ToggleGroupe.h" />
     <ClInclude Include="UI\Toggle.h" />
     <ClInclude Include="UI\Button.h" />
     <ClInclude Include="Camera.h" />
@@ -180,6 +181,7 @@
     <ClInclude Include="SampleState.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Transformable.h" />
+    <ClInclude Include="UI\UIStyle.h" />
     <ClInclude Include="VertexShader.h" />
     <ClInclude Include="VSLightSource.h" />
     <ClInclude Include="WindowBase.h" />
@@ -187,6 +189,7 @@
   <ItemGroup>
     <ClCompile Include="Buffer.cpp" />
     <ClCompile Include="Event.cpp" />
+    <ClCompile Include="UI\ToggleGroupe.cpp" />
     <ClCompile Include="UI\Toggle.cpp" />
     <ClCompile Include="UI\Button.cpp" />
     <ClCompile Include="Camera.cpp" />

@@ -3,6 +3,7 @@
 #include "../Transformable.h"
 #include "../decl.h"
 #include "../ModeledObject.h"
+#include "UIStyle.h"
 
 class UIElement : public Transformable, public IDrawable
 {
@@ -14,6 +15,9 @@ public:
 	float4 color = {1, 1, 1, 1};
 	float4 hoverColor = { 1, 1, 1, 1 };
 	float4 pressColor = { 1, 1, 1, 1 };
+	float4 onColor = { 1, 1, 1, 1 };
+	float4 onHoverColor = { 1, 1, 1, 1 };
+	float4 onPressColor = { 1, 1, 1, 1 };
 
 	DECL UIElement(RenderWindow* renderWindow, VertexShader* vertexShader, PixelShader* pixelShader);
 	DECL UIElement(RenderWindow* renderWindow, AmnModel* model, VertexShader* vertexShader, PixelShader* pixelShader);
@@ -25,6 +29,8 @@ public:
 	DECL bool getPressed() const;
 	DECL bool onDown();
 	DECL bool onUp();
+	DECL virtual void updateColor();
+	DECL void setStyle(UIStyle style);
 	virtual void DECL update(RenderTarget* renderTarget, RenderState state);
 	virtual DECL void draw(RenderTarget* renderTarget, RenderState state) override;
 protected:

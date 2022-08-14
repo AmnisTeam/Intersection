@@ -106,6 +106,31 @@ bool UIElement::onUp()
     return false;
 }
 
+void UIElement::updateColor()
+{
+    if (getPressed())
+    {
+        quad->PSConstBufUpdateValue(0, 0, &pressColor);
+    }
+    else
+    {
+        if (getHover())
+            quad->PSConstBufUpdateValue(0, 0, &hoverColor);
+        else
+            quad->PSConstBufUpdateValue(0, 0, &color);
+    }
+}
+
+void UIElement::setStyle(UIStyle style)
+{
+    color = style.color;
+    hoverColor = style.hoverColor;
+    pressColor = style.pressColor;
+    onColor = style.onColor;
+    onHoverColor = style.onHoverColor;
+    onPressColor = style.onPressColor;
+}
+
 void UIElement::setPositionInPixels(float2 position, RECT clientRect)
 {
     positionInPixels = position;
@@ -138,18 +163,7 @@ void UIElement::update(RenderTarget* renderTarget, RenderState state)
     if (oldClientRect != clientRect)
         setPositionInPixels(positionInPixels, clientRect);
 
-    if (getPressed())
-    {
-        quad->PSConstBufUpdateValue(0, 0, &pressColor);
-    }
-    else
-    {
-        int k = 5;
-        if (getHover())
-            quad->PSConstBufUpdateValue(0, 0, &hoverColor);
-        else
-            quad->PSConstBufUpdateValue(0, 0, &color);
-    }
+    updateColor();
 }
 
 void UIElement::draw(RenderTarget* renderTarget, RenderState state)

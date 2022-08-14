@@ -120,6 +120,12 @@
     <ClInclude Include="UI\Toggle.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="UI\ToggleGroupe.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\UIStyle.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -213,6 +219,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="UI\Toggle.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\ToggleGroupe.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
