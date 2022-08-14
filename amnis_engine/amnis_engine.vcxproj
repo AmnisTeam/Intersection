@@ -154,6 +154,7 @@
     <ClInclude Include="AMNFormat.h" />
     <ClInclude Include="Buffer.h" />
     <ClInclude Include="Event.h" />
+    <ClInclude Include="Font.h" />
     <ClInclude Include="UI\ToggleGroupe.h" />
     <ClInclude Include="UI\Toggle.h" />
     <ClInclude Include="UI\Button.h" />
@@ -189,6 +190,7 @@
   <ItemGroup>
     <ClCompile Include="Buffer.cpp" />
     <ClCompile Include="Event.cpp" />
+    <ClCompile Include="Font.cpp" />
     <ClCompile Include="UI\ToggleGroupe.cpp" />
     <ClCompile Include="UI\Toggle.cpp" />
     <ClCompile Include="UI\Button.cpp" />

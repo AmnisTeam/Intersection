@@ -20,6 +20,9 @@ public:
 	DECL virtual void updateColor() override;
 
 	DECL Toggle(RenderWindow* renderWindow, VertexShader* vertexShader, PixelShader* pixelShader);
+	DECL Toggle(RenderWindow* renderWindow, UIStyle style, VertexShader* vertexShader, PixelShader* pixelShader);
+	DECL Toggle(RenderWindow* renderWindow, float2 positionInPixels, float2 sizeInPixels, UIStyle style, VertexShader* vertexShader, PixelShader* pixelShader);
+	DECL Toggle(RenderWindow* renderWindow, float2 positionInPixels, float2 sizeInPixels, UIStyle style);
 	virtual DECL void draw(RenderTarget* renderTarget, RenderState state) override;
 private:
 	bool state = false;

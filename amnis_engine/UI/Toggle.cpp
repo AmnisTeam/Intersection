@@ -5,6 +5,27 @@ Toggle::Toggle(RenderWindow* renderWindow, VertexShader* vertexShader, PixelShad
 {
 }
 
+Toggle::Toggle(RenderWindow* renderWindow, UIStyle style, VertexShader* vertexShader, PixelShader* pixelShader) : UIElement(renderWindow, vertexShader, pixelShader)
+{
+	setStyle(style);
+}
+
+Toggle::Toggle(RenderWindow* renderWindow, float2 positionInPixels, float2 sizeInPixels, UIStyle style, VertexShader* vertexShader, PixelShader* pixelShader) : UIElement(renderWindow, vertexShader, pixelShader)
+{
+	setStyle(style);
+	setPositionInPixels(positionInPixels);
+	setSizeInPixels(sizeInPixels);
+}
+
+Toggle::Toggle(RenderWindow* renderWindow, float2 positionInPixels, float2 sizeInPixels, UIStyle style) : UIElement(renderWindow)
+{
+	setStyle(style);
+	setPositionInPixels(positionInPixels);
+	setSizeInPixels(sizeInPixels);
+}
+
+
+
 void Toggle::addDownEvent(Event* event)
 {
 	downEvents.push_back(event);

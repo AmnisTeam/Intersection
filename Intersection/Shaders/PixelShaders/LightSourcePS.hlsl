@@ -1,6 +1,7 @@
 
 struct PointLight 
 {
+	unsigned int id;
 	float3 position;
 	float kc;
 	float kl;
@@ -9,6 +10,12 @@ struct PointLight
 };
 
 StructuredBuffer<PointLight> pointLights : register(t9);
+
+cbuffer lightsCount : register(b5)
+{
+	float4 color;
+	bool turnedOn;
+};
 
 cbuffer lightsCount : register(b9)
 {
@@ -38,5 +45,8 @@ float3 myReflect(float3 i, float3 n)
 
 float4 main(Input input) : SV_TARGET
 {
-	return pointLightsCount;
+	if (turnedOn)
+		return color;
+	else
+		return float4(0, 0, 0, 1);
 }
