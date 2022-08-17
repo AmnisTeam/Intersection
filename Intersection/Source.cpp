@@ -17,6 +17,7 @@
 #include "UI/Button.h"
 #include "EventSwitchValue.h"
 #include <UI/Toggle.h>
+#include "Register.h"
 
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLine, int nCmdShow)
 {
@@ -32,6 +33,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLin
 	TexturesContent::load(renderWindow);
 	ModelsContent::load(renderWindow);
 	ShadersContent::load(renderWindow);
+	Register::init(renderWindow);
 
 	Sphere* sphere = new Sphere(renderWindow);
 	ModeledObject* plane = new ModeledObject(renderWindow, ModelsContent::plane);

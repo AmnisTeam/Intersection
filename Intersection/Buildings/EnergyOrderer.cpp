@@ -4,3 +4,8 @@ EnergyOrderer::EnergyOrderer(RenderWindow* renderWindow, int posX, int posY) : B
 {
 
 }
+
+void* EnergyOrderer::clone()
+{
+	return new EnergyOrderer(model->renderWindow, posX, posY);
+}

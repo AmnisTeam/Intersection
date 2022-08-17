@@ -1,6 +1,7 @@
 #pragma once
 #include "Buildings/grids/Grid.h"
 #include "Buildings/Building.h"
+#include "Register.h"
 #include <vector>
 class World : public Transformable, public IDrawable
 {

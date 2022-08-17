@@ -60,7 +60,16 @@
     <ClCompile Include="World.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="EnergyOrderer.cpp">
+    <ClCompile Include="Buildings\EnergyOrderer.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="Buildings\ChaosFurnace.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="Buildings\RegisterBuildings.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="Register.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
@@ -121,10 +130,22 @@
     <ClInclude Include="World.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="EnergyOrderer.h">
+    <ClInclude Include="Buildings\EnergyOrderer.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="EventSwitchValue.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Buildings\ChaosFurnace.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Buildings\RegisterBuildings.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="IClonable.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Register.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

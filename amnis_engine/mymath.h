@@ -298,3 +298,22 @@ struct Vertex
 	float3 bitangent;
 };
 
+struct int2
+{
+	int x;
+	int y;
+
+	bool operator<(const int2& a) const
+	{
+		if (x < a.x && y < a.y)
+			return true;
+		return false;
+	}
+};
+
+struct int3
+{
+	int x;
+	int y;
+	int z;
+};
