@@ -147,17 +147,18 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLin
 	fontAtlas->setPivot({ 0, 0 });
 	fontAtlas->setSizeInPixels(float2{ (float)font.texture->width, (float)font.texture->height});
 
-	UIElement* cube = new UIElement(renderWindow);
-	cube->color = { 1, 1, 1, 1 };
-	cube->hoverColor = { 1, 1, 1, 1 };
-	cube->pressColor = { 1, 1, 1, 1 };
-	cube->onColor = { 1, 1, 1, 1 };
-	cube->onHoverColor = { 1, 1, 1, 1 };
-	cube->onPressColor = { 1, 1, 1, 1 };
-	//cube->setPivot({ 0, 0 });
-	//cube->setPosition(float3{ 0, 0, renderWindow->boundCamera->znear + 0.01f });
-	cube->setPosition(float3{ 0, 0, 1 });
-	cube->setSizeInScreenSize(float2{ 0.9f, 0.9f });
+	Toggle* cube = new Toggle(renderWindow, { 0, 0 }, toggleSize, whiteLightsStyle);
+	//UIElement* cube = new UIElement(renderWindow);
+	//cube->color = { 1, 1, 1, 1 };
+	//cube->hoverColor = { 1, 1, 1, 1 };
+	//cube->pressColor = { 1, 1, 1, 1 };
+	//cube->onColor = { 1, 1, 1, 1 };
+	//cube->onHoverColor = { 1, 1, 1, 1 };
+	//cube->onPressColor = { 1, 1, 1, 1 };
+
+	//cube->setPosition(float3{ -0.5f, 0, 1 });
+	cube->setPositionInPixels(float2{ 25, 25 });
+	cube->setSizeInPixels(float2{ 50, 50 });
 
 
 	
@@ -233,19 +234,17 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLin
 
 		//strategyCamera->perspectiveCoof = 1;
 		//mainCamera->perspectiveCoof = 1;
-		mainCamera->setPerspectiveCoof(renderWindow->graphics, 1);
-		float3 someScale = cube->getScale();
+		mainCamera->setPerspectiveCoof(1);
 		renderWindow->Draw(cube, false, false);
+		renderWindow->Draw(button, false, false);
+		renderWindow->Draw(toggle1, false, false);
+		renderWindow->Draw(toggle2, false, false);
+		renderWindow->Draw(toggle3, false, false);
 
-		//renderWindow->Draw(button, false, false);
-		//renderWindow->Draw(toggle1, false, false);
-		//renderWindow->Draw(toggle2, false, false);
-		//renderWindow->Draw(toggle3, false, false);
-
-		//renderWindow->Draw(checkbox1, false, false);
-		//renderWindow->Draw(checkbox2, false, false);
-		//renderWindow->Draw(checkbox3, false, false);
-		mainCamera->setPerspectiveCoof(renderWindow->graphics, 0);
+		renderWindow->Draw(checkbox1, false, false);
+		renderWindow->Draw(checkbox2, false, false);
+		renderWindow->Draw(checkbox3, false, false);
+		mainCamera->setPerspectiveCoof(0);
 
 		//mainCamera->perspectiveCoof = 0;
 		//strategyCamera->perspectiveCoof = 0;

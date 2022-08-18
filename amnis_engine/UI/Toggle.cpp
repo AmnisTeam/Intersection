@@ -102,6 +102,5 @@ void Toggle::draw(RenderTarget* renderTarget, RenderState state)
 	}
 	if(getPressed()) executePressedEvents();
 
-	state.modelMatrix = modelMatrix * state.modelMatrix;
 	UIElement::draw(renderTarget, state);
 }

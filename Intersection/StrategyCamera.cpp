@@ -1,4 +1,5 @@
 #include "StrategyCamera.h"
+#include "RenderWindow.h"
 
 StrategyCamera::StrategyCamera(RenderWindow* renderWindow) : Camera(renderWindow, false)
 {
@@ -10,12 +11,12 @@ StrategyCamera::StrategyCamera(RenderWindow* renderWindow, float3 camPos, float3
 
 }
 
-void StrategyCamera::responseInput(Graphics* graphics, MainWindow* mainWindow)
+void StrategyCamera::responseInput(MainWindow* mainWindow)
 {
 	RECT rect;
 	GetClientRect(mainWindow->hwnd, &rect);
 
-	float tickIncreaseSpeed = (graphics->deltaTime / maxSpeedTime) * moveSpeed;
+	float tickIncreaseSpeed = (renderWindow->graphics->deltaTime / maxSpeedTime) * moveSpeed;
 	bool moved = false;
 
 	if (mainWindow->mousePos.x <= rect.left) // Left
@@ -43,7 +44,7 @@ void StrategyCamera::responseInput(Graphics* graphics, MainWindow* mainWindow)
 	}
 
 
-	float tickDecreasSpeed = (graphics->deltaTime / minSpeedTime) * moveSpeed;
+	float tickDecreasSpeed = (renderWindow->graphics->deltaTime / minSpeedTime) * moveSpeed;
 
 	if (!moved)
 	{
@@ -57,5 +58,5 @@ void StrategyCamera::responseInput(Graphics* graphics, MainWindow* mainWindow)
 	if (mymath::getLength(velocity) > moveSpeed)
 		mymath::setLength(&velocity, moveSpeed);
 
-	position += velocity * graphics->deltaTime;
+	position += velocity * renderWindow->graphics->deltaTime;
 }

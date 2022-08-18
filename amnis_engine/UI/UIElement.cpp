@@ -68,7 +68,7 @@ UIElement::UIElement(RenderWindow* renderWindow)
 
     setPivot(pivot);
     setPositionInPixels({ clientRect.right / 2.0f, clientRect.bottom / 2.0f });
-    //setSizeInPixels({ 100, 100 });
+    setSizeInPixels({ 100, 100 });
 }
 
 UIElement::UIElement(RenderWindow* renderWindow, AmnModel* model, VertexShader* vertexShader, PixelShader* pixelShader)
@@ -84,7 +84,7 @@ UIElement::UIElement(RenderWindow* renderWindow, AmnModel* model, VertexShader* 
 
     setPivot(pivot);
     setPositionInPixels({ clientRect.right / 2.0f, clientRect.bottom / 2.0f });
-    //setSizeInPixels({ 100, 100 });
+    setSizeInPixels({ 100, 100 });
 }
 
 UIElement::UIElement()
@@ -239,7 +239,8 @@ void UIElement::setPositionInPixels(float2 position, RECT clientRect)
     this->screenPosition = screenPosition;
 
     float2 normalizedPosition = { (screenPosition.x / width) * 2 - 1, 1 - (screenPosition.y / height) * 2 };
-    setPosition(float3{ normalizedPosition.x, normalizedPosition.y, getPosition().z });
+    //setPosition(float3{ normalizedPosition.x, normalizedPosition.y, getPosition().z });
+    setPosition(float3{ normalizedPosition.x / renderWindow->boundCamera->aspect / renderWindow->boundCamera->angle, normalizedPosition.y / renderWindow->boundCamera->angle, getPosition().z });
 }
 
 void UIElement::setSizeInPixels(float2 size, RECT clientRect)
@@ -252,7 +253,8 @@ void UIElement::setSizeInPixels(float2 size, RECT clientRect)
     float onePixelX = 1.0f / width;
     float onePixelY = 1.0f / hegiht;
 
-    setScale(float3{ onePixelX * size.x, onePixelY * size.y, getScale().z });
+    //setScale(float3{ onePixelX * size.x, onePixelY * size.y, getScale().z });
+    setSizeInScreenSize(float2{ onePixelX * size.x, onePixelY * size.y });
 }
 
 void UIElement::update(RenderTarget* renderTarget, RenderState state)
@@ -260,12 +262,12 @@ void UIElement::update(RenderTarget* renderTarget, RenderState state)
     RECT clientRect;
     GetClientRect(renderWindow->window->hwnd, &clientRect);
 
-    //if (oldClientRect != clientRect)
-    //{
-    //    setPositionInPixels(positionInPixels, clientRect);
-    //    setSizeInPixels(sizeInPixels);
-    //    oldClientRect = clientRect;
-    //}
+    if (oldClientRect != clientRect)
+    {
+        setPositionInPixels(positionInPixels, clientRect);
+        setSizeInPixels(sizeInPixels);
+        oldClientRect = clientRect;
+    }
 
     updateColor();
 }

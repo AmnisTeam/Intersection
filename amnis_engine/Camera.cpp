@@ -31,10 +31,10 @@ Camera::Camera(RenderWindow* renderWindow, bool responded)
 	aspect = (float)clientRect.bottom / float(clientRect.right);
 }
 
-void Camera::update(Graphics* graphics)
+void Camera::update()
 {
 	RECT clientRect{};
-	GetClientRect(graphics->hwnd, &clientRect);
+	GetClientRect(renderWindow->graphics->hwnd, &clientRect);
 	aspect = (float)clientRect.bottom / float(clientRect.right);
 
 	viewMatrix = DirectX::XMMatrixTranslation(-position.x, -position.y, -position.z) * DirectX::XMMatrixRotationY(-rotation.y) * DirectX::XMMatrixRotationX(-rotation.x) * DirectX::XMMatrixRotationZ(-rotation.z);
@@ -72,16 +72,16 @@ void Camera::update(Graphics* graphics)
 											0,				0,				   v43,								v44);
 }
 
-void Camera::responseInput(Graphics* graphics, MainWindow* mainWindow)
+void Camera::responseInput(MainWindow* mainWindow)
 {
 	if (responded)
 	{
-		rotation.x += (double)mainWindow->rawMouseDelta.y * rotationSpeed * graphics->deltaTime;
-		rotation.y += (double)mainWindow->rawMouseDelta.x * rotationSpeed * graphics->deltaTime;
+		rotation.x += (double)mainWindow->rawMouseDelta.y * rotationSpeed * renderWindow->graphics->deltaTime;
+		rotation.y += (double)mainWindow->rawMouseDelta.x * rotationSpeed * renderWindow->graphics->deltaTime;
 
 		DirectX::XMVECTOR tangent = DirectX::XMVector3Transform(DirectX::XMVectorSet(0, 0, 1, 0), DirectX::XMMatrixRotationX(rotation.x) * DirectX::XMMatrixRotationY(rotation.y));
 		DirectX::XMVECTOR binormal = DirectX::XMVector3Transform(DirectX::XMVectorSet(1, 0, 0, 0), DirectX::XMMatrixRotationX(rotation.x) * DirectX::XMMatrixRotationY(rotation.y));
-		float tickIncreaseSpeed = (graphics->deltaTime / maxSpeedTime) * moveSpeed;
+		float tickIncreaseSpeed = (renderWindow->graphics->deltaTime / maxSpeedTime) * moveSpeed;
 		bool moved = false;
 		if (GetAsyncKeyState('W'))
 		{
@@ -114,15 +114,15 @@ void Camera::responseInput(Graphics* graphics, MainWindow* mainWindow)
 
 		if (GetAsyncKeyState(VK_SPACE))
 		{
-			position.y += moveSpeed * graphics->deltaTime;
+			position.y += moveSpeed * renderWindow->graphics->deltaTime;
 		}
 
 		if (GetAsyncKeyState(VK_SHIFT))
 		{
-			position.y -= moveSpeed * graphics->deltaTime;
+			position.y -= moveSpeed * renderWindow->graphics->deltaTime;
 		}
 
-		float tickDecreasSpeed = (graphics->deltaTime / minSpeedTime) * moveSpeed;
+		float tickDecreasSpeed = (renderWindow->graphics->deltaTime / minSpeedTime) * moveSpeed;
 		if (!moved)
 		{
 			float length = mymath::getLength(velocity);
@@ -135,15 +135,12 @@ void Camera::responseInput(Graphics* graphics, MainWindow* mainWindow)
 		if (mymath::getLength(velocity) > moveSpeed)
 			mymath::setLength(&velocity, moveSpeed);
 
-		position += velocity * graphics->deltaTime;
+		position += velocity * renderWindow->graphics->deltaTime;
 	}
-
-
-
 }
 
-void Camera::setPerspectiveCoof(Graphics* graphics, float value)
+void Camera::setPerspectiveCoof(float value)
 {
 	perspectiveCoof = value;
-	update(graphics);
+	update();
 }

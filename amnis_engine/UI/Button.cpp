@@ -46,6 +46,5 @@ void Button::draw(RenderTarget* renderTarget, RenderState state)
 	if (onDown())
 		executeEvents();
 
-	state.modelMatrix = modelMatrix * state.modelMatrix;
 	UIElement::draw(renderTarget, state);
 }

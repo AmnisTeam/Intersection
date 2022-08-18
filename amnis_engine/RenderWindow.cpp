@@ -65,8 +65,8 @@ void RenderWindow::display()
 
 void RenderWindow::update()
 {
-	boundCamera->responseInput(graphics, window);
-	boundCamera->update(graphics);
+	boundCamera->responseInput(window);
+	boundCamera->update();
 }
 
 void RenderWindow::dispatchEvents()

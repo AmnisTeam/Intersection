@@ -104,6 +104,5 @@ float4 main(Input input) : SV_TARGET
 	float4 texColor = texture0.Sample(samplerState, input.texCoord.xy);
 	//return constantColor * texColor;
 	//return float4(1, 1, 1, texColor.r);
-	//return constantColor;
-	return float4(0, 1, 1, 1);
+	return constantColor;
 }

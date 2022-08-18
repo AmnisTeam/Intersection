@@ -21,7 +21,6 @@ public:
 	bool responded;
 
 	float aspect = 1;
-	//float fov = 3.14f / 2;
 	float fov = 3.14f / 2;
 	float angle = 1 / std::tan(fov / 2);
 	float znear = 0.01f;
@@ -31,11 +30,11 @@ public:
 	DirectX::XMMATRIX projectionMatrix;
 	DECL Camera(RenderWindow* renderWindow, float3 camPos, float3 camRotation, bool responded);
 	DECL Camera(RenderWindow* renderWindow, bool responded);
-	DECL void update(Graphics* graphics);
-	DECL virtual void responseInput(Graphics* graphics, MainWindow* mainWindow);
-	DECL void setPerspectiveCoof(Graphics* graphics, float value);
+	DECL void update();
+	DECL virtual void responseInput(MainWindow* mainWindow);
+	DECL void setPerspectiveCoof(float value);
 
-private:
+protected:
 	RenderWindow* renderWindow;
 	float perspectiveCoof = 0;
 };
