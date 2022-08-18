@@ -5,6 +5,8 @@
 #include "MainWindow.h"
 #include "decl.h"
 
+class RenderWindow;
+
 class Camera
 {
 public:
@@ -17,12 +19,24 @@ public:
 	float moveSpeed = 30.0f;
 	double rotationSpeed = 3.5f;
 	bool responded;
-	float perspectiveCoof = 0;
+
+	float aspect = 1;
+	//float fov = 3.14f / 2;
+	float fov = 3.14f / 2;
+	float angle = 1 / std::tan(fov / 2);
+	float znear = 0.01f;
+	float zfar = 10000.0f;
+
 	DirectX::XMMATRIX viewMatrix;
 	DirectX::XMMATRIX projectionMatrix;
-	DECL Camera(float3 camPos, float3 camRotation, bool responded);
-	DECL Camera(bool responded = true);
+	DECL Camera(RenderWindow* renderWindow, float3 camPos, float3 camRotation, bool responded);
+	DECL Camera(RenderWindow* renderWindow, bool responded);
 	DECL void update(Graphics* graphics);
 	DECL virtual void responseInput(Graphics* graphics, MainWindow* mainWindow);
+	DECL void setPerspectiveCoof(Graphics* graphics, float value);
+
+private:
+	RenderWindow* renderWindow;
+	float perspectiveCoof = 0;
 };
 

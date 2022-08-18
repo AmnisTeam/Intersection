@@ -1,43 +1,53 @@
 #include "pch.h"
 #include "Camera.h"
+#include "RenderWindow.h"
 
-Camera::Camera(float3 camPos, float3 camRotation, bool responded)
+Camera::Camera(RenderWindow* renderWindow, float3 camPos, float3 camRotation, bool responded)
 {
+	this->renderWindow = renderWindow;
 	this->responded = responded;
 	this->position = camPos;
 	this->rotation = camRotation;
 	viewMatrix = DirectX::XMMatrixIdentity();
 	projectionMatrix = DirectX::XMMatrixIdentity();
+
+	RECT clientRect{};
+	GetClientRect(renderWindow->window->hwnd, &clientRect);
+	aspect = (float)clientRect.bottom / float(clientRect.right);
+
 }
 
-Camera::Camera(bool responded)
+Camera::Camera(RenderWindow* renderWindow, bool responded)
 {
+	this->renderWindow = renderWindow;
 	this->responded = responded;
 	position = {};
 	rotation = {};
 	viewMatrix = DirectX::XMMatrixIdentity();
 	projectionMatrix = DirectX::XMMatrixIdentity();
+
+	RECT clientRect{};
+	GetClientRect(renderWindow->window->hwnd, &clientRect);
+	aspect = (float)clientRect.bottom / float(clientRect.right);
 }
 
 void Camera::update(Graphics* graphics)
 {
 	RECT clientRect{};
 	GetClientRect(graphics->hwnd, &clientRect);
+	aspect = (float)clientRect.bottom / float(clientRect.right);
+
 	viewMatrix = DirectX::XMMatrixTranslation(-position.x, -position.y, -position.z) * DirectX::XMMatrixRotationY(-rotation.y) * DirectX::XMMatrixRotationX(-rotation.x) * DirectX::XMMatrixRotationZ(-rotation.z);
 	//projectionMatrix = DirectX::XMMatrixPerspectiveFovLH(0.4 * 3.14, (float)clientRect.right / clientRect.bottom, 0.1f, 100000);
 
-	float aspect = (float)clientRect.bottom / float(clientRect.right);
-	float fov = 3.14f / 2;
-	float angle = 1 / std::tan(fov / 2);
-	float znear = 0.01f;
-	float zfar = 10000.0f;
+
 
 	// Perspective matrix:
 
-	//projectionMatrix = DirectX::XMMatrixSet(aspect * angle, 0,     0, 0,
-	//										0,			    angle, 0, 0,
-	//										0,				0,     zfar / (zfar - znear), 1,
-	//										0,			    0,     (zfar * znear) / (znear - zfar), 0);
+	//projectionMatrix = DirectX::XMMatrixSet(aspect * angle,   0,     0,                               0,
+	//										  0,			    angle, 0,                               0,
+	//										  0,				0,     zfar / (zfar - znear),           1,
+	//										  0,			    0,     (zfar * znear) / (znear - zfar), 0);
 
 
 	// Orthographic matrix:
@@ -51,10 +61,10 @@ void Camera::update(Graphics* graphics)
 
 	// Interpolation:
 
-	float v33 = mymath::interpolate(zfar / (zfar - znear), 1 / (zfar - znear), (sin(perspectiveCoof) + 1) / 2);
-	float v43 = mymath::interpolate((zfar * znear) / (znear - zfar), znear / (zfar - znear), (sin(perspectiveCoof) + 1) / 2);
-	float v44 = mymath::interpolate(0, 1, (sin(perspectiveCoof) + 1) / 2);
-	float v34 = mymath::interpolate(1, 0, (sin(perspectiveCoof) + 1) / 2);
+	float v33 = mymath::interpolate(zfar / (zfar - znear), 1 / (zfar - znear), perspectiveCoof);
+	float v43 = mymath::interpolate((zfar * znear) / (znear - zfar), znear / (zfar - znear), perspectiveCoof);
+	float v44 = mymath::interpolate(0, 1, perspectiveCoof);
+	float v34 = mymath::interpolate(1, 0, perspectiveCoof);
 
 	projectionMatrix = DirectX::XMMatrixSet(aspect * angle, 0,				   0,								0,
 											0,				angle,			   0,								0,
@@ -130,4 +140,10 @@ void Camera::responseInput(Graphics* graphics, MainWindow* mainWindow)
 
 
 
+}
+
+void Camera::setPerspectiveCoof(Graphics* graphics, float value)
+{
+	perspectiveCoof = value;
+	update(graphics);
 }

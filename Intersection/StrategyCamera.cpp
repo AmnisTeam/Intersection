@@ -1,11 +1,11 @@
 #include "StrategyCamera.h"
 
-StrategyCamera::StrategyCamera() : Camera(false)
+StrategyCamera::StrategyCamera(RenderWindow* renderWindow) : Camera(renderWindow, false)
 {
 
 }
 
-StrategyCamera::StrategyCamera(float3 camPos, float3 camRotation) : Camera(camPos, camRotation, false)
+StrategyCamera::StrategyCamera(RenderWindow* renderWindow, float3 camPos, float3 camRotation) : Camera(renderWindow, camPos, camRotation, false)
 {
 
 }

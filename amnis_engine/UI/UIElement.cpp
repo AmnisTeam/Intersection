@@ -35,7 +35,7 @@ UIElement::UIElement(RenderWindow* renderWindow, VertexShader* vertexShader, Pix
 
     setPivot(pivot);
     setPositionInPixels({ clientRect.right / 2.0f, clientRect.bottom / 2.0f});
-    setSizeInPixels({100, 100});
+    //setSizeInPixels({100, 100});
 }
 
 UIElement::UIElement(RenderWindow* renderWindow)
@@ -68,7 +68,7 @@ UIElement::UIElement(RenderWindow* renderWindow)
 
     setPivot(pivot);
     setPositionInPixels({ clientRect.right / 2.0f, clientRect.bottom / 2.0f });
-    setSizeInPixels({ 100, 100 });
+    //setSizeInPixels({ 100, 100 });
 }
 
 UIElement::UIElement(RenderWindow* renderWindow, AmnModel* model, VertexShader* vertexShader, PixelShader* pixelShader)
@@ -84,7 +84,7 @@ UIElement::UIElement(RenderWindow* renderWindow, AmnModel* model, VertexShader* 
 
     setPivot(pivot);
     setPositionInPixels({ clientRect.right / 2.0f, clientRect.bottom / 2.0f });
-    setSizeInPixels({ 100, 100 });
+    //setSizeInPixels({ 100, 100 });
 }
 
 UIElement::UIElement()
@@ -104,6 +104,12 @@ void UIElement::setSizeInPixels(float2 size)
     RECT clientRect;
     GetClientRect(renderWindow->window->hwnd, &clientRect);
     setSizeInPixels(size, clientRect);
+}
+
+void UIElement::setSizeInScreenSize(float2 size)
+{
+
+    setScale({ size.x / renderWindow->boundCamera->aspect / renderWindow->boundCamera->angle, size.y / renderWindow->boundCamera->angle, getScale().z});
 }
 
 float2 UIElement::getSizeInPixels() const
@@ -216,33 +222,12 @@ void UIElement::setStaticVertexAndPixelShaders(VertexShader* vertexShader, Pixel
 
 void UIElement::setPositionInPixels(float2 position, RECT clientRect)
 {
-    //positionInPixels = position;
-
-    //float width = clientRect.right;
-    //float height = clientRect.bottom;
-
-    //float2 elementSize = getSizeInPixels();
-    ////float2 parsedPosition = float2{ position.x - elementSize.x * 0.5f * pivot.x, position.y - elementSize.y * 0.5f * pivot.y };
-
-    //float2 clientChanging = { firstClientRect.right - width, firstClientRect.bottom - height };
-
-    //float2 parsedPosition = float2
-    //{ 
-    //    width * anchor.x + position.x + elementSize.x * 0.5f - elementSize.x * pivot.x - clientChanging.x * anchor.x,
-    //    height * anchor.y + position.y + elementSize.y * 0.5f - elementSize.y * pivot.y - clientChanging.y * anchor.y 
-    //};
-
-    //float2 normalizedPosition = { (parsedPosition.x / width) * 2 - 1, 1 - (parsedPosition.y / height) * 2 };
-    //setPosition(float3{ normalizedPosition.x, normalizedPosition.y, getPosition().z });
-
     positionInPixels = position;
 
     float width = clientRect.right;
     float height = clientRect.bottom;
 
     float2 elementSize = getSizeInPixels();
-    //float2 parsedPosition = float2{ position.x - elementSize.x * 0.5f * pivot.x, position.y - elementSize.y * 0.5f * pivot.y };
-
     float2 clientChanging = { firstClientRect.right - width, firstClientRect.bottom - height };
 
     float2 screenPosition = float2
@@ -275,12 +260,12 @@ void UIElement::update(RenderTarget* renderTarget, RenderState state)
     RECT clientRect;
     GetClientRect(renderWindow->window->hwnd, &clientRect);
 
-    if (oldClientRect != clientRect)
-    {
-        setPositionInPixels(positionInPixels, clientRect);
-        setSizeInPixels(sizeInPixels);
-        oldClientRect = clientRect;
-    }
+    //if (oldClientRect != clientRect)
+    //{
+    //    setPositionInPixels(positionInPixels, clientRect);
+    //    setSizeInPixels(sizeInPixels);
+    //    oldClientRect = clientRect;
+    //}
 
     updateColor();
 }
@@ -288,6 +273,7 @@ void UIElement::update(RenderTarget* renderTarget, RenderState state)
 void UIElement::draw(RenderTarget* renderTarget, RenderState state)
 {
     update(renderTarget, state);
+    state.modelMatrix = state.modelMatrix * modelMatrix;
     renderTarget->draw(quad, state);
 }
 

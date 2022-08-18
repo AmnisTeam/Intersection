@@ -27,6 +27,7 @@ public:
 	DECL UIElement();
 	DECL void setPositionInPixels(float2 position);
 	DECL void setSizeInPixels(float2 size);
+	DECL void setSizeInScreenSize(float2 size);
 	DECL float2 getSizeInPixels() const;
 	DECL float2 getPositionInPixels() const;
 	DECL float2 getScreenPosition() const;
