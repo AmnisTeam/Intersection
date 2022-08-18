@@ -87,6 +87,11 @@ UIElement::UIElement(RenderWindow* renderWindow, AmnModel* model, VertexShader* 
     setSizeInPixels({ 100, 100 });
 }
 
+UIElement::UIElement()
+{
+
+}
+
 void UIElement::setPositionInPixels(float2 position)
 {
     RECT clientRect;

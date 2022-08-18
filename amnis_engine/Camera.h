@@ -4,6 +4,7 @@
 #include <DirectXMath.h>
 #include "MainWindow.h"
 #include "decl.h"
+
 class Camera
 {
 public:
@@ -16,6 +17,7 @@ public:
 	float moveSpeed = 30.0f;
 	double rotationSpeed = 3.5f;
 	bool responded;
+	float perspectiveCoof = 0;
 	DirectX::XMMATRIX viewMatrix;
 	DirectX::XMMATRIX projectionMatrix;
 	DECL Camera(float3 camPos, float3 camRotation, bool responded);

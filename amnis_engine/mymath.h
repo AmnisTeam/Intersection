@@ -159,6 +159,11 @@ public:
 		*vec = normalize(*vec) * length;
 	}
 
+	static float interpolate(float a, float b, float t)
+	{
+		return a + (b - a) * t;
+	}
+
 	static bool rayCrossPointRayed(float3 origin, float3 end, float3 point)
 	{
 		float3 vec = end - origin;

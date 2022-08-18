@@ -18,8 +18,10 @@
 #include "EventSwitchValue.h"
 #include <UI/Toggle.h>
 #include <UI/ToggleGroupe.h>
+#include <Font.h>
 //#include <SpriteBatch.h>
 //#include <SpriteFont.h>
+#include <text.h>
 #include <ft2build.h>
 #include FT_FREETYPE_H
 
@@ -27,31 +29,14 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLin
 {
 	RenderWindow* renderWindow = new RenderWindow();
 	Camera* mainCamera = new Camera(true);
+	
+	FT_Library* ftLibrary = new FT_Library();
 
-	FT_Library  library;
-	FT_Face     face;
-
-	FT_Error error = FT_Init_FreeType(&library);
+	FT_Error error = FT_Init_FreeType(ftLibrary);
 	if (error)
 		throw;
 
-	error = FT_New_Face(library, "fonts\\Lato-ThinItalic.ttf", 0, &face);
-	if (error == FT_Err_Unknown_File_Format)
-		throw;
-	else if (error)
-		throw;
-
-	FT_UInt glyph_index = FT_Get_Char_Index(face, 'a');
-	error = FT_Load_Glyph(face, glyph_index, FT_LOAD_DEFAULT);
-	if (error)
-		throw;
-
-	if(face->glyph->format != FT_GLYPH_FORMAT_BITMAP)
-		error = FT_Render_Glyph(face->glyph, FT_RENDER_MODE_NORMAL);
-
-	face->glyph->bitmap;
-
-
+	Font font = Font(renderWindow, ftLibrary, "fonts//Roboto-Regular.ttf");
 
 	//DirectX::SpriteBatch* spriteBatch = new DirectX::SpriteBatch(renderWindow->graphics->deviceCon);
 	//DirectX::SpriteFont* spriteFont = new DirectX::SpriteFont(renderWindow->graphics->device, L"fonts//Lato-ThinItalic.ttf");
@@ -59,7 +44,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLin
 
 	//mainCamera->position = { 0, 3, -10 };
 	mainCamera->position = { 0, 0, 0 };
-	renderWindow->setCamera(mainCamera);
+	//renderWindow->setCamera(mainCamera);
 
 	StrategyCamera* strategyCamera = new StrategyCamera({ 0, 10, 0 }, { 3.14 / 3, 0, 0 });
 	renderWindow->setCamera(strategyCamera);
@@ -71,6 +56,8 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLin
 
 	Sphere* sphere = new Sphere(renderWindow);
 	ModeledObject* plane = new ModeledObject(renderWindow, ModelsContent::plane);
+	plane->setTexture(TexturesContent::stoneWallAlbedo, 0);
+	plane->setTexture(TexturesContent::stoneWallNormalMap, 1);
 	plane->setScale({100, 1, 100});
 
 	//EntityTree* entityTree = new EntityTree(renderWindow);
@@ -150,13 +137,56 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLin
 	toggleGroupe->add(toggle2);
 	toggleGroupe->add(toggle3);
 
+	Toggle* fontAtlas = new Toggle(renderWindow, { 0, 0 }, toggleSize, whiteLightsStyle);
+	fontAtlas->color = { 1, 1, 1, 1 };
+	fontAtlas->hoverColor = { 1, 1, 1, 1 };
+	fontAtlas->pressColor = { 1, 1, 1, 1 };
+	fontAtlas->onColor = { 1, 1, 1, 1 };
+	fontAtlas->onHoverColor = { 1, 1, 1, 1 };
+	fontAtlas->onPressColor = { 1, 1, 1, 1 };
+	fontAtlas->setPivot({ 0, 0 });
+	fontAtlas->setSizeInPixels(float2{ (float)font.texture->width, (float)font.texture->height});
+
+	Toggle* cube = new Toggle(renderWindow, { 0, 0 }, toggleSize, whiteLightsStyle);
+	cube->color = { 1, 1, 1, 1 };
+	cube->hoverColor = { 1, 1, 1, 1 };
+	cube->pressColor = { 1, 1, 1, 1 };
+	cube->onColor = { 1, 1, 1, 1 };
+	cube->onHoverColor = { 1, 1, 1, 1 };
+	cube->onPressColor = { 1, 1, 1, 1 };
+	cube->setPivot({ 0, 0 });
+	cube->setSizeInPixels(float2{ 15, 15 });
+	
+	Text* text = new Text(renderWindow, std::string("Hello world!"), &font, ShadersContent::defaultVS, ShadersContent::onlyTexturePS);
+
 	SkySphere* skySphere = new SkySphere(renderWindow, TexturesContent::textureSky);
 
 	World* world = new World(renderWindow, 100, 100, 1, 1);
 
+	ID3D11BlendState* blendState;
+	D3D11_BLEND_DESC blendDesc{};
+	auto &brt = blendDesc.RenderTarget[0];
+
+	//blendDesc.AlphaToCoverageEnable;
+	//blendDesc.IndependentBlendEnable;
+	brt.BlendEnable = true;
+	brt.SrcBlend = D3D11_BLEND_SRC_ALPHA;
+	brt.DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
+	brt.BlendOp = D3D11_BLEND_OP_ADD;
+	brt.SrcBlendAlpha = D3D11_BLEND_ZERO;
+	brt.DestBlendAlpha = D3D11_BLEND_ZERO;
+	brt.BlendOpAlpha = D3D11_BLEND_OP_ADD;
+	brt.RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
+
+	HRESULT hr = renderWindow->graphics->device->CreateBlendState(&blendDesc, &blendState);
+	if (FAILED(hr)) throw;
+
+
 	float a = 0;
 	while (renderWindow->isOpen)
 	{
+		//renderWindow->graphics->deviceCon->OMSetBlendState(blendState, nullptr, 0xFFFFFFFFu);
+
 		renderWindow->startDeltaTime();
 		renderWindow->dispatchEvents();
 		renderWindow->update();
@@ -167,7 +197,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLin
 		toggleGroupe->update();
 
 		renderWindow->Draw(skySphere, false);
-		renderWindow->Draw(sphere);
+		//renderWindow->Draw(sphere);
 
 		pointLight->turn(toggle1->getState());
 		pointLight1->turn(toggle2->getState());
@@ -186,6 +216,22 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLin
 
 		renderWindow->Draw(plane);
 		renderWindow->Draw(world);
+
+		font.texture->bind(0);
+		renderWindow->Draw(text);
+		//renderWindow->Draw(fontAtlas, false, false, false);
+		//renderWindow->Draw(cube, false, false, false);
+
+		//strategyCamera->perspectiveCoof = 1;
+		//renderWindow->Draw(button, false, false);
+		//renderWindow->Draw(toggle1, false, false);
+		//renderWindow->Draw(toggle2, false, false);
+		//renderWindow->Draw(toggle3, false, false);
+
+		//renderWindow->Draw(checkbox1, false, false);
+		//renderWindow->Draw(checkbox2, false, false);
+		//renderWindow->Draw(checkbox3, false, false);
+		//strategyCamera->perspectiveCoof = 0;
 
 		renderWindow->Draw(button, false, false, false);
 		renderWindow->Draw(toggle1, false, false, false);

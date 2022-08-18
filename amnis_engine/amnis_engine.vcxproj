@@ -125,7 +125,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
       <AdditionalLibraryDirectories>$(SolutionDir)lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>assimp-vc143-mtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>assimp-vc143-mtd.lib;freetype.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -152,9 +152,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="AMNFormat.h" />
+    <ClInclude Include="Blender.h" />
     <ClInclude Include="Buffer.h" />
     <ClInclude Include="Event.h" />
     <ClInclude Include="Font.h" />
+    <ClInclude Include="text.h" />
     <ClInclude Include="UI\ToggleGroupe.h" />
     <ClInclude Include="UI\Toggle.h" />
     <ClInclude Include="UI\Button.h" />
@@ -188,9 +190,11 @@
     <ClInclude Include="WindowBase.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Blender.cpp" />
     <ClCompile Include="Buffer.cpp" />
     <ClCompile Include="Event.cpp" />
     <ClCompile Include="Font.cpp" />
+    <ClCompile Include="text.cpp" />
     <ClCompile Include="UI\ToggleGroupe.cpp" />
     <ClCompile Include="UI\Toggle.cpp" />
     <ClCompile Include="UI\Button.cpp" />

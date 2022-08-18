@@ -105,7 +105,7 @@ float4 main(Input input) : SV_TARGET
 	float3 normal = normalize(normalMapColor.x * normalize(input.bitangent.xyz) + normalMapColor.y * normalize(input.tangent.xyz) + normalMapColor.z * normalize(input.normal.xyz));
 	//float3 normal = input.normal.xyz;
 
-	float4 texColor = float4(texture0.Sample(samplerState, input.texCoord.xy).xyz, 1);
+	float4 texColor = texture0.Sample(samplerState, input.texCoord.xy);
 	//float4 texColor = float4(1, 1, 1, 1);
 	//float4 specular = pow(max(dot(reflect(lightDirection.xyz, normal.xyz), viewDir), 0), 32) * specularColor;
 	float4 specular = 0;

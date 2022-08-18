@@ -24,7 +24,42 @@ void Camera::update(Graphics* graphics)
 	RECT clientRect{};
 	GetClientRect(graphics->hwnd, &clientRect);
 	viewMatrix = DirectX::XMMatrixTranslation(-position.x, -position.y, -position.z) * DirectX::XMMatrixRotationY(-rotation.y) * DirectX::XMMatrixRotationX(-rotation.x) * DirectX::XMMatrixRotationZ(-rotation.z);
-	projectionMatrix = DirectX::XMMatrixPerspectiveFovLH(0.4 * 3.14, (float)clientRect.right / clientRect.bottom, 0.1f, 100000);
+	//projectionMatrix = DirectX::XMMatrixPerspectiveFovLH(0.4 * 3.14, (float)clientRect.right / clientRect.bottom, 0.1f, 100000);
+
+	float aspect = (float)clientRect.bottom / float(clientRect.right);
+	float fov = 3.14f / 2;
+	float angle = 1 / std::tan(fov / 2);
+	float znear = 0.01f;
+	float zfar = 10000.0f;
+
+	// Perspective matrix:
+
+	//projectionMatrix = DirectX::XMMatrixSet(aspect * angle, 0,     0, 0,
+	//										0,			    angle, 0, 0,
+	//										0,				0,     zfar / (zfar - znear), 1,
+	//										0,			    0,     (zfar * znear) / (znear - zfar), 0);
+
+
+	// Orthographic matrix:
+
+	//projectionMatrix = DirectX::XMMatrixSet(aspect * angle, 0,			   0,								0,
+	//										0,				angle,			   0,								0,
+	//										0,				0,				   1 / (zfar - znear),				0,
+	//										0,				0,				   znear / (zfar - znear),		    1);
+
+
+
+	// Interpolation:
+
+	float v33 = mymath::interpolate(zfar / (zfar - znear), 1 / (zfar - znear), (sin(perspectiveCoof) + 1) / 2);
+	float v43 = mymath::interpolate((zfar * znear) / (znear - zfar), znear / (zfar - znear), (sin(perspectiveCoof) + 1) / 2);
+	float v44 = mymath::interpolate(0, 1, (sin(perspectiveCoof) + 1) / 2);
+	float v34 = mymath::interpolate(1, 0, (sin(perspectiveCoof) + 1) / 2);
+
+	projectionMatrix = DirectX::XMMatrixSet(aspect * angle, 0,				   0,								0,
+											0,				angle,			   0,								0,
+											0,				0,				   v33,								v34,
+											0,				0,				   v43,								v44);
 }
 
 void Camera::responseInput(Graphics* graphics, MainWindow* mainWindow)
@@ -92,4 +127,7 @@ void Camera::responseInput(Graphics* graphics, MainWindow* mainWindow)
 
 		position += velocity * graphics->deltaTime;
 	}
+
+
+
 }

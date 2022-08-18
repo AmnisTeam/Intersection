@@ -24,6 +24,7 @@ public:
 	DECL UIElement(RenderWindow* renderWindow, VertexShader* vertexShader, PixelShader* pixelShader);
 	DECL UIElement(RenderWindow* renderWindow);
 	DECL UIElement(RenderWindow* renderWindow, AmnModel* model, VertexShader* vertexShader, PixelShader* pixelShader);
+	DECL UIElement();
 	DECL void setPositionInPixels(float2 position);
 	DECL void setSizeInPixels(float2 size);
 	DECL float2 getSizeInPixels() const;
