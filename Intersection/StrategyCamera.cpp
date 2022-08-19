@@ -16,6 +16,17 @@ void StrategyCamera::responseInput(MainWindow* mainWindow)
 	RECT rect;
 	GetClientRect(mainWindow->hwnd, &rect);
 
+
+	DirectX::XMVECTOR tangent = DirectX::XMVector3Transform(DirectX::XMVectorSet(0, 0, 1, 0), DirectX::XMMatrixRotationX(rotation.x) * DirectX::XMMatrixRotationY(rotation.y));
+	DirectX::XMVECTOR binormal = DirectX::XMVector3Transform(DirectX::XMVectorSet(1, 0, 0, 0), DirectX::XMMatrixRotationX(rotation.x) * DirectX::XMMatrixRotationY(rotation.y));
+	DirectX::XMVECTOR normal = DirectX::XMVector3Transform(DirectX::XMVectorSet(0, 1, 0, 0), DirectX::XMMatrixRotationX(rotation.x) * DirectX::XMMatrixRotationY(rotation.y));
+
+	this->tangent = { DirectX::XMVectorGetX(tangent), DirectX::XMVectorGetY(tangent) , DirectX::XMVectorGetZ(tangent) };
+	this->bitangent = { DirectX::XMVectorGetX(binormal), DirectX::XMVectorGetY(binormal) , DirectX::XMVectorGetZ(binormal) };
+	this->normal = { DirectX::XMVectorGetX(normal), DirectX::XMVectorGetY(normal) , DirectX::XMVectorGetZ(normal) };
+
+
+
 	float tickIncreaseSpeed = (renderWindow->graphics->deltaTime / maxSpeedTime) * moveSpeed;
 	bool moved = false;
 

@@ -63,4 +63,3 @@ protected:
 	DECL void setPositionInPixels(float2 position, RECT clientRect);
 	DECL void setSizeInPixels(float2 size, RECT clientRect);
 };
-

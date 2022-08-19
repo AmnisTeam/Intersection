@@ -26,6 +26,11 @@ public:
 	float znear = 0.01f;
 	float zfar = 10000.0f;
 
+	float3 tangent = {0, 0, 1};
+	float3 bitangent = {1, 0, 0};
+	float3 normal = {0, 1, 0};
+
+
 	DirectX::XMMATRIX viewMatrix;
 	DirectX::XMMATRIX projectionMatrix;
 	DECL Camera(RenderWindow* renderWindow, float3 camPos, float3 camRotation, bool responded);

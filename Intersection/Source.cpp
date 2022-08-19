@@ -44,10 +44,10 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLin
 
 	//mainCamera->position = { 0, 3, -10 };
 	mainCamera->position = { 0, 0, 0 };
-	renderWindow->setCamera(mainCamera);
+	//renderWindow->setCamera(mainCamera);
 
 	StrategyCamera* strategyCamera = new StrategyCamera(renderWindow, { 0, 10, 0 }, { 3.14 / 3, 0, 0 });
-	//renderWindow->setCamera(strategyCamera);
+	renderWindow->setCamera(strategyCamera);
 
 	TexturesContent::load(renderWindow);
 	ModelsContent::load(renderWindow);
@@ -168,6 +168,8 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLin
 
 	World* world = new World(renderWindow, 100, 100, 1, 1);
 
+	PointLight* mousePointLight = new PointLight(renderWindow, ModelsContent::sphere, { 20, 5, 0 }, { 1, 1, 1, 1 });
+
 	ID3D11BlendState* blendState;
 	D3D11_BLEND_DESC blendDesc{};
 	auto &brt = blendDesc.RenderTarget[0];
@@ -187,6 +189,13 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLin
 	if (FAILED(hr)) throw;
 
 
+
+
+
+
+
+
+
 	float a = 0;
 	while (renderWindow->isOpen)
 	{
@@ -200,6 +209,11 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLin
 		renderWindow->clear(float4{ 0, 0, 0, 0 });
 
 		toggleGroupe->update();
+
+
+
+
+
 
 		renderWindow->Draw(skySphere, false);
 		//renderWindow->Draw(sphere);
@@ -234,6 +248,49 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLin
 
 		//strategyCamera->perspectiveCoof = 1;
 		//mainCamera->perspectiveCoof = 1;
+
+
+
+
+
+
+
+
+
+
+
+
+		RECT clientRect;
+		GetClientRect(renderWindow->window->hwnd, &clientRect);
+
+		float width = clientRect.right;
+		float height = clientRect.bottom;
+		float angle = renderWindow->boundCamera->angle;
+		float nearPlane = angle;
+		float aspect = renderWindow->boundCamera->aspect;
+
+		float3 normalizedMousePosition = float3
+		{
+		((renderWindow->window->mousePos.x / width) * 2 - 1) / aspect,
+		-((renderWindow->window->mousePos.y / height) * 2 - 1),
+		nearPlane
+		};
+
+		float3 spacedNormalizedMousePosition = renderWindow->boundCamera->position + renderWindow->boundCamera->bitangent * normalizedMousePosition.x + renderWindow->boundCamera->normal * normalizedMousePosition.y + renderWindow->boundCamera->tangent * normalizedMousePosition.z;
+
+		float3 direction = mymath::normalize(spacedNormalizedMousePosition - renderWindow->boundCamera->position);
+
+		mousePointLight->setPosition(renderWindow->boundCamera->position + direction * 3);
+		renderWindow->Draw(mousePointLight);
+
+
+
+
+
+
+
+
+
 		mainCamera->setPerspectiveCoof(1);
 		renderWindow->Draw(cube, false, false);
 		renderWindow->Draw(button, false, false);
@@ -248,6 +305,19 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLin
 
 		//mainCamera->perspectiveCoof = 0;
 		//strategyCamera->perspectiveCoof = 0;
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 		renderWindow->display();
