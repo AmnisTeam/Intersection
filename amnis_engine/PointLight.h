@@ -21,13 +21,14 @@ public:
 		bool turnedOn;
 	};
 	float kc = 1;
-	float kl = 0.010f;
-	float kq = 0.0005f;
+	float kl = 0.014f;
+	float kq = 0.0007f;
 	float4 color = { 1, 1, 1, 1 };
 	bool turnedOn = true;
 
 
 	DECL PointLight(RenderWindow* renderWindow, AmnModel* model, bool bind = true);
+	DECL PointLight(RenderWindow* renderWindow, AmnModel* model, float3 positoin, float4 color, bool bind = true);
 	DECL ~PointLight();
 	DECL void bind(RenderWindow* renderWindow);
 	DECL virtual void setPosition(float3 position) override;

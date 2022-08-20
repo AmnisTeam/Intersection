@@ -1,21 +1,33 @@
 #include "StrategyCamera.h"
+#include "RenderWindow.h"
 
-StrategyCamera::StrategyCamera() : Camera(false)
+StrategyCamera::StrategyCamera(RenderWindow* renderWindow) : Camera(renderWindow, false)
 {
 
 }
 
-StrategyCamera::StrategyCamera(float3 camPos, float3 camRotation) : Camera(camPos, camRotation, false)
+StrategyCamera::StrategyCamera(RenderWindow* renderWindow, float3 camPos, float3 camRotation) : Camera(renderWindow, camPos, camRotation, false)
 {
 
 }
 
-void StrategyCamera::responseInput(Graphics* graphics, MainWindow* mainWindow)
+void StrategyCamera::responseInput(MainWindow* mainWindow)
 {
 	RECT rect;
 	GetClientRect(mainWindow->hwnd, &rect);
 
-	float tickIncreaseSpeed = (graphics->deltaTime / maxSpeedTime) * moveSpeed;
+
+	DirectX::XMVECTOR tangent = DirectX::XMVector3Transform(DirectX::XMVectorSet(0, 0, 1, 0), DirectX::XMMatrixRotationX(rotation.x) * DirectX::XMMatrixRotationY(rotation.y));
+	DirectX::XMVECTOR binormal = DirectX::XMVector3Transform(DirectX::XMVectorSet(1, 0, 0, 0), DirectX::XMMatrixRotationX(rotation.x) * DirectX::XMMatrixRotationY(rotation.y));
+	DirectX::XMVECTOR normal = DirectX::XMVector3Transform(DirectX::XMVectorSet(0, 1, 0, 0), DirectX::XMMatrixRotationX(rotation.x) * DirectX::XMMatrixRotationY(rotation.y));
+
+	this->tangent = { DirectX::XMVectorGetX(tangent), DirectX::XMVectorGetY(tangent) , DirectX::XMVectorGetZ(tangent) };
+	this->bitangent = { DirectX::XMVectorGetX(binormal), DirectX::XMVectorGetY(binormal) , DirectX::XMVectorGetZ(binormal) };
+	this->normal = { DirectX::XMVectorGetX(normal), DirectX::XMVectorGetY(normal) , DirectX::XMVectorGetZ(normal) };
+
+
+
+	float tickIncreaseSpeed = (renderWindow->graphics->deltaTime / maxSpeedTime) * moveSpeed;
 	bool moved = false;
 
 	if (mainWindow->mousePos.x <= rect.left) // Left
@@ -43,7 +55,7 @@ void StrategyCamera::responseInput(Graphics* graphics, MainWindow* mainWindow)
 	}
 
 
-	float tickDecreasSpeed = (graphics->deltaTime / minSpeedTime) * moveSpeed;
+	float tickDecreasSpeed = (renderWindow->graphics->deltaTime / minSpeedTime) * moveSpeed;
 
 	if (!moved)
 	{
@@ -57,5 +69,5 @@ void StrategyCamera::responseInput(Graphics* graphics, MainWindow* mainWindow)
 	if (mymath::getLength(velocity) > moveSpeed)
 		mymath::setLength(&velocity, moveSpeed);
 
-	position += velocity * graphics->deltaTime;
+	position += velocity * renderWindow->graphics->deltaTime;
 }

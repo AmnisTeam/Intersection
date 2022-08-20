@@ -9,7 +9,7 @@ SkySphere::SkySphere(RenderWindow* renderWindow, Texture* texture)
 	sphere = new Sphere(renderWindow);
 	sphere->model->setPixelShader(ShadersContent::skyPS);
 	sphere->model->setTexture(texture, 0);
-	sphere->setScale({-1, -1, -1});
+	sphere->setScale({-5, -5, -5});
 	sphere->setPosition(renderWindow->boundCamera->position);
 }
 

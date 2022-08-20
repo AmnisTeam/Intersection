@@ -159,6 +159,11 @@ public:
 		*vec = normalize(*vec) * length;
 	}
 
+	static float interpolate(float a, float b, float t)
+	{
+		return a + (b - a) * t;
+	}
+
 	static bool rayCrossPointRayed(float3 origin, float3 end, float3 point)
 	{
 		float3 vec = end - origin;
@@ -204,17 +209,6 @@ public:
 		float ty = 0;
 		float tz = 0;
 		float t = 0;
-
-
-		// x y z
-		// 0 0 0 S8
-		// 0 0 1 S4
-		// 0 1 0 S5
-		// 0 1 1 S1
-		// 1 0 0 S6
-		// 1 0 1 S2
-		// 1 1 0 S3
-		// 1 1 1 S7
 
 		if (denomX == 0 && denomY == 0 && denomZ == 0) // 0 0 0 S8
 			return false;
@@ -271,21 +265,16 @@ public:
 		if (distance <= pointRadius)
 			if (t >= 0 && t <= 1)
 				return true;
-
-		//if (!(tx == ty && ty == tz))
-		//	return false;
-		//else
-		//{
-		//	if (tx >= 0 && tx <= 1)
-		//		return true;
-		//	else
-		//		return false;
-		//}
 	}
 
 	static float addIn(float resultValue, float time, double deltaTime)
 	{
 		return (deltaTime / time) * resultValue;
+	}
+
+	static float4 getColor(float4 color)
+	{
+		return float4{color.x / 255.0f, color.y / 255.0f, color.z / 255.0f, color.z / 255.0f };
 	}
 };
 
