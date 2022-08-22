@@ -157,6 +157,7 @@
     <ClInclude Include="Event.h" />
     <ClInclude Include="Font.h" />
     <ClInclude Include="text.h" />
+    <ClInclude Include="text2.h" />
     <ClInclude Include="UI\ToggleGroupe.h" />
     <ClInclude Include="UI\Toggle.h" />
     <ClInclude Include="UI\Button.h" />
@@ -195,6 +196,7 @@
     <ClCompile Include="Event.cpp" />
     <ClCompile Include="Font.cpp" />
     <ClCompile Include="text.cpp" />
+    <ClCompile Include="text2.cpp" />
     <ClCompile Include="UI\ToggleGroupe.cpp" />
     <ClCompile Include="UI\Toggle.cpp" />
     <ClCompile Include="UI\Button.cpp" />

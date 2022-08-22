@@ -101,8 +101,8 @@ float3 myReflect(float3 i, float3 n)
 
 float4 main(Input input) : SV_TARGET
 {
-	float4 texColor = texture0.Sample(samplerState, input.texCoord.xy);
+	float3 texColor = texture0.Sample(samplerState, input.texCoord.xy).xyz;
 	//return constantColor * texColor;
 	//return float4(1, 1, 1, texColor.r);
-	return constantColor;
+	return float4(constantColor.xyz, 1);
 }

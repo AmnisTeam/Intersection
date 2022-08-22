@@ -14,6 +14,7 @@ public:
 	static PixelShader* lightSourcePS;
 	static PixelShader* skyPS;
 	static PixelShader* onlyTexturePS;
+	static PixelShader* TextPS;
 
 	static void load(RenderWindow* renderWindow);
 

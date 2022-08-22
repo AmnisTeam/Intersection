@@ -24,6 +24,7 @@
 #include <text.h>
 #include <ft2build.h>
 #include FT_FREETYPE_H
+#include "text2.h"
 
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLine, int nCmdShow)
 {
@@ -43,11 +44,11 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLin
 
 
 	//mainCamera->position = { 0, 3, -10 };
-	mainCamera->position = { 0, 0, 0 };
-	//renderWindow->setCamera(mainCamera);
+	mainCamera->position = { 0, 2, -2 };
+	renderWindow->setCamera(mainCamera);
 
 	StrategyCamera* strategyCamera = new StrategyCamera(renderWindow, { 0, 10, 0 }, { 3.14 / 3, 0, 0 });
-	renderWindow->setCamera(strategyCamera);
+	//renderWindow->setCamera(strategyCamera);
 
 	TexturesContent::load(renderWindow);
 	ModelsContent::load(renderWindow);
@@ -188,18 +189,21 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLin
 	HRESULT hr = renderWindow->graphics->device->CreateBlendState(&blendDesc, &blendState);
 	if (FAILED(hr)) throw;
 
-
-
-
-
-
-
-
+	Text2* text2 = new Text2(renderWindow, 256, ShadersContent::defaultVS, ShadersContent::TextPS);
+	text2->setFont(&font);
+	text2->setPosition(float3{0, 0, 1});
+	text2->setText("Hello world! How are you?");
+	text2->setScale(float3{2, 1, 1});
+	text2->setStringsGap(0.5f);
+	text2->setFontSize(2);
+	text2->setTextOrigin(float2{0.1f, 0.1f});
+	text2->setAttachment(float2{0, 0});
 
 	float a = 0;
 	while (renderWindow->isOpen)
 	{
-		//renderWindow->graphics->deviceCon->OMSetBlendState(blendState, nullptr, 0xFFFFFFFFu);
+		a += 3.14f * renderWindow->graphics->deltaTime;
+		renderWindow->graphics->deviceCon->OMSetBlendState(blendState, nullptr, 0xFFFFFFFFu);
 
 		renderWindow->startDeltaTime();
 		renderWindow->dispatchEvents();
@@ -209,10 +213,6 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLin
 		renderWindow->clear(float4{ 0, 0, 0, 0 });
 
 		toggleGroupe->update();
-
-
-
-
 
 
 		renderWindow->Draw(skySphere, false);
@@ -237,6 +237,9 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLin
 
 
 		renderWindow->Draw(plane);
+		//text2->setText(std::to_string(renderWindow->boundCamera->position.x) + " " + std::to_string(renderWindow->boundCamera->position.y) + " " + std::to_string(renderWindow->boundCamera->position.z));
+
+
 
 
 		//renderWindow->Draw(world);
@@ -292,6 +295,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLin
 
 
 		mainCamera->setPerspectiveCoof(1);
+		renderWindow->Draw(text2, false, false);
 		renderWindow->Draw(cube, false, false);
 		renderWindow->Draw(button, false, false);
 		renderWindow->Draw(toggle1, false, false);
@@ -301,7 +305,11 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLin
 		renderWindow->Draw(checkbox1, false, false);
 		renderWindow->Draw(checkbox2, false, false);
 		renderWindow->Draw(checkbox3, false, false);
+
 		mainCamera->setPerspectiveCoof(0);
+
+		//text2->setScale({ 1 + (sin(a) + 1) / 2, 1 + (cos(a) + 1) / 2, 1 });
+
 
 		//mainCamera->perspectiveCoof = 0;
 		//strategyCamera->perspectiveCoof = 0;
