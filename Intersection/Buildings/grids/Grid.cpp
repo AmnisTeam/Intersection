@@ -52,3 +52,13 @@ void Grid::unsetBuilding(Building* building)
 				element.erase({ x, y });
 			}
 }
+
+bool Grid::getGridElement(int x, int y, GridElement** gridElement)
+{
+	bool have = element.find({ x, y }) != element.end();
+	if (have)
+		*gridElement = element[{x, y}];
+	else
+		*gridElement = nullptr;
+	return have;
+}

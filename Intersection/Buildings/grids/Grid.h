@@ -15,5 +15,7 @@ public:
 
 	bool setBuilding(Building* building);
 	void unsetBuilding(Building* building);
+
+	bool getGridElement(int x, int y, GridElement** gridElement);
 };
 

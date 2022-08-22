@@ -153,7 +153,9 @@
   <ItemGroup>
     <ClInclude Include="AMNFormat.h" />
     <ClInclude Include="Blender.h" />
+    <ClInclude Include="BoxCollider.h" />
     <ClInclude Include="Buffer.h" />
+    <ClInclude Include="Collider.h" />
     <ClInclude Include="Event.h" />
     <ClInclude Include="Font.h" />
     <ClInclude Include="text.h" />
@@ -191,7 +193,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Blender.cpp" />
+    <ClCompile Include="BoxCollider.cpp" />
     <ClCompile Include="Buffer.cpp" />
+    <ClCompile Include="Collider.cpp" />
     <ClCompile Include="Event.cpp" />
     <ClCompile Include="Font.cpp" />
     <ClCompile Include="text.cpp" />

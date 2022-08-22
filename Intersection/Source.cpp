@@ -17,9 +17,9 @@
 #include "UI/Button.h"
 #include "EventSwitchValue.h"
 #include <UI/Toggle.h>
-<<<<<<< HEAD
 #include "Register.h"
-=======
+#include "BoxCollider.h"
+
 #include <UI/ToggleGroupe.h>
 #include <Font.h>
 //#include <SpriteBatch.h>
@@ -27,7 +27,6 @@
 #include <text.h>
 #include <ft2build.h>
 #include FT_FREETYPE_H
->>>>>>> 0846b662c783e8a8e79b58c596ae4dad15a31c15
 
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLine, int nCmdShow)
 {
@@ -51,22 +50,25 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLin
 	//renderWindow->setCamera(mainCamera);
 
 	StrategyCamera* strategyCamera = new StrategyCamera(renderWindow, { 0, 10, 0 }, { 3.14 / 3, 0, 0 });
-	renderWindow->setCamera(strategyCamera);
+	renderWindow->setCamera(mainCamera);
 
 	TexturesContent::load(renderWindow);
-	ModelsContent::load(renderWindow);
 	ShadersContent::load(renderWindow);
-<<<<<<< HEAD
+	ModelsContent::load(renderWindow);
 	Register::init(renderWindow);
-=======
 	UIElement::setStaticVertexAndPixelShaders(ShadersContent::defaultVS, ShadersContent::onlyTexturePS);
->>>>>>> 0846b662c783e8a8e79b58c596ae4dad15a31c15
 
 	Sphere* sphere = new Sphere(renderWindow);
 	ModeledObject* plane = new ModeledObject(renderWindow, ModelsContent::plane);
 	plane->setTexture(TexturesContent::stoneWallAlbedo, 0);
 	plane->setTexture(TexturesContent::stoneWallNormalMap, 1);
 	plane->setScale({100, 1, 100});
+
+	ModeledObject* box = new ModeledObject(renderWindow, ModelsContent::box);
+	box->setTexture(TexturesContent::stoneWallAlbedo, 0);
+	box->setTexture(TexturesContent::stoneWallNormalMap, 1);
+
+	BoxCollider* boxCollider = new BoxCollider(box->getOrigin(), box->getPosition(), box->getScale());
 
 	//EntityTree* entityTree = new EntityTree(renderWindow);
 
@@ -203,12 +205,11 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLin
 
 
 
-
-	float a = 0;
+	float k = 0;
 	while (renderWindow->isOpen)
 	{
 		//renderWindow->graphics->deviceCon->OMSetBlendState(blendState, nullptr, 0xFFFFFFFFu);
-
+		k += renderWindow->graphics->deltaTime * 3.14f;
 		renderWindow->startDeltaTime();
 		renderWindow->dispatchEvents();
 		renderWindow->update();
@@ -245,6 +246,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLin
 
 
 		renderWindow->Draw(plane);
+		renderWindow->Draw(box);
 
 
 		//renderWindow->Draw(world);
@@ -288,7 +290,21 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLin
 
 		float3 direction = mymath::normalize(spacedNormalizedMousePosition - renderWindow->boundCamera->position);
 
-		mousePointLight->setPosition(renderWindow->boundCamera->position + direction * 3);
+		//mousePointLight->setPosition(renderWindow->boundCamera->position + direction * 3);
+
+		box->setRotation({ k, 0, 0});
+		box->setOrigin({-0.5f, -0.5f, -0.5f});
+		boxCollider->setRotation({k, 0, 0});
+		boxCollider->setOrigin({ -0.5f, -0.5f, -0.5f });
+
+		mousePointLight->setScale({0.2f, 0.2f, 0.2f});
+		float3 hitPoint;
+		bool intersect = boxCollider->raycast(renderWindow->boundCamera->position, direction, &hitPoint);
+		if(intersect)
+			mousePointLight->setPosition(hitPoint);
+		else
+			mousePointLight->setPosition({0, 0, 9999});
+
 		renderWindow->Draw(mousePointLight);
 
 
