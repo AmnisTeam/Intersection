@@ -16,6 +16,11 @@ public:
 	bool setBuilding(Building* building);
 	void unsetBuilding(Building* building);
 
+	void setObstacle(int x, int y);
+	bool unsetObstacle(int x, int y);
+
 	bool getGridElement(int x, int y, GridElement** gridElement);
+
+	GridElement** findPath(int2 point1, int2 point2, int* countGrids);
 };
 

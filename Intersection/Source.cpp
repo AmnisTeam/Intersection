@@ -176,7 +176,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLin
 
 	SkySphere* skySphere = new SkySphere(renderWindow, TexturesContent::textureSky);
 
-	World* world = new World(renderWindow, 100, 100, 1, 1);
+	World* world = new World(renderWindow, 1, 1);
 
 	PointLight* mousePointLight = new PointLight(renderWindow, ModelsContent::sphere, { 20, 5, 0 }, { 1, 1, 1, 1 });
 
@@ -306,7 +306,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLin
 			mousePointLight->setPosition({0, 0, 9999});
 
 		renderWindow->Draw(mousePointLight);
-
+		renderWindow->Draw(world);
 
 
 

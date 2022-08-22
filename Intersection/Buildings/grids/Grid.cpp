@@ -53,12 +53,54 @@ void Grid::unsetBuilding(Building* building)
 			}
 }
 
+void Grid::setObstacle(int x, int y)
+{
+	bool have = element.find({ x, y }) != element.end();
+	GridElement* gridElement = nullptr;
+	if (have)
+		gridElement = element[{x, y}];
+	else
+	{
+		gridElement = new GridElement();
+		element[{x, y}] = gridElement;
+	}
+
+	gridElement->setObstacle(true);
+}
+
+bool Grid::unsetObstacle(int x, int y)
+{
+	bool have = element.find({ x, y }) != element.end();
+	if (have)
+	{
+		GridElement* gridElement = element[{x, y}];
+		if (gridElement->getBuilding() == nullptr)
+		{
+			gridElement->setObstacle(false);
+			return true;
+		}
+		else
+			return false;
+	}
+	else
+		return true;
+}
+
 bool Grid::getGridElement(int x, int y, GridElement** gridElement)
 {
 	bool have = element.find({ x, y }) != element.end();
 	if (have)
 		*gridElement = element[{x, y}];
 	else
+	{
 		*gridElement = nullptr;
+	}
 	return have;
+}
+
+GridElement** Grid::findPath(int2 point1, int2 point2, int* countGrids)
+{
+	GridElement** g = new GridElement*[3];
+	*countGrids = 3;
+	return g;
 }

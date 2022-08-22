@@ -10,7 +10,7 @@ public:
 	Grid* grid;
 	std::vector<Building*> buildings;
 
-	World(RenderWindow* renderWindow, int sizeGridX, int sizeGridY, float sizeElementGridX, float sizeElementGridY);
+	World(RenderWindow* renderWindow, float sizeElementGridX, float sizeElementGridY);
 
 	void addBuilding(Building* building);
 	bool deleteBuilding(Building* building);

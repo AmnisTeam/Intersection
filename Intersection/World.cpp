@@ -1,27 +1,10 @@
 #include "World.h"
 #include "Buildings/EnergyOrderer.h"
 
-World::World(RenderWindow* renderWindow, int sizeGridX, int sizeGridY, float sizeElementGridX, float sizeElementGridY)
+World::World(RenderWindow* renderWindow, float sizeElementGridX, float sizeElementGridY)
 {
 	this->renderWindow = renderWindow;
     grid = new Grid(sizeElementGridX, sizeElementGridY);
-	int countX = 10;
-	int countY = 10;
-	EnergyOrderer*** energyOrderer = new EnergyOrderer **[countX];
-	for (int x = 0; x < countX; x++)
-	{
-		energyOrderer[x] = new EnergyOrderer * [countY];
-		for (int y = 0; y < countY; y++)
-		{
-			energyOrderer[x][y] = (EnergyOrderer*)RegisterBuildings::createBuilding(0, x * 2, y * 2);
-			addBuilding(energyOrderer[x][y]);
-		}
-	}
-
-	deleteBuilding(energyOrderer[5][5]);
-	deleteBuilding(energyOrderer[6][5]);
-	deleteBuilding(energyOrderer[5][6]);
-	deleteBuilding(energyOrderer[6][6]);
 }
 
 void World::addBuilding(Building* building)
