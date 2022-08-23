@@ -9,17 +9,21 @@ World::World(RenderWindow* renderWindow, float sizeElementGridX, float sizeEleme
 	gameClient = new GameClient(this);
 }
 
-void World::addBuilding(Building* building)
+bool World::addBuilding(Building* building)
 {
-	grid->setBuilding(building);
-	for (int x = 0; x < buildings.size(); x++)
-		if (buildings[x] == nullptr)
-		{
-			buildings[x] = building;
-			return;
-		}
+	if (grid->setBuilding(building))
+	{
+		for (int x = 0; x < buildings.size(); x++)
+			if (buildings[x] == nullptr)
+			{
+				buildings[x] = building;
+				return true;
+			}
 
-	buildings.push_back(building);
+		buildings.push_back(building);
+		return true;
+	}
+	return false;
 }
 
 bool World::deleteBuilding(Building* building)
@@ -40,8 +44,9 @@ bool World::deleteBuilding(Building* building)
 
 void World::start()
 {
+	boxColliderModel = new ModeledObject(renderWindow, ModelsContent::box);
 	EnergyOrderer* e1 = new EnergyOrderer(this, 0, 0);
-	EnergyOrderer* e2 = new EnergyOrderer(this, 1, 0);
+	EnergyOrderer* e2 = new EnergyOrderer(this, 5, 0);
 
 	addBuilding(e1);
 	addBuilding(e2);
@@ -59,6 +64,13 @@ void World::draw(RenderTarget* renderTarget, RenderState state)
 		if (buildings[x] != nullptr)
 		{
 			buildings[x]->setPosition({ buildings[x]->getPosX() * grid->sizeElementX, 0, buildings[x]->getPosY() * grid->sizeElementY });
+			IChoosable* choosable= dynamic_cast<IChoosable*>(buildings[x]);
+			BoxCollider* collider = dynamic_cast<BoxCollider*>(choosable->getCollider());
+
+			boxColliderModel->setPosition(collider->getPosition());
+			boxColliderModel->setScale(collider->getScale());
+			boxColliderModel->setOrigin(collider->getOrigin());
 			renderTarget->draw(buildings[x], state);
+			renderTarget->draw(boxColliderModel, state);
 		}
 }

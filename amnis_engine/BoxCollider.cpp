@@ -11,33 +11,43 @@ BoxCollider::BoxCollider(float3 origin, float3 position, float3 size)
 	setScale(size);
 }
 
-bool BoxCollider::raycast(Ray ray, float3* hitPoint)
+bool BoxCollider::raycast(Ray ray, RayHitPoint* hitPoint, ColliderState colliderState)
 {
+	colliderState.state = modelMatrix * colliderState.state;
+	XMMATRIX rotationMatrix = colliderState.state;
+	rotationMatrix.r[0] = XMVectorSet(XMVectorGetX(rotationMatrix.r[0]), XMVectorGetY(rotationMatrix.r[0]), XMVectorGetZ(rotationMatrix.r[0]), 0);
+	rotationMatrix.r[1] = XMVectorSet(XMVectorGetX(rotationMatrix.r[1]), XMVectorGetY(rotationMatrix.r[1]), XMVectorGetZ(rotationMatrix.r[1]), 0);
+	rotationMatrix.r[2] = XMVectorSet(XMVectorGetX(rotationMatrix.r[2]), XMVectorGetY(rotationMatrix.r[2]), XMVectorGetZ(rotationMatrix.r[2]), 0);
+	rotationMatrix.r[3] = XMVectorSet(0, 0, 0, 0);
+
+
 	if (GetAsyncKeyState('P'))
 		int point = 0;
 
 	//Получение базиса куба
-	float3 notRotatedOrigin	= getOrigin();
-	float3 rotation = getRotation();
 	XMVECTOR XMtangent   = { 1, 0, 0 };
 	XMVECTOR XMnormal    = { 0, 1, 0 };
 	XMVECTOR XMbitangent = { 0, 0, 1 };
-	XMVECTOR XMOrigin	 = { notRotatedOrigin.x, notRotatedOrigin.y, notRotatedOrigin.z};
 
-	XMtangent   = XMVector3Transform(XMtangent,   XMMatrixRotationX(rotation.x) * XMMatrixRotationY(rotation.y) * XMMatrixRotationZ(rotation.z));
-	XMnormal    = XMVector3Transform(XMnormal,    XMMatrixRotationX(rotation.x) * XMMatrixRotationY(rotation.y) * XMMatrixRotationZ(rotation.z));
-	XMbitangent = XMVector3Transform(XMbitangent, XMMatrixRotationX(rotation.x) * XMMatrixRotationY(rotation.y) * XMMatrixRotationZ(rotation.z));
-	XMOrigin	= XMVector3Transform(XMOrigin,    XMMatrixRotationX(rotation.x) * XMMatrixRotationY(rotation.y) * XMMatrixRotationZ(rotation.z));
+	XMtangent   = XMVector3Transform(XMtangent,   rotationMatrix);
+	XMnormal    = XMVector3Transform(XMnormal,    rotationMatrix);
+	XMbitangent = XMVector3Transform(XMbitangent, rotationMatrix);
 
 	float3 tangent   = { XMVectorGetX(XMtangent),   XMVectorGetY(XMtangent),   XMVectorGetZ(XMtangent)   };
 	float3 normal    = { XMVectorGetX(XMnormal),    XMVectorGetY(XMnormal),    XMVectorGetZ(XMnormal)    };
 	float3 bitangent = { XMVectorGetX(XMbitangent), XMVectorGetY(XMbitangent), XMVectorGetZ(XMbitangent) };
-	float3 origin    = { XMVectorGetX(XMOrigin),    XMVectorGetY(XMOrigin),    XMVectorGetZ(XMOrigin)    };
+
+	tangent   = mymath::normalize(tangent);
+	normal    = mymath::normalize(normal);
+	bitangent = mymath::normalize(bitangent);
 
 	//Получение точек плоскостей
 	float3 boxSize = getScale();
 
-	float3 boxPosition         = getPosition() + origin; //Изначальная точка коробки
+	XMVECTOR XMposition = {};
+	XMposition = XMVector3Transform(XMposition, colliderState.state);
+
+	float3 boxPosition		   = {XMVectorGetX(XMposition), XMVectorGetY(XMposition), XMVectorGetZ(XMposition)}; //Изначальная точка коробки
 	float3 boxPositionDiagonal = boxPosition + tangent * boxSize.x + normal * boxSize.y + bitangent * boxSize.z; //Диагональная точка коробки
 
 	//Описание плоскостей
@@ -79,14 +89,7 @@ bool BoxCollider::raycast(Ray ray, float3* hitPoint)
 
 
 	//Нахождение точек пересечения плоскостей
-	struct HitPoint
-	{
-		bool intersect;
-		float3 position;
-		double distance;
-	};
-
-	HitPoint boxHitPoint[6];
+	RayHitPoint boxHitPoint[6];
 	for (int x = 0; x < 6; x++)
 	{
 		double div = plane[x].normal.x * ray.direction.x + plane[x].normal.y * ray.direction.y + plane[x].normal.z * ray.direction.z;
@@ -123,7 +126,7 @@ bool BoxCollider::raycast(Ray ray, float3* hitPoint)
 
 				if (inBox && boxHitPoint[x].distance <= minDistance)
 				{
-					*hitPoint = boxHitPoint[x].position;
+					*hitPoint = boxHitPoint[x];
 					minDistance = boxHitPoint[x].distance;
 					intersect = true;
 				}

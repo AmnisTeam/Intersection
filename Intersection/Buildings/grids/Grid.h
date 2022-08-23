@@ -3,6 +3,7 @@
 #include "GridElement.h"
 #include "../Building.h"
 #include <map>
+#include <string>
 
 class Grid
 {
@@ -10,7 +11,7 @@ public:
 	float sizeElementX;
 	float sizeElementY;
 
-	std::map<int2, GridElement*> element;
+	std::map<std::string, GridElement*> element;
 	Grid(float sizeElementX, float sizeElementY);
 
 	bool setBuilding(Building* building);
@@ -21,6 +22,7 @@ public:
 
 	bool getGridElement(int x, int y, GridElement** gridElement);
 
+	std::string getKey(int x, int y);
 	GridElement** findPath(int2 point1, int2 point2, int* countGrids);
 };
 

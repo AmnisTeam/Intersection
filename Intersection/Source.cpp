@@ -50,7 +50,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLin
 	//renderWindow->setCamera(mainCamera);
 
 	StrategyCamera* strategyCamera = new StrategyCamera(renderWindow, { 0, 10, 0 }, { 3.14 / 3, 0, 0 });
-	renderWindow->setCamera(mainCamera);
+	renderWindow->setCamera(strategyCamera);
 
 	World* world = new World(renderWindow, 1, 1);
 
@@ -295,14 +295,17 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLin
 
 		box->setRotation({ k, 0, 0});
 		box->setOrigin({-0.5f, -0.5f, -0.5f});
+		box->setPosition({0, 0, 5});
+
 		boxCollider->setRotation({k, 0, 0});
 		boxCollider->setOrigin({ -0.5f, -0.5f, -0.5f });
+		boxCollider->setPosition({ 0, 0, 5 });
 
 		mousePointLight->setScale({0.2f, 0.2f, 0.2f});
-		float3 hitPoint;
+		RayHitPoint hitPoint;
 		bool intersect = boxCollider->raycast({ renderWindow->boundCamera->position, direction }, &hitPoint);
 		if(intersect)
-			mousePointLight->setPosition(hitPoint);
+			mousePointLight->setPosition(hitPoint.position);
 		else
 			mousePointLight->setPosition({0, 0, 9999});
 

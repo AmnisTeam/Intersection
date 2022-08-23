@@ -5,6 +5,7 @@
 #include "Inventory.h"
 #include "../IClonable.h"
 #include "../IChoosable.h"
+#include "BoxCollider.h"
 
 class World;
 
@@ -20,6 +21,7 @@ public:
 	Inventory* inv;
 	ModeledObject* model;
 	World* world;
+	BoxCollider* boxCollider;
 	Building(World* world, AmnModel* model, int health, int posX, int posY, int width, int height);
 	virtual void draw(RenderTarget* renderTarget, RenderState state) override;
 	virtual void* getObject() override;
@@ -30,6 +32,7 @@ public:
 	int getPosY() const;
 	float getHealth() const;
 	Inventory* getInv() const;
+	virtual Collider* getCollider() override;
 
 	void damage(float value);
 };

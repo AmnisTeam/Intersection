@@ -15,9 +15,11 @@ public:
 	std::vector<Building*> buildings;
 	GameClient* gameClient;
 
+	ModeledObject* boxColliderModel;
+
 	World(RenderWindow* renderWindow, float sizeElementGridX, float sizeElementGridY);
 
-	void addBuilding(Building* building);
+	bool addBuilding(Building* building);
 	bool deleteBuilding(Building* building);
 
 	virtual void start();

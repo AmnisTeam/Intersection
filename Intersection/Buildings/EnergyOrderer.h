@@ -5,11 +5,11 @@
 class EnergyOrderer : public Building
 {
 public:
-	BoxCollider* boxCollider;
 
 	EnergyOrderer(World* world, int posX, int posY);
 
 	virtual void* clone() override;
-	virtual Collider* getCollider() override;
+	virtual void draw(RenderTarget* renderTarget, RenderState state) override;
+
 };
 
