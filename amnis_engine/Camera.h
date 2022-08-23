@@ -4,8 +4,10 @@
 #include <DirectXMath.h>
 #include "MainWindow.h"
 #include "decl.h"
+#include "Ray.h"
 
 class RenderWindow;
+
 
 class Camera
 {
@@ -38,6 +40,8 @@ public:
 	DECL void update();
 	DECL virtual void responseInput(MainWindow* mainWindow);
 	DECL void setPerspectiveCoof(float value);
+	DECL Ray castRay(float pX, float pY);
+	DECL Ray castRayFromMouse();
 
 protected:
 	RenderWindow* renderWindow;

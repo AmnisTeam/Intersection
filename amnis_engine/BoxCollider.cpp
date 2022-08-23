@@ -11,7 +11,7 @@ BoxCollider::BoxCollider(float3 origin, float3 position, float3 size)
 	setScale(size);
 }
 
-bool BoxCollider::raycast(float3 rayOrigin, float3 rayDirection, float3* hitPoint)
+bool BoxCollider::raycast(Ray ray, float3* hitPoint)
 {
 	if (GetAsyncKeyState('P'))
 		int point = 0;
@@ -89,14 +89,14 @@ bool BoxCollider::raycast(float3 rayOrigin, float3 rayDirection, float3* hitPoin
 	HitPoint boxHitPoint[6];
 	for (int x = 0; x < 6; x++)
 	{
-		double div = plane[x].normal.x * rayDirection.x + plane[x].normal.y * rayDirection.y + plane[x].normal.z * rayDirection.z;
+		double div = plane[x].normal.x * ray.direction.x + plane[x].normal.y * ray.direction.y + plane[x].normal.z * ray.direction.z;
 		boxHitPoint[x].intersect = div != 0;
 
 		if (div != 0)
 		{
-			double t = (plane[x].normal.x * (plane[x].position.x - rayOrigin.x) + plane[x].normal.y * (plane[x].position.y - rayOrigin.y) + plane[x].normal.z * (plane[x].position.z - rayOrigin.z)) / div;
+			double t = (plane[x].normal.x * (plane[x].position.x - ray.position.x) + plane[x].normal.y * (plane[x].position.y - ray.position.y) + plane[x].normal.z * (plane[x].position.z - ray.position.z)) / div;
 			boxHitPoint[x].distance = t;
-			boxHitPoint[x].position = rayOrigin + rayDirection * t;
+			boxHitPoint[x].position = ray.position + ray.direction * t;
 		}
 	}
 

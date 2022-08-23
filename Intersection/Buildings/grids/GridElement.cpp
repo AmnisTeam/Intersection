@@ -16,7 +16,7 @@ void GridElement::setObstacle(bool haveObstacle)
 		this->haveObstacle = haveObstacle;
 }
 
-void* GridElement::getBuilding() const
+Building* GridElement::getBuilding() const
 {
 	return building;
 }

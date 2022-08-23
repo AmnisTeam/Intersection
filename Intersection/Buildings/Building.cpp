@@ -1,8 +1,10 @@
 #include "Building.h"
+#include "../World.h"
 
-Building::Building(RenderWindow* renderWindow, AmnModel* model, int health, int posX, int posY, int width, int height)
+Building::Building(World* world, AmnModel* model, int health, int posX, int posY, int width, int height)
 {
-	this->model = new ModeledObject(renderWindow, model);
+	this->model = new ModeledObject(world->renderWindow, model);
+	this->world = world;
 	this->health = health;
 	this->width = width;
 	this->height = height;
@@ -14,6 +16,11 @@ void Building::draw(RenderTarget* renderTarget, RenderState state)
 {
 	state.modelMatrix = modelMatrix * state.modelMatrix;
 	renderTarget->draw(model, state);
+}
+
+void* Building::getObject()
+{
+	return this;
 }
 
 

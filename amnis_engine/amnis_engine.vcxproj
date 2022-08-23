@@ -158,6 +158,7 @@
     <ClInclude Include="Collider.h" />
     <ClInclude Include="Event.h" />
     <ClInclude Include="Font.h" />
+    <ClInclude Include="Ray.h" />
     <ClInclude Include="text.h" />
     <ClInclude Include="UI\ToggleGroupe.h" />
     <ClInclude Include="UI\Toggle.h" />

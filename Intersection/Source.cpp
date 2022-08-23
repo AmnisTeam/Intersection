@@ -52,11 +52,14 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLin
 	StrategyCamera* strategyCamera = new StrategyCamera(renderWindow, { 0, 10, 0 }, { 3.14 / 3, 0, 0 });
 	renderWindow->setCamera(mainCamera);
 
+	World* world = new World(renderWindow, 1, 1);
+
 	TexturesContent::load(renderWindow);
 	ShadersContent::load(renderWindow);
 	ModelsContent::load(renderWindow);
-	Register::init(renderWindow);
+	Register::init(world);
 	UIElement::setStaticVertexAndPixelShaders(ShadersContent::defaultVS, ShadersContent::onlyTexturePS);
+
 
 	Sphere* sphere = new Sphere(renderWindow);
 	ModeledObject* plane = new ModeledObject(renderWindow, ModelsContent::plane);
@@ -176,8 +179,6 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLin
 
 	SkySphere* skySphere = new SkySphere(renderWindow, TexturesContent::textureSky);
 
-	World* world = new World(renderWindow, 1, 1);
-
 	PointLight* mousePointLight = new PointLight(renderWindow, ModelsContent::sphere, { 20, 5, 0 }, { 1, 1, 1, 1 });
 
 	ID3D11BlendState* blendState;
@@ -203,7 +204,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLin
 
 
 
-
+	world->start();
 
 	float k = 0;
 	while (renderWindow->isOpen)
@@ -248,7 +249,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLin
 		renderWindow->Draw(plane);
 		renderWindow->Draw(box);
 
-
+		world->update();
 		//renderWindow->Draw(world);
 
 		font.texture->bind(0);
@@ -299,7 +300,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLin
 
 		mousePointLight->setScale({0.2f, 0.2f, 0.2f});
 		float3 hitPoint;
-		bool intersect = boxCollider->raycast(renderWindow->boundCamera->position, direction, &hitPoint);
+		bool intersect = boxCollider->raycast({ renderWindow->boundCamera->position, direction }, &hitPoint);
 		if(intersect)
 			mousePointLight->setPosition(hitPoint);
 		else

@@ -1,6 +1,6 @@
 #include "Register.h"
 
-void Register::init(RenderWindow* renderWindow)
+void Register::init(World* world)
 {
-	RegisterBuildings::init(renderWindow);
+	RegisterBuildings::init(world);
 }

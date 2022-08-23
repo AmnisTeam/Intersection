@@ -17,8 +17,8 @@ Building* RegisterBuildings::createBuilding(int id, int posX, int posY)
 	return building;
 }
 
-void RegisterBuildings::init(RenderWindow* renderWindow)
+void RegisterBuildings::init(World* world)
 {
-	addBuilding(new EnergyOrderer(renderWindow, 0, 0));
-	addBuilding(new ChaosFurnace(renderWindow, 0, 0));
+	addBuilding(new EnergyOrderer(world, 0, 0));
+	addBuilding(new ChaosFurnace(world, 0, 0));
 }

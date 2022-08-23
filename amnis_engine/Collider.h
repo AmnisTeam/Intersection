@@ -2,11 +2,12 @@
 #include "Transformable.h"
 #include "mymath.h"
 #include "decl.h"
+#include "Ray.h"
 class Collider : public Transformable
 {
 public:
 
 	Collider();
-	DECL virtual bool raycast(float3 rayOrigin, float3 rayDirection, float3* hitPoint) = 0;
+	DECL virtual bool raycast(Ray ray, float3* hitPoint) = 0;
 };
 

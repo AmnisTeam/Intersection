@@ -10,6 +10,6 @@ public:
 	static void addBuilding(Building* building);
 	static Building* createBuilding(int id, int posX, int posY);
 
-	static void init(RenderWindow* renderWindow);
+	static void init(World* world);
 };
 

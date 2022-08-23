@@ -1,10 +1,12 @@
 #include "World.h"
 #include "Buildings/EnergyOrderer.h"
+#include "GameClient.h"
 
 World::World(RenderWindow* renderWindow, float sizeElementGridX, float sizeElementGridY)
 {
 	this->renderWindow = renderWindow;
     grid = new Grid(sizeElementGridX, sizeElementGridY);
+	gameClient = new GameClient(this);
 }
 
 void World::addBuilding(Building* building)
@@ -33,6 +35,21 @@ bool World::deleteBuilding(Building* building)
 		}
 	}
 	return false;
+}
+
+
+void World::start()
+{
+	EnergyOrderer* e1 = new EnergyOrderer(this, 0, 0);
+	EnergyOrderer* e2 = new EnergyOrderer(this, 1, 0);
+
+	addBuilding(e1);
+	addBuilding(e2);
+}
+
+void World::update()
+{
+	gameClient->update();
 }
 
 void World::draw(RenderTarget* renderTarget, RenderState state)

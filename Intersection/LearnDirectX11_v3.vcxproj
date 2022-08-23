@@ -172,6 +172,7 @@
     <ClCompile Include="Buildings\grids\GridElement.cpp" />
     <ClCompile Include="Buildings\grids\Grid.cpp" />
     <ClCompile Include="Buildings\Inventory.cpp" />
+    <ClCompile Include="GameClient.cpp" />
     <ClCompile Include="ModelsContent.cpp" />
     <ClCompile Include="Buildings\RegisterBuildings.cpp" />
     <ClCompile Include="Register.cpp" />
@@ -249,6 +250,8 @@
     <ClInclude Include="Buildings\Building.h" />
     <ClInclude Include="Buildings\ChaosFurnace.h" />
     <ClInclude Include="Buildings\EnergyOrderer.h" />
+    <ClInclude Include="GameClient.h" />
+    <ClInclude Include="IChoosable.h" />
     <ClInclude Include="IClonable.h" />
     <ClInclude Include="entities\Entity.h" />
     <ClInclude Include="entities\EntityTree.h" />

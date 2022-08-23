@@ -3,6 +3,6 @@
 class Register
 {
 public:
-	static void init(RenderWindow* renderWindow);
+	static void init(World* world);
 };
 
