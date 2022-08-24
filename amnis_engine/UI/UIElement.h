@@ -6,14 +6,11 @@
 #include "UIStyle.h"
 #include "../VertexShader.h"
 #include "../PixelShader.h"
+#include "../InnerModelsContent.h"
 
 class UIElement : public Transformable, public IDrawable
 {
 public:
-	ModeledObject* quad;
-	double width;
-	double height;
-
 	float4 color = { 1, 1, 1, 1 };
 	float4 hoverColor = { 1, 1, 1, 1 };
 	float4 pressColor = { 1, 1, 1, 1 };
@@ -21,13 +18,10 @@ public:
 	float4 onHoverColor = { 1, 1, 1, 1 };
 	float4 onPressColor = { 1, 1, 1, 1 };
 
-	DECL UIElement(RenderWindow* renderWindow, VertexShader* vertexShader, PixelShader* pixelShader);
 	DECL UIElement(RenderWindow* renderWindow);
-	DECL UIElement(RenderWindow* renderWindow, AmnModel* model, VertexShader* vertexShader, PixelShader* pixelShader);
-	DECL UIElement();
 	DECL void setPositionInPixels(float2 position);
-	DECL void setSizeInPixels(float2 size);
-	DECL void setSizeInScreenSize(float2 size);
+	DECL virtual void setSizeInPixels(float2 size);
+	DECL virtual void setSizeInScreenSize(float2 size);
 	DECL float2 getSizeInPixels() const;
 	DECL float2 getPositionInPixels() const;
 	DECL float2 getScreenPosition() const;
@@ -39,15 +33,15 @@ public:
 	DECL bool getPressed() const;
 	DECL bool onDown();
 	DECL bool onUp();
+	DECL void initColorSystem(ModeledObject* object);
 	DECL virtual void updateColor();
 	DECL void setStyle(UIStyle style);
 	DECL static void setStaticVertexAndPixelShaders(VertexShader* vertexShader, PixelShader* pixelShader);
 	virtual void DECL update(RenderTarget* renderTarget, RenderState state);
-	virtual DECL void draw(RenderTarget* renderTarget, RenderState state) override;
-
 protected:
+
 	RenderWindow* renderWindow;
-	AmnModel* quadModel;
+	ModeledObject* coloredModel;
 	std::vector<Vertex> vertices;
 	std::vector<int> indices;
 	static VertexShader* defaultVS;
@@ -60,6 +54,10 @@ protected:
 	RECT firstClientRect = {};
 	RECT oldClientRect = {};
 
+	DECL UIElement();
+	DECL void _constructor(RenderWindow* renderWindow);
 	DECL void setPositionInPixels(float2 position, RECT clientRect);
 	DECL void setSizeInPixels(float2 size, RECT clientRect);
+	DECL void setRenderWindow(RenderWindow* renderWindow);
+	DECL void setFirstClientRect();
 };

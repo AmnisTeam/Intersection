@@ -5,91 +5,9 @@
 VertexShader* UIElement::defaultVS;
 PixelShader* UIElement::defaultPS;
 
-UIElement::UIElement(RenderWindow* renderWindow, VertexShader* vertexShader, PixelShader* pixelShader)
-{
-    this->renderWindow = renderWindow;
-
-    vertices.push_back({ { -1, -1, 0 }, { 0, 1 }, {0, 0, -1}, {0, 0, 0}, {0, 0, 0}});
-    vertices.push_back({ { -1, 1, 0 }, { 0, 0 }, {0, 0, -1}, {0, 0, 0}, {0, 0, 0}});
-    vertices.push_back({ { 1, 1, 0 }, { 1, 0 }, {0, 0, -1}, {0, 0, 0}, {0, 0, 0}});
-    vertices.push_back({ { 1, -1, 0 }, { 1, 1 }, {0, 0, -1}, {0, 0, 0}, {0, 0, 0}});
-
-    indices.push_back(0);
-    indices.push_back(1);
-    indices.push_back(3);
-
-    indices.push_back(3);
-    indices.push_back(1);
-    indices.push_back(2);
-
-    quadModel = new AmnModel(renderWindow->graphics, vertices, indices, vertexShader, pixelShader);
-    quad = new ModeledObject(renderWindow, quadModel, vertexShader, pixelShader);
-    quad->PSConstBufAdd(0);
-    quad->PSConstBufAddValue(0, &color, "Color", sizeof(color));
-    quad->PSConstBufInit(0);
-    setPosition({0, 0, 1});
-
-    RECT clientRect = {};
-    GetClientRect(renderWindow->window->hwnd, &clientRect);
-    firstClientRect = clientRect;
-
-    setPivot(pivot);
-    setPositionInPixels({ clientRect.right / 2.0f, clientRect.bottom / 2.0f});
-    //setSizeInPixels({100, 100});
-}
-
 UIElement::UIElement(RenderWindow* renderWindow)
 {
-    this->renderWindow = renderWindow;
-
-    vertices.push_back({ { -1, -1, 0 }, { 0, 1 }, {0, 0, -1}, {0, 0, 0}, {0, 0, 0} });
-    vertices.push_back({ { -1, 1, 0 }, { 0, 0 }, {0, 0, -1}, {0, 0, 0}, {0, 0, 0} });
-    vertices.push_back({ { 1, 1, 0 }, { 1, 0 }, {0, 0, -1}, {0, 0, 0}, {0, 0, 0} });
-    vertices.push_back({ { 1, -1, 0 }, { 1, 1 }, {0, 0, -1}, {0, 0, 0}, {0, 0, 0} });
-
-    indices.push_back(0);
-    indices.push_back(1);
-    indices.push_back(3);
-
-    indices.push_back(3);
-    indices.push_back(1);
-    indices.push_back(2);
-
-    quadModel = new AmnModel(renderWindow->graphics, vertices, indices, defaultVS, defaultPS);
-    quad = new ModeledObject(renderWindow, quadModel, defaultVS, defaultPS);
-    quad->PSConstBufAdd(0);
-    quad->PSConstBufAddValue(0, &color, "Color", sizeof(color));
-    quad->PSConstBufInit(0);
-    setPosition({ 0, 0, 1 });
-
-    RECT clientRect = {};
-    GetClientRect(renderWindow->window->hwnd, &clientRect);
-    firstClientRect = clientRect;
-
-    setPivot(pivot);
-    setPositionInPixels({ clientRect.right / 2.0f, clientRect.bottom / 2.0f });
-    setSizeInPixels({ 100, 100 });
-}
-
-UIElement::UIElement(RenderWindow* renderWindow, AmnModel* model, VertexShader* vertexShader, PixelShader* pixelShader)
-{
-    this->renderWindow = renderWindow;
-    quad = new ModeledObject(renderWindow, model);
-    setRotation({ -PI * 0.5f, 0, 0 });
-    setPosition({ 0, 0, 1 });
-
-    RECT clientRect = {};
-    GetClientRect(renderWindow->window->hwnd, &clientRect);
-    firstClientRect = clientRect;
-
-    setPivot(pivot);
-    setPositionInPixels({ clientRect.right / 2.0f, clientRect.bottom / 2.0f });
-    setSizeInPixels({ 100, 100 });
-}
-
-UIElement::UIElement()
-{
-
+    _constructor(renderWindow);
 }
 
 void UIElement::setPositionInPixels(float2 position)
@@ -108,7 +26,6 @@ void UIElement::setSizeInPixels(float2 size)
 
 void UIElement::setSizeInScreenSize(float2 size)
 {
-
     setScale({ size.x / renderWindow->boundCamera->aspect / renderWindow->boundCamera->angle, size.y / renderWindow->boundCamera->angle, getScale().z});
 }
 
@@ -179,7 +96,6 @@ bool UIElement::onDown()
     if (getHover() && renderWindow->window->rawMouseLeftButtonDown)
         return true;
     return false;
-
 }
 
 bool UIElement::onUp()
@@ -189,18 +105,26 @@ bool UIElement::onUp()
     return false;
 }
 
+void UIElement::initColorSystem(ModeledObject* object)
+{
+    coloredModel = object;
+    object->PSConstBufAdd(0);
+    object->PSConstBufAddValue(0, &color, "Color", sizeof(color));
+    object->PSConstBufInit(0);
+}
+
 void UIElement::updateColor()
 {
     if (getPressed())
     {
-        quad->PSConstBufUpdateValue(0, 0, &pressColor);
+        coloredModel->PSConstBufUpdateValue(0, 0, &pressColor);
     }
     else
     {
         if (getHover())
-            quad->PSConstBufUpdateValue(0, 0, &hoverColor);
+            coloredModel->PSConstBufUpdateValue(0, 0, &hoverColor);
         else
-            quad->PSConstBufUpdateValue(0, 0, &color);
+            coloredModel->PSConstBufUpdateValue(0, 0, &color);
     }
 }
 
@@ -218,6 +142,22 @@ void UIElement::setStaticVertexAndPixelShaders(VertexShader* vertexShader, Pixel
 {
     defaultVS = vertexShader;
     defaultPS = pixelShader;
+}
+
+UIElement::UIElement()
+{
+}
+
+void UIElement::_constructor(RenderWindow* renderWindow)
+{
+    setRenderWindow(renderWindow);
+    setPosition({ 0, 0, 1 });
+
+    setFirstClientRect();
+
+    setPivot(pivot);
+    setPositionInPixels({ firstClientRect.right * 0.5f, firstClientRect.bottom * 0.5f });
+    setSizeInPixels({ 100, 100 });
 }
 
 void UIElement::setPositionInPixels(float2 position, RECT clientRect)
@@ -239,7 +179,6 @@ void UIElement::setPositionInPixels(float2 position, RECT clientRect)
     this->screenPosition = screenPosition;
 
     float2 normalizedPosition = { (screenPosition.x / width) * 2 - 1, 1 - (screenPosition.y / height) * 2 };
-    //setPosition(float3{ normalizedPosition.x, normalizedPosition.y, getPosition().z });
     setPosition(float3{ normalizedPosition.x / renderWindow->boundCamera->aspect / renderWindow->boundCamera->angle, normalizedPosition.y / renderWindow->boundCamera->angle, getPosition().z });
 }
 
@@ -253,8 +192,19 @@ void UIElement::setSizeInPixels(float2 size, RECT clientRect)
     float onePixelX = 1.0f / width;
     float onePixelY = 1.0f / hegiht;
 
-    //setScale(float3{ onePixelX * size.x, onePixelY * size.y, getScale().z });
     setSizeInScreenSize(float2{ onePixelX * size.x, onePixelY * size.y });
+}
+
+void UIElement::setRenderWindow(RenderWindow* renderWindow)
+{
+    this->renderWindow = renderWindow;
+}
+
+void UIElement::setFirstClientRect()
+{
+    RECT clientRect = {};
+    GetClientRect(renderWindow->window->hwnd, &clientRect);
+    firstClientRect = clientRect;
 }
 
 void UIElement::update(RenderTarget* renderTarget, RenderState state)
@@ -271,12 +221,4 @@ void UIElement::update(RenderTarget* renderTarget, RenderState state)
 
     updateColor();
 }
-
-void UIElement::draw(RenderTarget* renderTarget, RenderState state)
-{
-    update(renderTarget, state);
-    state.modelMatrix = state.modelMatrix * modelMatrix;
-    renderTarget->draw(quad, state);
-}
-
 

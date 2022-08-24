@@ -129,13 +129,16 @@
     <ClInclude Include="Font.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="text.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Blender.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="text2.h">
+    <ClInclude Include="text.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="InnerModelsContent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\UIText.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -239,13 +242,16 @@
     <ClCompile Include="Font.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="text.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Blender.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="text2.cpp">
+    <ClCompile Include="text.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="InnerModelsContent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\UIText.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

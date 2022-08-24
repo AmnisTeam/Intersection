@@ -102,7 +102,7 @@ float4 main(Input input) : SV_TARGET
 		if (withinArea(float2(input.texCoord.x, input.texCoord.y), left, top, right, bottom))
 		{
 			float2 posInGlyph = float2(x0 + (input.texCoord.x - left) / fontSize, y0 + (input.texCoord.y - top) / fontSize);
-			color = float4(0, 0, 0, textureAtlas.Sample(samplerState, posInGlyph).r);
+			color = float4(1, 1, 1, textureAtlas.Sample(samplerState, posInGlyph).r);
 		}
 		penX += glyphs[i].advance * fontSize;
 	}

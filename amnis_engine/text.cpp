@@ -1,53 +1,165 @@
 #include "pch.h"
 #include "text.h"
+#include "RenderWindow.h"
 
-Text::Text(RenderWindow* renderWindow, std::string text, Font* font, VertexShader* vertexShader, PixelShader* pixelShader)
+Text::Text(RenderWindow* renderWindow, unsigned int const max_chars_count, VertexShader* vertexShader, PixelShader* pixelShader)
 {
 	this->renderWindow = renderWindow;
+	setMaxCharsCount(max_chars_count);
 
-	float penX = 0, penY = 0;
-	for (int g = 0; g < text.length(); g++)
+
+	vertices.push_back({ { -1, -1, 0 }, { 0, 1 }, {0, 0, -1}, {0, 0, 0}, {0, 0, 0} });
+	vertices.push_back({ { -1, 1, 0 }, { 0, 0 }, {0, 0, -1}, {0, 0, 0}, {0, 0, 0} });
+	vertices.push_back({ { 1, 1, 0 }, { 1, 0 }, {0, 0, -1}, {0, 0, 0}, {0, 0, 0} });
+	vertices.push_back({ { 1, -1, 0 }, { 1, 1 }, {0, 0, -1}, {0, 0, 0}, {0, 0, 0} });
+
+	indices.push_back(0);
+	indices.push_back(1);
+	indices.push_back(3);
+
+	indices.push_back(3);
+	indices.push_back(1);
+	indices.push_back(2);
+
+	textFrameModel = new AmnModel(renderWindow->graphics, vertices, indices, vertexShader, pixelShader);
+	textFrame = new ModeledObject(renderWindow, textFrameModel, vertexShader, pixelShader);
+
+
+	D3D11_BUFFER_DESC bufferDesc{};
+	bufferDesc.ByteWidth = sizeof(TextCharacterDescription) * max_chars_count;
+	bufferDesc.Usage = D3D11_USAGE_DYNAMIC;
+	bufferDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
+	bufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+	bufferDesc.MiscFlags = D3D11_RESOURCE_MISC_BUFFER_STRUCTURED;
+	bufferDesc.StructureByteStride = sizeof(TextCharacterDescription);
+
+	HRESULT hr = renderWindow->graphics->device->CreateBuffer(&bufferDesc, NULL, &textCharactersBuffer);
+	if (FAILED(hr)) throw;
+
+
+	D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc{};
+	srvDesc.Format = DXGI_FORMAT_UNKNOWN;
+	srvDesc.ViewDimension = D3D11_SRV_DIMENSION_BUFFER;
+	srvDesc.Buffer.FirstElement = 0;
+	srvDesc.Buffer.NumElements = maxCharsCount;
+
+	hr = renderWindow->graphics->device->CreateShaderResourceView(textCharactersBuffer, &srvDesc, &textCharactersSRV);
+	if (FAILED(hr)) throw;
+
+	textFrame->PSConstBufAdd(1);
+	textFrame->PSConstBufAddValue(1, &textCharsCount, "TextCharsCount", sizeof(float));
+	textFrame->PSConstBufAddValue(1, &stringsGap, "StringsGap", sizeof(float));
+	textFrame->PSConstBufAddValue(1, &modelScale, "ModelScale", sizeof(float2));
+	textFrame->PSConstBufAddValue(1, &textOrigin, "TextOrigin", sizeof(float2));
+	textFrame->PSConstBufAddValue(1, &fontSize, "FontSize", sizeof(float2));
+	textFrame->PSConstBufAddValue(1, &attachment, "Attachment", sizeof(float4));
+	textFrame->PSConstBufInit(1);
+}
+
+Text::~Text()
+{
+	textCharactersBuffer->Release();
+	textCharactersSRV->Release();
+}
+
+void Text::setMaxCharsCount(unsigned int const max_chars_count)
+{
+	maxCharsCount = max_chars_count;
+}
+
+void Text::setText(std::string const text)
+{
+	const unsigned int glyphsCount = text.size();
+	textCharsCount = text.size();
+
+	D3D11_MAPPED_SUBRESOURCE mappedSubRes{};
+	HRESULT hr = renderWindow->graphics->deviceCon->Map(textCharactersBuffer, NULL, D3D11_MAP_WRITE_DISCARD, NULL, &mappedSubRes);
+	if (FAILED(hr)) throw;
+
+	textSize = {};
+
+	char* last = (char*)mappedSubRes.pData;
+	unsigned int stringNum = 0;
+	for (int i = 0; i < glyphsCount; i++)
 	{
-		unsigned int firstVertexID = g * 4;
-		Font::glyph_info glyphInfo = font->info[text[g]];
+		if (text[i] == '\n')
+		{
+			stringNum += 1;
+			textCharsCount -= 1;
+		}
+		else
+		{
+			TextCharacterDescription glyphsInfo{};
+			glyphsInfo.x0 = font->info[text[i]].x0;
+			glyphsInfo.y0 = font->info[text[i]].y0;
+			glyphsInfo.x1 = font->info[text[i]].x1;
+			glyphsInfo.y1 = font->info[text[i]].y1;
 
-		// v2 v3
-		// v1 v4
+			glyphsInfo.x_off = font->info[text[i]].x_off;
+			glyphsInfo.y_off = font->info[text[i]].y_off;
 
-		float3 v1Pos = {penX + glyphInfo.x_off, penY - (glyphInfo.height - glyphInfo.y_off), 0 };
-		float3 v2Pos = {penX + glyphInfo.x_off, penY - (glyphInfo.height - glyphInfo.y_off) + glyphInfo.height, 0 };
-		float3 v3Pos = {penX + glyphInfo.x_off + glyphInfo.width, penY + -(glyphInfo.height - glyphInfo.y_off) + glyphInfo.height, 0 };
-		float3 v4Pos = {penX + glyphInfo.x_off + glyphInfo.width, penY + -(glyphInfo.height - glyphInfo.y_off), 0};
+			glyphsInfo.advance = font->info[text[i]].advance;
 
-		float2 v1TexCoords = { (float)glyphInfo.x0, (float)glyphInfo.y1 };
-		float2 v2TexCoords = { (float)glyphInfo.x0, (float)glyphInfo.y0 };
-		float2 v3TexCoords = { (float)glyphInfo.x1, (float)glyphInfo.y0 };
-		float2 v4TexCoords = { (float)glyphInfo.x1, (float)glyphInfo.y1 };
+			glyphsInfo.width = font->info[text[i]].width;
+			glyphsInfo.height = font->info[text[i]].height;
 
-		vertices.push_back({ v1Pos, v1TexCoords, {0, 0, -1}, {0, 0, 0}, {0, 0, 0} });
-		vertices.push_back({ v2Pos, v2TexCoords, {0, 0, -1}, {0, 0, 0}, {0, 0, 0} });
-		vertices.push_back({ v3Pos, v3TexCoords, {0, 0, -1}, {0, 0, 0}, {0, 0, 0} });
-		vertices.push_back({ v4Pos, v4TexCoords, {0, 0, -1}, {0, 0, 0}, {0, 0, 0} });
+			glyphsInfo.stringNum = stringNum;
 
-		indices.push_back(firstVertexID);
-		indices.push_back(firstVertexID + 1);
-		indices.push_back(firstVertexID + 3);
 
-		indices.push_back(firstVertexID + 3);
-		indices.push_back(firstVertexID + 1);
-		indices.push_back(firstVertexID + 2);
 
-		penX += glyphInfo.advance;
+			//textSize.x += glyphsInfo.advance * fontScale;
+			//if (i > 0)
+			//	if (text[i - 1].stringNum != glyphsInfo.stringNum)
+			//		textHeight += stringsGap;
+
+			memcpy(last, &glyphsInfo, sizeof(TextCharacterDescription));
+			last += sizeof(TextCharacterDescription);
+		}
 	}
+	renderWindow->graphics->deviceCon->Unmap(textCharactersBuffer, NULL);
+	textFrame->PSConstBufUpdateValue(1, 0, &textCharsCount);
+}
 
+void Text::setFont(Font* const font)
+{
+	this->font = font;
+}
 
-	model = new AmnModel(renderWindow->graphics, vertices, indices, vertexShader, pixelShader);
-	modelObject = new ModeledObject(renderWindow, model, vertexShader, pixelShader);
-	setScale({50, 50});
+void Text::setScale(float3 scale)
+{
+	modelScale = { scale.x, scale.y };
+	textFrame->PSConstBufUpdateValue(1, 2, &modelScale);
+	Transformable::setScale(scale);
+}
+
+void Text::setStringsGap(const float gap)
+{
+	stringsGap = gap;
+	textFrame->PSConstBufUpdateValue(1, 1, &stringsGap);
+}
+
+void Text::setTextOrigin(const float2 textOrigin)
+{
+	this->textOrigin = textOrigin;
+	textFrame->PSConstBufUpdateValue(1, 3, &this->textOrigin);
+}
+
+void Text::setFontSize(const float fontSize)
+{
+	this->fontSize = fontSize;
+	textFrame->PSConstBufUpdateValue(1, 4, &this->fontSize);
+}
+
+void Text::setAttachment(const float2 attachment)
+{
+	this->attachment = attachment;
+	textFrame->PSConstBufUpdateValue(1, 5, &this->attachment);
 }
 
 void Text::draw(RenderTarget* renderTarget, RenderState state)
 {
-	state.modelMatrix = modelMatrix * state.modelMatrix;
-	renderTarget->draw(modelObject, state);
+	state.modelMatrix = state.modelMatrix * modelMatrix;
+	renderWindow->graphics->deviceCon->PSSetShaderResources(20, 1, &textCharactersSRV);
+	textFrame->setTexture(font->texture, 3);
+	renderTarget->draw(textFrame, state);
 }

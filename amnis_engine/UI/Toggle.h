@@ -6,6 +6,7 @@
 class Toggle : public UIElement
 {
 public:
+	ModeledObject* square;
 	DECL void addDownEvent(Event* event);
 	DECL void addUpEvent(Event* event);
 	DECL void addPressedEvent(Event* event);

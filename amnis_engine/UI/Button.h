@@ -7,6 +7,7 @@
 class Button : public UIElement
 {
 public:
+	ModeledObject* square;
 	DECL Button(RenderWindow* renderWindow, VertexShader* vertexShader, PixelShader* pixelShader);
 	DECL Button(RenderWindow* renderWindow, UIStyle style, VertexShader* vertexShader, PixelShader* pixelShader);
 	DECL Button(RenderWindow* renderWindow, float2 positionInPixels, float2 sizeInPixels, UIStyle style, VertexShader* vertexShader, PixelShader* pixelShader);
