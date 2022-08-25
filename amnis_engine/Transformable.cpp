@@ -47,8 +47,8 @@ float3 Transformable::getOrigin() const
 void Transformable::updateModelMatrix()
 {
 	modelMatrix = 
-		DirectX::XMMatrixScaling(scale.x, scale.y, scale.z) *
 		DirectX::XMMatrixTranslation(origin.x, origin.y, origin.z) *
+		DirectX::XMMatrixScaling(scale.x, scale.y, scale.z) *
 		DirectX::XMMatrixRotationX(rotation.x) * 
 		DirectX::XMMatrixRotationY(rotation.y) *
 		DirectX::XMMatrixRotationZ(rotation.z) *

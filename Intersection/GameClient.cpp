@@ -5,6 +5,9 @@
 GameClient::GameClient(World* world)
 {
     this->world = world;
+	setPoint = new ModeledObject(world->renderWindow, ModelsContent::box);
+	setPoint->setTexture(TexturesContent::textureSky, 0);
+	setPoint->setTexture(TexturesContent::flatNormalMap, 1);
 }
 
 void GameClient::addChoosedObject(IChoosable* object)
@@ -19,8 +22,20 @@ void GameClient::setBuilgingByMouse()
 {
 	if (world->renderWindow->window->rawMouseLeftButtonDown && idBuildingsToSet != -1)
 	{
-		//Building* building = RegisterBuildings::createBuilding(idBuildingsToSet, );
-		//world->addBuilding();
+		Ray ray = world->renderWindow->boundCamera->castRayFromMouse();
+
+		RayHitPoint hitPoint;
+		if (world->terrain->raycast(ray, &hitPoint))
+		{
+			int pX = (float)hitPoint.position.x / world->grid->sizeElementX;
+			int pZ = (float)hitPoint.position.z / world->grid->sizeElementY + 1;
+
+			pX = hitPoint.position.x < 0 ? pX - 1 : pX;
+			pZ = hitPoint.position.z < 0 ? pZ - 1 : pZ;
+
+			Building* building = RegisterBuildings::createBuilding(idBuildingsToSet, pX, pZ);
+			world->addBuilding(building);
+		}
 	}
 }
 
@@ -38,5 +53,27 @@ void GameClient::update()
 				if (choosable->getCollider()->raycast(ray, &hitPoint))
 					addChoosedObject(choosable);
 			}
+	}
+
+	setBuilgingByMouse();
+}
+
+void GameClient::draw(RenderTarget* renderTarget, RenderState state)
+{
+	Ray ray = world->renderWindow->boundCamera->castRayFromMouse();
+
+	RayHitPoint hitPoint;
+	if (world->terrain->raycast(ray, &hitPoint))
+	{
+		int pX = (float)hitPoint.position.x / world->grid->sizeElementX;
+		int pZ = (float)hitPoint.position.z / world->grid->sizeElementY + 1;
+
+		pX = hitPoint.position.x < 0 ? pX - 1 : pX;
+		pZ = hitPoint.position.z < 0 ? pZ - 1 : pZ;
+
+		setPoint->setPosition({pX * world->grid->sizeElementX, 0, pZ * world->grid->sizeElementY});
+		setPoint->setScale({ RegisterBuildings::buildings[idBuildingsToSet]->width * world->grid->sizeElementX, 0.5f, RegisterBuildings::buildings[idBuildingsToSet]->height * world->grid->sizeElementY });
+		setPoint->setOrigin({0, 0, -1});
+		renderTarget->draw(setPoint, state);
 	}
 }

@@ -16,7 +16,7 @@ class Collider : public Transformable
 {
 public:
 
-	Collider();
+	DECL Collider();
 	DECL virtual bool raycast(Ray ray, RayHitPoint* hitPoint, ColliderState colliderState = ColliderState()) = 0;
 };
 

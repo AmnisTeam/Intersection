@@ -246,7 +246,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLin
 		renderWindow->Draw(pointLight5);
 
 
-		renderWindow->Draw(plane);
+	//	renderWindow->Draw(plane);
 		renderWindow->Draw(box);
 
 		world->update();

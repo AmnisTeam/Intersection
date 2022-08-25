@@ -31,6 +31,12 @@ public:
 	int getPosX() const;
 	int getPosY() const;
 	float getHealth() const;
+
+	virtual void setPosition(float3 position);
+	virtual void setRotation(float3 rotation);
+	virtual void setScale(float3 scale);
+	virtual void setOrigin(float3 origin);
+
 	Inventory* getInv() const;
 	virtual Collider* getCollider() override;
 

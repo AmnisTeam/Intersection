@@ -119,7 +119,7 @@ bool BoxCollider::raycast(Ray ray, RayHitPoint* hitPoint, ColliderState collider
 					double k = plane[y].normal.x * (boxHitPoint[x].position.x - plane[y].position.x) +
 							  plane[y].normal.y * (boxHitPoint[x].position.y - plane[y].position.y) +
 							  plane[y].normal.z * (boxHitPoint[x].position.z - plane[y].position.z);
-					inBox = k <= 0.000001;
+					inBox = k <= 0.0001;
 					if (!inBox)
 						break;
 				}

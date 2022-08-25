@@ -6,7 +6,6 @@ World::World(RenderWindow* renderWindow, float sizeElementGridX, float sizeEleme
 {
 	this->renderWindow = renderWindow;
     grid = new Grid(sizeElementGridX, sizeElementGridY);
-	gameClient = new GameClient(this);
 }
 
 bool World::addBuilding(Building* building)
@@ -44,6 +43,8 @@ bool World::deleteBuilding(Building* building)
 
 void World::start()
 {
+	terrain = new Terrain(this);
+	gameClient = new GameClient(this);
 	boxColliderModel = new ModeledObject(renderWindow, ModelsContent::box);
 	EnergyOrderer* e1 = new EnergyOrderer(this, 0, 0);
 	EnergyOrderer* e2 = new EnergyOrderer(this, 5, 0);
@@ -73,4 +74,6 @@ void World::draw(RenderTarget* renderTarget, RenderState state)
 			renderTarget->draw(buildings[x], state);
 			renderTarget->draw(boxColliderModel, state);
 		}
+	renderTarget->draw(terrain, state);
+	renderTarget->draw(gameClient, state);
 }

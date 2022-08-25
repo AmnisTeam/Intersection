@@ -1,13 +1,24 @@
 #pragma once
 #include "Transformable.h"
 #include "IDrawable.h"
+#include "ModeledObject.h"
+#include "BoxCollider.h"
+#include "ModelsContent.h"
+#include "TexturesContent.h"
 
-class Terrain : public Transformable, public IDrawable
+class World;
+
+class Terrain : public Collider, public IDrawable
 {
 public:
 
-	Terrain();
+	ModeledObject* terrain;
+	BoxCollider* collider;
+	World* world;
 
-	virtual DECL void draw(RenderTarget* renderTarget, RenderState state) override;
+	Terrain(World* world);
+
+	virtual void draw(RenderTarget* renderTarget, RenderState state) override;
+	virtual bool raycast(Ray ray, RayHitPoint* hitPoint, ColliderState colliderState = ColliderState()) override;
 };
 

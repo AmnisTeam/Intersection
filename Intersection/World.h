@@ -4,6 +4,7 @@
 #include "Register.h"
 #include <vector>
 #include "RenderWindow.h"
+#include "Terrain.h"
 
 class GameClient;
 
@@ -14,6 +15,7 @@ public:
 	Grid* grid;
 	std::vector<Building*> buildings;
 	GameClient* gameClient;
+	Terrain* terrain;
 
 	ModeledObject* boxColliderModel;
 

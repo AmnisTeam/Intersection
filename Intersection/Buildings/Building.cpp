@@ -11,7 +11,7 @@ Building::Building(World* world, AmnModel* model, int health, int posX, int posY
 	this->posX = posX;
 	this->posY = posY;
 
-	float3 origin = { 0, 0, -world->grid->sizeElementY * height };
+	float3 origin = { 0, 0, -1 };
 	float3 position = { posX * world->grid->sizeElementX, 0, posY * world->grid->sizeElementY };
 	float3 size = { world->grid->sizeElementX * width, 1, world->grid->sizeElementY * height };
 
@@ -34,12 +34,36 @@ int Building::getWidth() const { return width; };
 int Building::getHeight() const { return height; };
 int Building::getPosX() const { return posX; };
 int Building::getPosY() const { return posY; };
-float Building::getHealth() const { return health; };
+float Building::getHealth() const { return health; }
+
+void Building::setPosition(float3 position)
+{
+	Transformable::setPosition(position);
+	boxCollider->setPosition(position);
+}
+
+void Building::setRotation(float3 rotation)
+{
+	Transformable::setRotation(rotation);
+	boxCollider->setRotation(rotation);
+}
+
+void Building::setScale(float3 scale)
+{
+	Transformable::setScale(scale);
+	boxCollider->setScale(scale);
+}
+
+void Building::setOrigin(float3 origin)
+{
+	Transformable::setOrigin(origin);
+	//boxCollider->setOrigin(origin);
+}
+
 Inventory* Building::getInv() const { return inv; }
+
 Collider* Building::getCollider()
 {
-	float3 position = getPosition();
-	boxCollider->setPosition(position);
 	return boxCollider;
 }
 
