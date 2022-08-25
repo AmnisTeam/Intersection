@@ -5,6 +5,13 @@ World::World(RenderWindow* renderWindow, float sizeElementGridX, float sizeEleme
 {
 	this->renderWindow = renderWindow;
     grid = new Grid(sizeElementGridX, sizeElementGridY);
+
+
+	grid->setObstacle(2, 1);
+	grid->setObstacle(3, 1);
+	grid->setObstacle(3, 2);
+	int countGrids;
+	grid->findPath({ 1, 2 }, {5, 2}, &countGrids);
 }
 
 void World::addBuilding(Building* building)

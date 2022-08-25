@@ -10,6 +10,8 @@ public:
 
 	Building* getBuilding() const;
 	bool getObstacle() const;
+	int2 coordinate;
+
 private:
 	Building* building = nullptr;
 	bool haveObstacle = false;
