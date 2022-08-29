@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "UIElement.h"
 #include "../RenderWindow.h"
+#include "../InnerTexturesContent.h"
 
 VertexShader* UIElement::defaultVS;
 PixelShader* UIElement::defaultPS;
@@ -8,6 +9,12 @@ PixelShader* UIElement::defaultPS;
 UIElement::UIElement(RenderWindow* renderWindow)
 {
     _constructor(renderWindow);
+}
+
+void UIElement::setSprite(Texture* texture, float4 textureRect)
+{
+    coloredModel->setTexture(texture, 0);
+    coloredModel->PSConstBufUpdateValue(0, true, "TextureRect", &textureRect);
 }
 
 void UIElement::setPositionInPixels(float2 position)
@@ -22,6 +29,7 @@ void UIElement::setSizeInPixels(float2 size)
     RECT clientRect;
     GetClientRect(renderWindow->window->hwnd, &clientRect);
     setSizeInPixels(size, clientRect);
+    setPositionInPixels(getPositionInPixels());
 }
 
 void UIElement::setSizeInScreenSize(float2 size)
@@ -105,32 +113,39 @@ bool UIElement::onUp()
     return false;
 }
 
-void UIElement::initColorSystem(ModeledObject* object)
+void UIElement::initColorSystem(ModeledObject* object, unsigned int const slot)
 {
     coloredModel = object;
-    object->PSConstBufAdd(0);
-    object->PSConstBufAddValue(0, &color, "Color", sizeof(color));
-    object->PSConstBufInit(0);
+    object->PSConstBufAdd(slot);
+    object->PSConstBufAddValue(slot, &overlayColor, "OverlayColor", sizeof(float4));
+    object->PSConstBufAddValue(slot, &shadeColor, "ShadeColor", sizeof(float4));
+    object->PSConstBufAddValue(slot, &shade, "Shade", sizeof(float));
+    object->PSConstBufAddValue(slot, &overlay, "Overlay", sizeof(float3));
+    object->PSConstBufAddValue(slot, &textureRect, "TextureRect", sizeof(float4));
+    object->PSConstBufInit(slot);
+
+    setSprite(InnerTexturesContent::pureWhite, float4{ 0, 0, 1, 1 });
 }
 
 void UIElement::updateColor()
 {
     if (getPressed())
     {
-        coloredModel->PSConstBufUpdateValue(0, 0, &pressColor);
+        coloredModel->PSConstBufUpdateValue(0, true, "OverlayColor", &pressColor);
     }
     else
     {
         if (getHover())
-            coloredModel->PSConstBufUpdateValue(0, 0, &hoverColor);
+            coloredModel->PSConstBufUpdateValue(0, true, "OverlayColor", &hoverColor);
         else
-            coloredModel->PSConstBufUpdateValue(0, 0, &color);
+            coloredModel->PSConstBufUpdateValue(0, true, "OverlayColor", &overlayColor);
     }
+    //coloredModel->PSConstBufUpdateValue(0, 1, &shadeColor);
 }
 
 void UIElement::setStyle(UIStyle style)
 {
-    color = style.color;
+    overlayColor = style.color;
     hoverColor = style.hoverColor;
     pressColor = style.pressColor;
     onColor = style.onColor;
@@ -142,6 +157,28 @@ void UIElement::setStaticVertexAndPixelShaders(VertexShader* vertexShader, Pixel
 {
     defaultVS = vertexShader;
     defaultPS = pixelShader;
+}
+
+void UIElement::setShade(float shade)
+{
+    this->shade = shade;
+    coloredModel->PSConstBufUpdateValue(0, true, "Shade", &shade);
+}
+
+float UIElement::getShade() const
+{
+    return shade;
+}
+
+void UIElement::setOverlay(float overlay)
+{
+    this->overlay = overlay;
+    coloredModel->PSConstBufUpdateValue(0, true, "Overlay", &overlay);
+}
+
+float UIElement::getOverlay() const
+{
+    return overlay;
 }
 
 UIElement::UIElement()
@@ -156,7 +193,7 @@ void UIElement::_constructor(RenderWindow* renderWindow)
     setFirstClientRect();
 
     setPivot(pivot);
-    setPositionInPixels({ firstClientRect.right * 0.5f, firstClientRect.bottom * 0.5f });
+    setAnchor(float2{0.5f, 0.5f});
     setSizeInPixels({ 100, 100 });
 }
 
@@ -218,7 +255,6 @@ void UIElement::update(RenderTarget* renderTarget, RenderState state)
         setSizeInPixels(sizeInPixels);
         oldClientRect = clientRect;
     }
-
     updateColor();
 }
 

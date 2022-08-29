@@ -65,9 +65,9 @@ void Mesh::setupMesh(Graphics* graphics, VertexShader* vertexShader, PixelShader
 	vertexBuffer = new Buffer(graphics, D3D11_BIND_VERTEX_BUFFER, vertices.data(), vertices.size() * sizeof(Vertex));
 
 	VSConstBufAdd(0);
-	VSConstBufAddValue(0, &modelMatrix, "modelMatrix", sizeof(modelMatrix));
+	VSConstBufAddValue(0, &modelMatrix, "ModelMatrix", sizeof(modelMatrix));
 	VSConstBufAddValue(0, &MVP, "MVP", sizeof(MVP));
-	VSConstBufAddValue(0, nullptr, "cameraPositoin", sizeof(float4));
+	VSConstBufAddValue(0, nullptr, "CameraPositoin", sizeof(float4));
 	VSConstBufInit(0);
 
 	indexBuffer = new Buffer(graphics, D3D11_BIND_INDEX_BUFFER, indices.data(), indices.size() * sizeof(int));
@@ -113,14 +113,14 @@ void Mesh::VSConstBufSet(ConstantBuffer* constantBuffer, unsigned int const slot
 	constantBuffersVS[slot] = constantBuffer;
 }
 
-void Mesh::VSConstBufUpdateValue(unsigned int const slot, unsigned int dataID, void* data)
+void Mesh::VSConstBufUpdateValue(unsigned int const slot, const char* key, void* data)
 {
-	constantBuffersVS[slot]->updateValue(dataID, data);
+	constantBuffersVS[slot]->updateValue(key, data);
 }
 
-void Mesh::PSConstBufUpdateValue(unsigned int const slot, unsigned int dataID, void* data)
+void Mesh::PSConstBufUpdateValue(unsigned int const slot, const char* key, void* data)
 {
-	constantBuffersPS[slot]->updateValue(dataID, data);
+	constantBuffersPS[slot]->updateValue(key, data);
 }
 
 void Mesh::VSConstBufInit(unsigned int const slot)
@@ -149,9 +149,9 @@ void Mesh::update(RenderTarget* renderTarget, RenderState state)
 	MVP = DirectX::XMMatrixTranspose(preTransopesedMVP);
 	modelMatrix = DirectX::XMMatrixTranspose(modelMatrix);
 
-	VSConstBufUpdateValue(0, 0, &modelMatrix);
-	VSConstBufUpdateValue(0, 1, &MVP);
-	VSConstBufUpdateValue(0, 2, &camera->position);
+	VSConstBufUpdateValue(0, "ModelMatrix", &modelMatrix);
+	VSConstBufUpdateValue(0, "MVP", &MVP);
+	VSConstBufUpdateValue(0, "CameraPositoin", &camera->position);
 
 	for (auto it = constantBuffersVS.begin(); it != constantBuffersVS.end(); it++)
 		it->second->updateBuffer();

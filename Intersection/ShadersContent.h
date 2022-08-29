@@ -15,6 +15,8 @@ public:
 	static PixelShader* skyPS;
 	static PixelShader* onlyTexturePS;
 	static PixelShader* TextPS;
+	static PixelShader* colorPS;
+	static PixelShader* UIElementPS;
 
 	static void load(RenderWindow* renderWindow);
 

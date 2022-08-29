@@ -5,20 +5,20 @@
 Button::Button(RenderWindow* renderWindow, VertexShader* vertexShader, PixelShader* pixelShader) : UIElement(renderWindow)
 {
 	square = new ModeledObject(renderWindow, InnerModelsContent::square, vertexShader, pixelShader);
-	initColorSystem(square);
+	//initColorSystem(square);
 }
 
 Button::Button(RenderWindow* renderWindow, UIStyle style, VertexShader* vertexShader, PixelShader* pixelShader) : UIElement(renderWindow)
 {
 	square = new ModeledObject(renderWindow, InnerModelsContent::square, vertexShader, pixelShader);
-	initColorSystem(square);
+	initColorSystem(square, 0);
 	setStyle(style);
 }
 
 Button::Button(RenderWindow* renderWindow, float2 positionInPixels, float2 sizeInPixels, UIStyle style, VertexShader* vertexShader, PixelShader* pixelShader) : UIElement(renderWindow)
 {
 	square = new ModeledObject(renderWindow, InnerModelsContent::square, vertexShader, pixelShader);
-	initColorSystem(square);
+	initColorSystem(square, 0);
 	setStyle(style);
 	setPositionInPixels(positionInPixels);
 	setSizeInPixels(sizeInPixels);
@@ -27,7 +27,7 @@ Button::Button(RenderWindow* renderWindow, float2 positionInPixels, float2 sizeI
 Button::Button(RenderWindow* renderWindow, float2 positionInPixels, float2 sizeInPixels, UIStyle style) : UIElement(renderWindow)
 {
 	square = new ModeledObject(renderWindow, InnerModelsContent::square, defaultVS, defaultPS);
-	initColorSystem(square);
+	initColorSystem(square, 0);
 	setStyle(style);
 	setPositionInPixels(positionInPixels);
 	setSizeInPixels(sizeInPixels);

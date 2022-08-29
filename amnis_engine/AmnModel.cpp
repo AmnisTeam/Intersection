@@ -114,26 +114,29 @@ void AmnModel::PSConstBufAdd(unsigned int const slot)
 void AmnModel::VSConstBufAddValue(unsigned int slot, void* value, const char* key, unsigned int const size)
 {
 	constantBuffersVS[slot]->add(value, key, size);
+	//constantBuffersVS[std::pair<unsigned int, std::string>(slot, key)]->add(value, key, size);
 }
 
 void AmnModel::PSConstBufAddValue(unsigned int slot, void* value, const char* key, unsigned int const size)
 {
 	constantBuffersPS[slot]->add(value, key, size);
+	//constantBuffersVS[std::pair<unsigned int, std::string>(slot, key)]->add(value, key, size);
 }
 
 void AmnModel::VSConstBufSet(ConstantBuffer* constantBuffer, unsigned int const slot)
 {
 	constantBuffersVS[slot] = constantBuffer;
+	//constantBuffersVS[std::pair<unsigned int, std::string>(slot, key)] = constantBuffer;
 }
 
-void AmnModel::VSConstBufUpdateValue(unsigned int const slot, unsigned int dataID, void* data)
+void AmnModel::VSConstBufUpdateValue(unsigned int const slot, const char* key, void* data)
 {
-	constantBuffersVS[slot]->updateValue(dataID, data);
+	constantBuffersVS[slot]->updateValue(key, data);
 }
 
-void AmnModel::PSConstBufUpdateValue(unsigned int const slot, unsigned int dataID, void* data)
+void AmnModel::PSConstBufUpdateValue(unsigned int const slot, const char* key, void* data)
 {
-	constantBuffersPS[slot]->updateValue(dataID, data);
+	constantBuffersPS[slot]->updateValue(key, data);
 }
 
 void AmnModel::VSConstBufInit(unsigned int const slot)

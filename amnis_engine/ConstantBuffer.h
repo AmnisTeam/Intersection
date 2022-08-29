@@ -1,7 +1,9 @@
 #pragma once
 #include "Buffer.h"
 #include <vector>
+#include <map>
 #include "AMNFormat.h"
+#include "decl.h"
 
 class ConstantBuffer : public Buffer
 {
@@ -11,16 +13,21 @@ public:
 		const char* key;
 		void* data;
 		unsigned int size;
+		unsigned int sizeToElement;
 	};
-	ConstantBuffer(Graphics* graphics);
-	void init();
-	void add(void* value, const char* key, unsigned int const size);
-	void updateValue(unsigned int id, void* value);
-	void updateBuffer();
-	void VSSet(unsigned int slot);
-	void PSSet(unsigned int slot);
+	DECL ConstantBuffer(Graphics* graphics);
+	DECL void init();
+	DECL void add(void* value, const char* key, unsigned int const size);
+	DECL void updateValue(const char* key, void* value);
+	DECL void updateBuffer();
+	//void updateBufferKeyed();
+	DECL void VSSet(unsigned int slot);
+	DECL void PSSet(unsigned int slot);
 private:
 	Graphics* graphics;
 	std::vector<ConstantElement> values;
+	std::map<std::string, ConstantElement> valuesKeyed;
+	std::map<std::string, unsigned int> valuePoses;
+	unsigned int lastSizeSum = 0;
 };
 

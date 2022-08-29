@@ -4,20 +4,20 @@
 Toggle::Toggle(RenderWindow* renderWindow, VertexShader* vertexShader, PixelShader* pixelShader) : UIElement(renderWindow)
 {
 	square = new ModeledObject(renderWindow, InnerModelsContent::square, vertexShader, pixelShader);
-	initColorSystem(square);
+	initColorSystem(square, 0);
 }
 
 Toggle::Toggle(RenderWindow* renderWindow, UIStyle style, VertexShader* vertexShader, PixelShader* pixelShader) : UIElement(renderWindow)
 {
 	square = new ModeledObject(renderWindow, InnerModelsContent::square, vertexShader, pixelShader);
-	initColorSystem(square);
+	initColorSystem(square, 0);
 	setStyle(style);
 }
 
 Toggle::Toggle(RenderWindow* renderWindow, float2 positionInPixels, float2 sizeInPixels, UIStyle style, VertexShader* vertexShader, PixelShader* pixelShader) : UIElement(renderWindow)
 {
 	square = new ModeledObject(renderWindow, InnerModelsContent::square, vertexShader, pixelShader);
-	initColorSystem(square);
+	initColorSystem(square, 0);
 	setStyle(style);
 	setPositionInPixels(positionInPixels);
 	setSizeInPixels(sizeInPixels);
@@ -26,13 +26,11 @@ Toggle::Toggle(RenderWindow* renderWindow, float2 positionInPixels, float2 sizeI
 Toggle::Toggle(RenderWindow* renderWindow, float2 positionInPixels, float2 sizeInPixels, UIStyle style) : UIElement(renderWindow)
 {
 	square = new ModeledObject(renderWindow, InnerModelsContent::square, defaultVS, defaultPS);
-	initColorSystem(square);
+	initColorSystem(square, 0);
 	setStyle(style);
 	setPositionInPixels(positionInPixels);
 	setSizeInPixels(sizeInPixels);
 }
-
-
 
 void Toggle::addDownEvent(Event* event)
 {
@@ -85,14 +83,14 @@ void Toggle::updateColor()
 	{
 		if (getPressed())
 		{
-			coloredModel->PSConstBufUpdateValue(0, 0, &onPressColor);
+			coloredModel->PSConstBufUpdateValue(0, true, "OverlayColor", &onPressColor);
 		}
 		else
 		{
 			if (getHover())
-				coloredModel->PSConstBufUpdateValue(0, 0, &onHoverColor);
+				coloredModel->PSConstBufUpdateValue(0, true, "OverlayColor", &onHoverColor);
 			else
-				coloredModel->PSConstBufUpdateValue(0, 0, &onColor);
+				coloredModel->PSConstBufUpdateValue(0, true, "OverlayColor", &onColor);
 		}
 	}
 }

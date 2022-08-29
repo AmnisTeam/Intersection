@@ -36,8 +36,8 @@ public:
 	DECL void PSConstBufAdd(unsigned int const slot);
 	DECL void VSConstBufAddValue(unsigned int slot, void* value, const char* key, unsigned int const size);
 	DECL void PSConstBufAddValue(unsigned int slot, void* value, const char* key, unsigned int const size);
-	DECL void VSConstBufUpdateValue(unsigned int const slot, unsigned int dataID, void* data);
-	DECL void PSConstBufUpdateValue(unsigned int const slot, unsigned int dataID, void* data);
+	DECL void VSConstBufUpdateValue(unsigned int const slot, const char* key, void* data);
+	DECL void PSConstBufUpdateValue(unsigned int const slot, const char* key, void* data);
 	DECL void VSConstBufInit(unsigned int const slot);
 	DECL void PSConstBufInit(unsigned int const slot);
 

@@ -16,6 +16,11 @@ cbuffer lightsCount : register(b9)
 	unsigned int pointLightsCount;
 };
 
+cbuffer sdfsdf : register(b11)
+{
+	float4 color;
+};
+
 Texture2D texture0 : register(t0);
 Texture2D normalMap : register(t1);
 Texture2D textureSky : register(t2);
@@ -131,4 +136,5 @@ float4 main(Input input) : SV_TARGET
 	}
 	
 	return float4(diffusion.xyz * texColor.xyz + specular.xyz * texColor.xyz + ambient.xyz * texColor.xyz, 1); // For tranparency to work
+	//return color; // For tranparency to work
 }

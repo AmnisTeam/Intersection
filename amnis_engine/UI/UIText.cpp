@@ -5,6 +5,7 @@ UIText::UIText(RenderWindow* renderWindow, unsigned int const max_chars_count, V
 	: UIElement(renderWindow)
 {
 	text = new Text(renderWindow, max_chars_count, vertexShader, pixelShader);
+	initColorSystem(text->textFrame, 0);
 }
 
 UIText::~UIText()
@@ -17,15 +18,20 @@ void UIText::setSizeInPixels(float2 size)
 	UIElement::setSizeInPixels(size);
 }
 
-void UIText::setSizeInScreenSize(float2 size)
+void UIText::update(RenderTarget* renderTarget, RenderState state)
 {
-	UIElement::setSizeInScreenSize(size);
-	text->modelScale = { text->getScale().x * getScale().x, text->getScale().y * getScale().y };
-	text->textFrame->PSConstBufUpdateValue(1, 2, &text->modelScale);
+	UIElement::update(renderTarget, state);
 }
 
 void UIText::draw(RenderTarget* renderTarget, RenderState state)
 {
+	update(renderTarget, state);
 	state.modelMatrix = modelMatrix * state.modelMatrix;
+
+	float3 scale = float3{ DirectX::XMVectorGetX(state.modelMatrix.r[0]), DirectX::XMVectorGetY(state.modelMatrix.r[1]), DirectX::XMVectorGetZ(state.modelMatrix.r[2]) };
+	text->modelScale = float2{ scale.x / scale.y, 1};
+	//text->textFrame->PSConstBufUpdateValue(1, 2, &text->modelScale);
+	text->textFrame->PSConstBufUpdateValue(1, true, "ModelScale", &text->modelScale);
+
 	renderTarget->draw(text, state);
 }

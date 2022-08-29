@@ -117,7 +117,8 @@ void Text::setText(std::string const text)
 		}
 	}
 	renderWindow->graphics->deviceCon->Unmap(textCharactersBuffer, NULL);
-	textFrame->PSConstBufUpdateValue(1, 0, &textCharsCount);
+	//textFrame->PSConstBufUpdateValue(1, 0, &textCharsCount);
+	textFrame->PSConstBufUpdateValue(1, true, "TextCharsCount", &textCharsCount);
 }
 
 void Text::setFont(Font* const font)
@@ -128,32 +129,32 @@ void Text::setFont(Font* const font)
 void Text::setScale(float3 scale)
 {
 	modelScale = { scale.x, scale.y };
-	textFrame->PSConstBufUpdateValue(1, 2, &modelScale);
+	textFrame->PSConstBufUpdateValue(1, true, "ModelScale", &modelScale);
 	Transformable::setScale(scale);
 }
 
 void Text::setStringsGap(const float gap)
 {
 	stringsGap = gap;
-	textFrame->PSConstBufUpdateValue(1, 1, &stringsGap);
+	textFrame->PSConstBufUpdateValue(1, true, "StringsGap", &stringsGap);
 }
 
 void Text::setTextOrigin(const float2 textOrigin)
 {
 	this->textOrigin = textOrigin;
-	textFrame->PSConstBufUpdateValue(1, 3, &this->textOrigin);
+	textFrame->PSConstBufUpdateValue(1, true, "TextOrigin", &this->textOrigin);
 }
 
 void Text::setFontSize(const float fontSize)
 {
 	this->fontSize = fontSize;
-	textFrame->PSConstBufUpdateValue(1, 4, &this->fontSize);
+	textFrame->PSConstBufUpdateValue(1, true, "FontSize", &this->fontSize);
 }
 
 void Text::setAttachment(const float2 attachment)
 {
 	this->attachment = attachment;
-	textFrame->PSConstBufUpdateValue(1, 5, &this->attachment);
+	textFrame->PSConstBufUpdateValue(1, true, "Attachment", &this->attachment);
 }
 
 void Text::draw(RenderTarget* renderTarget, RenderState state)

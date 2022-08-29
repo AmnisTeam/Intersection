@@ -157,6 +157,8 @@
     <ClInclude Include="Event.h" />
     <ClInclude Include="Font.h" />
     <ClInclude Include="InnerModelsContent.h" />
+    <ClInclude Include="InnerTexturesContent.h" />
+    <ClInclude Include="UI\Sprite.h" />
     <ClInclude Include="text.h" />
     <ClInclude Include="UI\UIText.h" />
     <ClInclude Include="UI\ToggleGroupe.h" />
@@ -197,6 +199,8 @@
     <ClCompile Include="Event.cpp" />
     <ClCompile Include="Font.cpp" />
     <ClCompile Include="InnerModelsContent.cpp" />
+    <ClCompile Include="InnerTexturesContent.cpp" />
+    <ClCompile Include="UI\Sprite.cpp" />
     <ClCompile Include="text.cpp" />
     <ClCompile Include="UI\UIText.cpp" />
     <ClCompile Include="UI\ToggleGroupe.cpp" />

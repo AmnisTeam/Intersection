@@ -29,13 +29,24 @@ public:
 	DECL void PSConstBufAdd(unsigned int const slot);
 	DECL void VSConstBufAddValue(unsigned int slot, void* value, const char* key, unsigned int const size);
 	DECL void PSConstBufAddValue(unsigned int slot, void* value, const char* key, unsigned int const size);
-	DECL void VSConstBufUpdateValue(unsigned int const slot, unsigned int dataID, void* data);
-	DECL void PSConstBufUpdateValue(unsigned int const slot, unsigned int dataID, void* data);
+	DECL void VSConstBufUpdateValue(unsigned int const slot, bool k, const char* key, void* data);
+	DECL void PSConstBufUpdateValue(unsigned int const slot, bool k, const char* key, void* data);
+
+
+
 	DECL void VSConstBufInit(unsigned int const slot);
 	DECL void PSConstBufInit(unsigned int const slot);
+	DECL void VSConstBufInitKeyed(unsigned int const slot);
+	DECL void PSConstBufInitKeyed(unsigned int const slot);
+
+	float4 testColor = { 0, 1, 1, 1 };
+
+
 private:
 	AmnModel* model;
 	std::map<unsigned int, Texture*> textures;
+	//std::map<std::pair<unsigned int, std::string>, unsigned int> VSconstBuffElements;
+	//std::map<std::pair<unsigned int, std::string>, unsigned int> PSconstBuffElements;
 	VertexShader* vertexShader;
 	PixelShader* pixelShader;
 	DECL void bindAllTextures();

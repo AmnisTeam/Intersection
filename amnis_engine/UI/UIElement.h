@@ -11,7 +11,10 @@
 class UIElement : public Transformable, public IDrawable
 {
 public:
-	float4 color = { 1, 1, 1, 1 };
+	float4 textureRect;
+	float4 shadeColor = { 1, 1, 1, 1 };
+
+	float4 overlayColor = { 1, 1, 1, 1 };
 	float4 hoverColor = { 1, 1, 1, 1 };
 	float4 pressColor = { 1, 1, 1, 1 };
 	float4 onColor = { 1, 1, 1, 1 };
@@ -19,6 +22,7 @@ public:
 	float4 onPressColor = { 1, 1, 1, 1 };
 
 	DECL UIElement(RenderWindow* renderWindow);
+	DECL void setSprite(Texture* texture, float4 textureRect);
 	DECL void setPositionInPixels(float2 position);
 	DECL virtual void setSizeInPixels(float2 size);
 	DECL virtual void setSizeInScreenSize(float2 size);
@@ -33,10 +37,17 @@ public:
 	DECL bool getPressed() const;
 	DECL bool onDown();
 	DECL bool onUp();
-	DECL void initColorSystem(ModeledObject* object);
+	DECL void initColorSystem(ModeledObject* object, unsigned int const slot);
 	DECL virtual void updateColor();
 	DECL void setStyle(UIStyle style);
 	DECL static void setStaticVertexAndPixelShaders(VertexShader* vertexShader, PixelShader* pixelShader);
+
+	DECL void setShade(float shade);
+	DECL float getShade() const;
+
+	DECL void setOverlay(float overlay);
+	DECL float getOverlay() const;
+
 	virtual void DECL update(RenderTarget* renderTarget, RenderState state);
 protected:
 
@@ -53,6 +64,9 @@ protected:
 	float2 anchor = { 0, 0 };
 	RECT firstClientRect = {};
 	RECT oldClientRect = {};
+
+	float shade = 0;
+	float overlay = 1;
 
 	DECL UIElement();
 	DECL void _constructor(RenderWindow* renderWindow);

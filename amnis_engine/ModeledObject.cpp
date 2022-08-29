@@ -18,6 +18,11 @@ void ModeledObject::constructor(RenderWindow* const renderWindow, AmnModel* cons
 	this->model = model;
 	setVertexShader(vertexShader);
 	setPixelShader(pixelShader);
+
+
+	model->PSConstBufAdd(11);
+	model->PSConstBufAddValue(11, &testColor, "TestColor", sizeof(testColor));
+	model->PSConstBufInit(11);
 }
 
 ModeledObject::~ModeledObject()
@@ -86,15 +91,30 @@ void ModeledObject::VSConstBufSet(ConstantBuffer* constantBuffer, unsigned int c
 	model->VSConstBufSet(constantBuffer, slot);
 }
 
-void ModeledObject::VSConstBufUpdateValue(unsigned int const slot, unsigned int dataID, void* data)
+//void ModeledObject::VSConstBufUpdateValue(unsigned int const slot, unsigned int dataID, void* data)
+//{
+//	model->VSConstBufUpdateValue(slot, dataID, data);
+//}
+//
+//void ModeledObject::PSConstBufUpdateValue(unsigned int const slot, unsigned int dataID, void* data)
+//{
+//	model->PSConstBufUpdateValue(slot, dataID, data);
+//}
+
+void ModeledObject::VSConstBufUpdateValue(unsigned int const slot, bool k, const char* key, void* data)
 {
-	model->VSConstBufUpdateValue(slot, dataID, data);
+	model->VSConstBufUpdateValue(slot, key, data);
 }
 
-void ModeledObject::PSConstBufUpdateValue(unsigned int const slot, unsigned int dataID, void* data)
+void ModeledObject::PSConstBufUpdateValue(unsigned int const slot, bool k, const char* key, void* data)
 {
-	model->PSConstBufUpdateValue(slot, dataID, data);
+	model->PSConstBufUpdateValue(slot, key, data);
 }
+
+//void ModeledObject::PSConstBufUpdateValue(unsigned int const slot, std::string semantic, void* data)
+//{
+//	model->PSConstBufUpdateValue(slot, dataID, data);
+//}
 
 void ModeledObject::VSConstBufInit(unsigned int const slot)
 {
@@ -106,12 +126,26 @@ void ModeledObject::PSConstBufInit(unsigned int const slot)
 	model->PSConstBufInit(slot);
 }
 
+void ModeledObject::VSConstBufInitKeyed(unsigned int const slot)
+{
+	model->VSConstBufInit(slot);
+}
+
+void ModeledObject::PSConstBufInitKeyed(unsigned int const slot)
+{
+	model->PSConstBufInit(slot);
+}
+
 void ModeledObject::draw(RenderTarget* renderTarget, RenderState state)
 {
 	state.modelMatrix = modelMatrix * state.modelMatrix;
 	bindAllTextures();
 	vertexShader->setVertexShader(renderWindow->graphics);
 	pixelShader->setPixelShader(renderWindow->graphics);
+
+	float4 newColor = { 1, 0, 0, 1 };
+	model->PSConstBufUpdateValue(11, "TestColor", &newColor);
+
 	renderTarget->draw(model, state);
 }
 

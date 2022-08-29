@@ -135,10 +135,16 @@
     <ClInclude Include="text.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="InnerModelsContent.h">
+    <ClInclude Include="UI\UIText.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UI\UIText.h">
+    <ClInclude Include="UI\Sprite.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="InnerTexturesContent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="InnerModelsContent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -248,10 +254,16 @@
     <ClCompile Include="text.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="InnerModelsContent.cpp">
+    <ClCompile Include="UI\UIText.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UI\UIText.cpp">
+    <ClCompile Include="UI\Sprite.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="InnerTexturesContent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="InnerModelsContent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

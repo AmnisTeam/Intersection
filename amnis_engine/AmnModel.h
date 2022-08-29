@@ -33,17 +33,18 @@ public:
 	DECL void PSConstBufAdd(unsigned int const slot);
 	DECL void VSConstBufAddValue(unsigned int slot, void* value, const char* key, unsigned int const size);
 	DECL void PSConstBufAddValue(unsigned int slot, void* value, const char* key, unsigned int const size);
-	DECL void VSConstBufUpdateValue(unsigned int const slot, unsigned int dataID, void* data);
-	DECL void PSConstBufUpdateValue(unsigned int const slot, unsigned int dataID, void* data);
+	DECL void VSConstBufUpdateValue(unsigned int const slot, const char* key, void* data);
+	DECL void PSConstBufUpdateValue(unsigned int const slot, const char* key, void* data);
 	DECL void VSConstBufInit(unsigned int const slot);
 	DECL void PSConstBufInit(unsigned int const slot);
-
 private:
 	Graphics* graphics;
 	std::vector<Mesh> meshes;
 	std::string directory;
 	std::map<unsigned int, ConstantBuffer*> constantBuffersVS;
 	std::map<unsigned int, ConstantBuffer*> constantBuffersPS;
+	//std::map<std::pair<unsigned int, std::string>, ConstantBuffer*> constantBuffersVS;
+	//std::map<std::pair<unsigned int, std::string>, ConstantBuffer*> constantBuffersPS;
 	DECL void loadModel(Graphics* graphics, std::string path, VertexShader* vertexShader, PixelShader* pixelShader);
 	DECL void loadModel(Graphics* graphics, void* model, const unsigned int modelSize, VertexShader* vertexShader, PixelShader* pixelShader);
 	DECL void processNode(Graphics* graphics, aiNode* node, const aiScene* scene, VertexShader* vertexShader, PixelShader* pixelShader);

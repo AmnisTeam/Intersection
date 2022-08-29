@@ -11,7 +11,8 @@ public:
 	DECL UIText(RenderWindow* renderWindow, unsigned int const max_chars_count, VertexShader* vertexShader, PixelShader* pixelShader);
 	DECL ~UIText();
 	DECL virtual void setSizeInPixels(float2 size) override;
-	DECL virtual void setSizeInScreenSize(float2 size) override;
+	//DECL virtual void setSizeInScreenSize(float2 size) override;
+	virtual void DECL update(RenderTarget* renderTarget, RenderState state) override;
 	virtual DECL void draw(RenderTarget* renderTarget, RenderState state) override;
 };
 
