@@ -21,10 +21,10 @@ void ModelsContent::load(RenderWindow* renderWindow)
 	//WideCharToMultiByte(0, 0, path.c_str(), path.size(), &str[0], path.size(), NULL, NULL);
 	std::string str;
 
-	sphere = new AmnModel(renderWindow->graphics, (char*)(str + "Models\\sphere.obj").c_str(), renderWindow->graphics->defaultVS, renderWindow->graphics->defaultPS);
-	plane = new AmnModel(renderWindow->graphics, (char*)(str + "Models\\Plane.obj").c_str(), renderWindow->graphics->defaultVS, renderWindow->graphics->defaultPS);
-	tree = new AmnModel(renderWindow->graphics, (char*)(str + "Models\\Tree\\source\\tree2.fbx").c_str(), renderWindow->graphics->defaultVS, renderWindow->graphics->defaultPS);
-	ghosthz = new AmnModel(renderWindow->graphics, (char*)(str + "Models\\ghosthz\\source\\ghosthz.fbx").c_str(), renderWindow->graphics->defaultVS, renderWindow->graphics->defaultPS);
+	sphere = new AmnModel(renderWindow, (char*)(str + "Models\\sphere.obj").c_str(), renderWindow->graphics->defaultVS, renderWindow->graphics->defaultPS);
+	plane = new AmnModel(renderWindow, (char*)(str + "Models\\Plane.obj").c_str(), renderWindow->graphics->defaultVS, renderWindow->graphics->defaultPS);
+	tree = new AmnModel(renderWindow, (char*)(str + "Models\\Tree\\source\\tree2.fbx").c_str(), renderWindow->graphics->defaultVS, renderWindow->graphics->defaultPS);
+	ghosthz = new AmnModel(renderWindow, (char*)(str + "Models\\ghosthz\\source\\ghosthz.fbx").c_str(), renderWindow->graphics->defaultVS, renderWindow->graphics->defaultPS);
 
 	std::vector<Vertex> boxVertices;
 
@@ -123,5 +123,5 @@ void ModelsContent::load(RenderWindow* renderWindow)
 	boxIndices.push_back(20);
 	boxIndices.push_back(23);
 
-	box = new AmnModel(renderWindow->graphics, boxVertices, boxIndices, ShadersContent::defaultVS, ShadersContent::defaultPS);
+	box = new AmnModel(renderWindow, boxVertices, boxIndices, ShadersContent::defaultVS, ShadersContent::defaultPS);
 }

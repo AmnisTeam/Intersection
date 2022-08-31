@@ -5,7 +5,7 @@ Sprite::Sprite(RenderWindow* renderWindow, Texture* texture, float4 textureRect,
 {
 	square = new ModeledObject(renderWindow, InnerModelsContent::square, vertexShader, pixelShader);
 	initColorSystem(square, 0);
-	//setSprite(texture, textureRect);
+	setSprite(texture, textureRect);
 }
 
 void Sprite::draw(RenderTarget* renderTarget, RenderState state)

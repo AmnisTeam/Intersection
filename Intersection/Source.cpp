@@ -38,11 +38,10 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLin
 
 	Camera* mainCamera = new Camera(renderWindow, true);
 	mainCamera->position = { 0, 2, -2 };
-	renderWindow->setCamera(mainCamera);
+	//renderWindow->setCamera(mainCamera);
 
 	StrategyCamera* strategyCamera = new StrategyCamera(renderWindow, { 0, 10, 0 }, { 3.14 / 3, 0, 0 });
-	//renderWindow->setCamera(strategyCamera);
-
+	renderWindow->setCamera(strategyCamera);
 
 	FT_Library* ftLibrary = new FT_Library();
 
@@ -51,17 +50,6 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLin
 		throw;
 
 	Font font = Font(renderWindow, ftLibrary, "fonts//Roboto-Regular.ttf");
-
-	//DirectX::SpriteBatch* spriteBatch = new DirectX::SpriteBatch(renderWindow->graphics->deviceCon);
-	//DirectX::SpriteFont* spriteFont = new DirectX::SpriteFont(renderWindow->graphics->device, L"fonts//Lato-ThinItalic.ttf");
-
-
-	//mainCamera->position = { 0, 3, -10 };
-	mainCamera->position = { 0, 0, 0 };
-	//renderWindow->setCamera(mainCamera);
-
-	StrategyCamera* strategyCamera = new StrategyCamera(renderWindow, { 0, 10, 0 }, { 3.14 / 3, 0, 0 });
-	renderWindow->setCamera(strategyCamera);
 
 	World* world = new World(renderWindow, 1, 1);
 
@@ -158,7 +146,6 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLin
 	Toggle* checkbox3 = new Toggle(renderWindow, { toggleSize.x + toggleOffset.x, - toggleSize.y -toggleOffset.y * 2 }, toggleSize, whiteLightsStyle);
 	checkbox3->setAnchor({ 0.5f, 1 });
 	checkbox3->setPivot({ 0.5f, 1 });
-	//checkbox3->setSprite(TexturesContent::textureSky, float4{0, 0, 1, 1});
 
 	ToggleGroupe* toggleGroupe = new ToggleGroupe(renderWindow);
 	toggleGroupe->add(toggle1);
@@ -214,33 +201,27 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLin
 	positionInfo->setPositionInPixels(float2{0, 26});
 	positionInfo->setAnchor({ 0, 0 });
 	positionInfo->setPivot({ 0, 0 });
-	positionInfo->overlayColor = { 0, 1, 1, 1 };
 
 	Text* text = new Text(renderWindow, 256, ShadersContent::defaultVS, ShadersContent::TextPS);
 	text->setFont(&font);
 	text->setText("Hello world!");
 	text->setStringsGap(0.5f);
 	text->setAttachment(float2{0.5f, 0.5f});
-	text->setColor(float4{1, 0, 0, 1});
-
-
 
 	world->start();
 
-	float k = 0;
+
 	Sprite* testSpirte = new Sprite(renderWindow, TexturesContent::bugAlbedo, float4{ 0.45f, 0.45f, 0.55f, 0.55f }, ShadersContent::defaultVS, ShadersContent::UIElementPS);
 	testSpirte->overlayColor = {1, 0, 0, 1};
 	testSpirte->shadeColor = {0, 0, 1, 1};
+	testSpirte->setAnchor(float2{1, 0});
+	testSpirte->setPivot(float2{1, 0});
 	testSpirte->setShade(0);
 	testSpirte->setOverlay(0);
 
-	//Toggle* testSquare = new Toggle(renderWindow, { toggleSize.x + toggleOffset.x, -toggleOffset.y }, toggleSize, style);
-	//testSquare->setAnchor(positionInfo->getAnchor());
-	//testSquare->setPivot(positionInfo->getPivot());
-	//testSquare->setSizeInPixels(positionInfo->getSizeInPixels());
-	//testSquare->setPositionInPixels(positionInfo->getPositionInPixels());
 
 	float a = 0;
+	float k = 0;
 	while (renderWindow->isOpen)
 	{
 		//renderWindow->graphics->deviceCon->OMSetBlendState(blendState, nullptr, 0xFFFFFFFFu);
@@ -284,7 +265,6 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLin
 		renderWindow->Draw(box);
 
 		world->update();
-		//renderWindow->Draw(world);
 		font.texture->bind(0);
 		RECT clientRect;
 		GetClientRect(renderWindow->window->hwnd, &clientRect);
