@@ -3,6 +3,7 @@
 #include <IDrawable.h>
 #include <ModeledObject.h>
 #include <RenderWindow.h>
+#include <cmath>
 #include "../TexturesContent.h"
 
 class Entity : public Transformable, public IDrawable
@@ -11,7 +12,7 @@ public:
 	ModeledObject* model;
 	float3 viewDirecton = {0, 0, 1};
 	float3 velocity = {};
-	double moveSpeed = 2;
+	double moveSpeed = 4;
 	double turningSpeed = PI * 0.5;
 	std::vector<float3> moveTargets;
 	Entity(RenderWindow* renderWindow, AmnModel* model);

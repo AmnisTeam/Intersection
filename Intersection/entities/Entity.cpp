@@ -87,6 +87,12 @@ void Entity::update()
 {
 	movementToTargets();
 	setPosition(getPosition() + velocity * renderWindow->graphics->deltaTime);
+
+	if (moveTargets.size() == 0) return;
+
+	float yAngle = mymath::getAngle(velocity.x, velocity.z);
+
+	setRotation({ 0, yAngle + 3.14f / 2, 0 });
 }
 
 void Entity::draw(RenderTarget* renderTarget, RenderState state)

@@ -164,6 +164,18 @@ public:
 		return a + (b - a) * t;
 	}
 
+	static float getAngle(float originAxisCoord, float noRotationAxisCoord) { // (координата по оси, относительно которой расчитывается угол; координата по оси, относительно которой НЕ происходит вращение)
+		if (originAxisCoord == 0 && noRotationAxisCoord > 0) return PI / 2;
+		if (originAxisCoord == 0 && noRotationAxisCoord < 0) return 3 * PI / 2;
+
+		float angle = std::atan(noRotationAxisCoord / originAxisCoord);
+
+		if (originAxisCoord < 0) angle += PI;
+		if (originAxisCoord > 0 && noRotationAxisCoord < 0) angle += 2 * PI;
+
+		return -angle;
+	}
+
 	static bool rayCrossPointRayed(float3 origin, float3 end, float3 point)
 	{
 		float3 vec = end - origin;
