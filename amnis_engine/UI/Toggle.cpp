@@ -1,17 +1,23 @@
 #include "pch.h"
 #include "Toggle.h"
 
-Toggle::Toggle(RenderWindow* renderWindow, VertexShader* vertexShader, PixelShader* pixelShader) : UIElement(renderWindow, vertexShader, pixelShader)
+Toggle::Toggle(RenderWindow* renderWindow, VertexShader* vertexShader, PixelShader* pixelShader) : UIElement(renderWindow)
 {
+	square = new ModeledObject(renderWindow, InnerModelsContent::square, vertexShader, pixelShader);
+	initColorSystem(square, 0);
 }
 
-Toggle::Toggle(RenderWindow* renderWindow, UIStyle style, VertexShader* vertexShader, PixelShader* pixelShader) : UIElement(renderWindow, vertexShader, pixelShader)
+Toggle::Toggle(RenderWindow* renderWindow, UIStyle style, VertexShader* vertexShader, PixelShader* pixelShader) : UIElement(renderWindow)
 {
+	square = new ModeledObject(renderWindow, InnerModelsContent::square, vertexShader, pixelShader);
+	initColorSystem(square, 0);
 	setStyle(style);
 }
 
-Toggle::Toggle(RenderWindow* renderWindow, float2 positionInPixels, float2 sizeInPixels, UIStyle style, VertexShader* vertexShader, PixelShader* pixelShader) : UIElement(renderWindow, vertexShader, pixelShader)
+Toggle::Toggle(RenderWindow* renderWindow, float2 positionInPixels, float2 sizeInPixels, UIStyle style, VertexShader* vertexShader, PixelShader* pixelShader) : UIElement(renderWindow)
 {
+	square = new ModeledObject(renderWindow, InnerModelsContent::square, vertexShader, pixelShader);
+	initColorSystem(square, 0);
 	setStyle(style);
 	setPositionInPixels(positionInPixels);
 	setSizeInPixels(sizeInPixels);
@@ -19,12 +25,12 @@ Toggle::Toggle(RenderWindow* renderWindow, float2 positionInPixels, float2 sizeI
 
 Toggle::Toggle(RenderWindow* renderWindow, float2 positionInPixels, float2 sizeInPixels, UIStyle style) : UIElement(renderWindow)
 {
+	square = new ModeledObject(renderWindow, InnerModelsContent::square, defaultVS, defaultPS);
+	initColorSystem(square, 0);
 	setStyle(style);
 	setPositionInPixels(positionInPixels);
 	setSizeInPixels(sizeInPixels);
 }
-
-
 
 void Toggle::addDownEvent(Event* event)
 {
@@ -77,14 +83,14 @@ void Toggle::updateColor()
 	{
 		if (getPressed())
 		{
-			quad->PSConstBufUpdateValue(0, 0, &onPressColor);
+			coloredModel->constantBuffersSystem->PSUpdateValue(0, "OverlayColor", &onPressColor);
 		}
 		else
 		{
 			if (getHover())
-				quad->PSConstBufUpdateValue(0, 0, &onHoverColor);
+				coloredModel->constantBuffersSystem->PSUpdateValue(0, "OverlayColor", &onHoverColor);
 			else
-				quad->PSConstBufUpdateValue(0, 0, &onColor);
+				coloredModel->constantBuffersSystem->PSUpdateValue(0, "OverlayColor", &onColor);
 		}
 	}
 }
@@ -102,5 +108,8 @@ void Toggle::draw(RenderTarget* renderTarget, RenderState state)
 	}
 	if(getPressed()) executePressedEvents();
 
-	UIElement::draw(renderTarget, state);
+
+	update(renderTarget, state);
+	state.modelMatrix = state.modelMatrix * modelMatrix;
+	renderTarget->draw(square, state);
 }

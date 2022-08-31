@@ -135,35 +135,6 @@ void Graphics::updateDeltaTime()
 
 void Graphics::updatePointLights()
 {
-    //D3D11_MAPPED_SUBRESOURCE mappedSubResource{};
-    //HRESULT hr = deviceCon->Map(pointLightsBuffer, NULL, D3D11_MAP_WRITE_DISCARD, NULL, &mappedSubResource);
-    //if (FAILED(hr)) throw;
-
-    //unsigned int offset = 0;
-    //for (int i = 0; (i < pointLights.size()) && (i < maxPointLightsCount); i++)
-    //{
-    //    PointLight::PointLightDesc pointLightDesc{};
-    //    pointLightDesc.color = pointLights[i]->color;
-    //    pointLightDesc.kc = pointLights[i]->kc;
-    //    pointLightDesc.kl = pointLights[i]->kl;
-    //    pointLightDesc.kq = pointLights[i]->kq;
-    //    pointLightDesc.position = pointLights[i]->getPosition();
-    //    pointLightDesc.turnedOn = pointLights[i]->turnedOn;
-
-    //    memcpy((char*)mappedSubResource.pData + offset, &pointLightDesc, sizeof(PointLight::PointLightDesc));
-    //    offset += sizeof(PointLight::PointLightDesc);
-    //}
-
-    //deviceCon->Unmap(pointLightsBuffer, NULL);
-
-    //hr = deviceCon->Map(lightsCountsBuffer, NULL, D3D11_MAP_WRITE_DISCARD, NULL, &mappedSubResource);
-    //if (FAILED(hr)) throw;
-
-    //unsigned int count = pointLights.size();
-    //memcpy((char*)mappedSubResource.pData, &count, sizeof(PointLight::PointLightDesc));
-
-    //deviceCon->Unmap(lightsCountsBuffer, NULL);
-
     D3D11_MAPPED_SUBRESOURCE mappedSubResource{};
     HRESULT hr = deviceCon->Map(pointLightsBuffer, NULL, D3D11_MAP_WRITE_DISCARD, NULL, &mappedSubResource);
     if (FAILED(hr)) throw;

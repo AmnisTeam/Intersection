@@ -86,6 +86,9 @@
     <FxCompile Include="Shaders\PixelShaders\SkyPS.hlsl" />
     <FxCompile Include="Shaders\PixelShaders\OnlyTexturePS.hlsl" />
     <FxCompile Include="PureColorPS.hlsl" />
+    <FxCompile Include="Shaders\PixelShaders\TextPS.hlsl" />
+    <FxCompile Include="Shaders\PixelShaders\ColorPS.hlsl" />
+    <FxCompile Include="Shaders\PixelShaders\UIElementPS.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -1,4 +1,3 @@
-
 cbuffer colorValue : register(b0)
 {
 	float4 constantColor;
@@ -22,10 +21,5 @@ struct Input
 
 float4 main(Input input) : SV_TARGET
 {
-	float3 texColor = texture0.Sample(samplerState, input.texCoord.xy).xyz;
-	//return constantColor * texColor;
-	//return float4(1, 1, 1, texColor.r);
 	return float4(constantColor.xyz, 1);
-	//return float4(texColor.xyz, 1);
-
 }

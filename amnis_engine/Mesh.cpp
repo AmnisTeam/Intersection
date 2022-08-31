@@ -2,15 +2,16 @@
 #include "Mesh.h"
 #include "RenderWindow.h"
 
-Mesh::Mesh(Graphics* graphics, std::vector<Vertex> vertices, std::vector<int> indices, VertexShader* vertexShader, PixelShader* pixelShader)
+Mesh::Mesh(RenderWindow* renderWindow, std::vector<Vertex> vertices, std::vector<int> indices, VertexShader* vertexShader, PixelShader* pixelShader)
 {
 	this->vertices = vertices;
 	this->indices = indices;
-	this->graphics = graphics;
-	setupMesh(graphics, vertexShader, pixelShader);
+	this->renderWindow = renderWindow;
+	constantBuffersSystem = new ConstantBuffersSystem(renderWindow);
+	setupMesh(renderWindow, vertexShader, pixelShader);
 }
 
-void Mesh::setupMesh(Graphics* graphics, VertexShader* vertexShader, PixelShader* pixelShader)
+void Mesh::setupMesh(RenderWindow* renderWindow, VertexShader* vertexShader, PixelShader* pixelShader)
 {
 	for (int i = 0; i < indices.size(); i += 3)
 	{
@@ -62,16 +63,15 @@ void Mesh::setupMesh(Graphics* graphics, VertexShader* vertexShader, PixelShader
 		vertices[vertex3].tangent = T;
 		vertices[vertex3].bitangent = B;
 	}
-	vertexBuffer = new Buffer(graphics, D3D11_BIND_VERTEX_BUFFER, vertices.data(), vertices.size() * sizeof(Vertex));
+	vertexBuffer = new Buffer(renderWindow->graphics, D3D11_BIND_VERTEX_BUFFER, vertices.data(), vertices.size() * sizeof(Vertex));
 
-	VSConstBufAdd(0);
-	VSConstBufAddValue(0, &modelMatrix, "modelMatrix", sizeof(modelMatrix));
-	VSConstBufAddValue(0, &MVP, "MVP", sizeof(MVP));
-	VSConstBufAddValue(0, nullptr, "cameraPositoin", sizeof(float4));
-	VSConstBufInit(0);
+	constantBuffersSystem->VSAddValue(0, &modelMatrix, "ModelMatrix", sizeof(modelMatrix));
+	constantBuffersSystem->VSAddValue(0, &MVP, "MVP", sizeof(MVP));
+	constantBuffersSystem->VSAddValue(0, nullptr, "CameraPositoin", sizeof(float4));
+	constantBuffersSystem->VSInit(0);
 
-	indexBuffer = new Buffer(graphics, D3D11_BIND_INDEX_BUFFER, indices.data(), indices.size() * sizeof(int));
-	sampleState = new SampleState(graphics);
+	indexBuffer = new Buffer(renderWindow->graphics, D3D11_BIND_INDEX_BUFFER, indices.data(), indices.size() * sizeof(int));
+	sampleState = new SampleState(renderWindow->graphics);
 	this->vertexShader = vertexShader;
 	this->pixelShader = pixelShader;
 }
@@ -79,58 +79,6 @@ void Mesh::setupMesh(Graphics* graphics, VertexShader* vertexShader, PixelShader
 void Mesh::setTexture(Texture* texture, int slot)
 {
 	textures[slot] = texture;
-}
-
-void Mesh::PSConstBufSet(ConstantBuffer* constantBuffer, unsigned int const slot)
-{
-	constantBuffersPS[slot] = constantBuffer;
-}
-
-void Mesh::VSConstBufAdd(unsigned int const slot)
-{
-	ConstantBuffer* constantBufferVS = new ConstantBuffer(graphics);
-	VSConstBufSet(constantBufferVS, slot);
-}
-
-void Mesh::PSConstBufAdd(unsigned int const slot)
-{
-	ConstantBuffer* constantBufferPS = new ConstantBuffer(graphics);
-	PSConstBufSet(constantBufferPS, slot);
-}
-
-void Mesh::VSConstBufAddValue(unsigned int slot, void* value, const char* key, unsigned int const size)
-{
-	constantBuffersVS[slot]->add(value, key, size);
-}
-
-void Mesh::PSConstBufAddValue(unsigned int slot, void* value, const char* key, unsigned int const size)
-{
-	constantBuffersPS[slot]->add(value, key, size);
-}
-
-void Mesh::VSConstBufSet(ConstantBuffer* constantBuffer, unsigned int const slot)
-{
-	constantBuffersVS[slot] = constantBuffer;
-}
-
-void Mesh::VSConstBufUpdateValue(unsigned int const slot, unsigned int dataID, void* data)
-{
-	constantBuffersVS[slot]->updateValue(dataID, data);
-}
-
-void Mesh::PSConstBufUpdateValue(unsigned int const slot, unsigned int dataID, void* data)
-{
-	constantBuffersPS[slot]->updateValue(dataID, data);
-}
-
-void Mesh::VSConstBufInit(unsigned int const slot)
-{
-	constantBuffersVS[slot]->init();
-}
-
-void Mesh::PSConstBufInit(unsigned int const slot)
-{
-	constantBuffersPS[slot]->init();
 }
 
 void Mesh::update(RenderTarget* renderTarget, RenderState state)
@@ -148,15 +96,9 @@ void Mesh::update(RenderTarget* renderTarget, RenderState state)
 	MVP = DirectX::XMMatrixTranspose(preTransopesedMVP);
 	modelMatrix = DirectX::XMMatrixTranspose(modelMatrix);
 
-	VSConstBufUpdateValue(0, 0, &modelMatrix);
-	VSConstBufUpdateValue(0, 1, &MVP);
-	VSConstBufUpdateValue(0, 2, &camera->position);
-
-	for (auto it = constantBuffersVS.begin(); it != constantBuffersVS.end(); it++)
-		it->second->updateBuffer();
-
-	for (auto it = constantBuffersPS.begin(); it != constantBuffersPS.end(); it++)
-		it->second->updateBuffer();
+	constantBuffersSystem->VSUpdateValue(0, "ModelMatrix", &modelMatrix);
+	constantBuffersSystem->VSUpdateValue(0, "MVP", &MVP);
+	constantBuffersSystem->VSUpdateValue(0, "CameraPositoin", &camera->position);
 }
 
 void Mesh::draw(RenderTarget* renderTarget, RenderState state)
@@ -175,11 +117,7 @@ void Mesh::draw(RenderTarget* renderTarget, RenderState state)
 	sampleState->set(state.renderWindow->graphics);
 	state.renderWindow->graphics->deviceCon->IASetVertexBuffers(0, 1, vertexBuffer->getpp(), &strides, &offset);
 
-	for (auto it = constantBuffersVS.begin(); it != constantBuffersVS.end(); it++)
-		it->second->VSSet(it->first);
-
-	for (auto it = constantBuffersPS.begin(); it != constantBuffersPS.end(); it++)
-		it->second->PSSet(it->first);
+	constantBuffersSystem->updateAndSetAll();
 
 	state.renderWindow->graphics->deviceCon->IASetIndexBuffer(indexBuffer->get(), DXGI_FORMAT_R32_UINT, 0);
 	vertexShader->setLayout(state.renderWindow->graphics);

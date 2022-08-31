@@ -11,10 +11,9 @@ PointLight::PointLight(RenderWindow* renderWindow, AmnModel* model, bool bind)
 		this->bind(renderWindow);
 	this->renderWindow = renderWindow;
 
-	this->model->PSConstBufAdd(5);
-	this->model->PSConstBufAddValue(5, &color, "Color", sizeof(color));
-	this->model->PSConstBufAddValue(5, &turnedOn, "TurnedOn", sizeof(float4));
-	this->model->PSConstBufInit(5);
+	this->model->constantBuffersSystem->PSAddValue(5, &color, "Color", sizeof(color));
+	this->model->constantBuffersSystem->PSAddValue(5, &turnedOn, "TurnedOn", sizeof(float4));
+	this->model->constantBuffersSystem->PSInit(5);
 }
 
 PointLight::PointLight(RenderWindow* renderWindow, AmnModel* model, float3 positoin, float4 color, bool bind)
@@ -25,10 +24,9 @@ PointLight::PointLight(RenderWindow* renderWindow, AmnModel* model, float3 posit
 		this->bind(renderWindow);
 	this->renderWindow = renderWindow;
 
-	this->model->PSConstBufAdd(5);
-	this->model->PSConstBufAddValue(5, &color, "Color", sizeof(color));
-	this->model->PSConstBufAddValue(5, &turnedOn, "TurnedOn", sizeof(float4));
-	this->model->PSConstBufInit(5);
+	this->model->constantBuffersSystem->PSAddValue(5, &color, "Color", sizeof(color));
+	this->model->constantBuffersSystem->PSAddValue(5, &turnedOn, "TurnedOn", sizeof(float4));
+	this->model->constantBuffersSystem->PSInit(5);
 
 	setPosition(positoin);
 	setColor(color);
@@ -84,7 +82,7 @@ void PointLight::turn(bool on)
 void PointLight::draw(RenderTarget* renderTarget, RenderState state)
 {
 	state.modelMatrix = modelMatrix * state.modelMatrix;
-	this->model->PSConstBufUpdateValue(5, 0, &color);
-	this->model->PSConstBufUpdateValue(5, 1, &turnedOn);
+	this->model->constantBuffersSystem->PSUpdateValue(5, "Color", &color);
+	this->model->constantBuffersSystem->PSUpdateValue(5, "TurnedOn", &turnedOn);
 	renderTarget->draw(model, state);
 }

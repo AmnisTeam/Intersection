@@ -9,6 +9,9 @@ PixelShader* ShadersContent::defaultPS;
 PixelShader* ShadersContent::lightSourcePS;
 PixelShader* ShadersContent::skyPS;
 PixelShader* ShadersContent::onlyTexturePS;
+PixelShader* ShadersContent::TextPS;
+PixelShader* ShadersContent::colorPS;
+PixelShader* ShadersContent::UIElementPS;
 
 void ShadersContent::load(RenderWindow* renderWindow)
 {
@@ -25,4 +28,7 @@ void ShadersContent::load(RenderWindow* renderWindow)
     lightSourcePS = new PixelShader(renderWindow->graphics, L"Shaders//PixelShaders//LightSourcePS.hlsl");
     skyPS = new PixelShader(renderWindow->graphics, L"Shaders//PixelShaders//SkyPS.hlsl");
     onlyTexturePS = new PixelShader(renderWindow->graphics, L"Shaders//PixelShaders//OnlyTexturePS.hlsl");
+    TextPS = new PixelShader(renderWindow->graphics, L"Shaders//PixelShaders//TextPS.hlsl");
+    colorPS = new PixelShader(renderWindow->graphics, L"Shaders//PixelShaders//ColorPS.hlsl");
+    UIElementPS = new PixelShader(renderWindow->graphics, L"Shaders//PixelShaders//UIElementPS.hlsl");
 }

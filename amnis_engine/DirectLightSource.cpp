@@ -1,7 +1,8 @@
 #include "pch.h"
 #include "DirectLightSource.h"
+#include "RenderWindow.h"
 
-DirectLightSource::DirectLightSource(Graphics* graphics, char* modelPath) : AmnModel(graphics, modelPath, new DefaultVertexShader(graphics, L"VertexShader.hlsl"), new PixelShader(graphics, L"PSDirectLight.hlsl"))
+DirectLightSource::DirectLightSource(RenderWindow* renderWindow, char* modelPath) : AmnModel(renderWindow, modelPath, new DefaultVertexShader(renderWindow->graphics, L"VertexShader.hlsl"), new PixelShader(renderWindow->graphics, L"PSDirectLight.hlsl"))
 {
 
 }

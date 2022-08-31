@@ -21,17 +21,27 @@
 
 #include <UI/ToggleGroupe.h>
 #include <Font.h>
-//#include <SpriteBatch.h>
-//#include <SpriteFont.h>
-#include <text.h>
 #include <ft2build.h>
 #include FT_FREETYPE_H
+#include "text.h"
+#include "InnerTexturesContent.h"
+#include "UI/UIText.h"
+#include "UI/Sprite.h"
 
-int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLine, int nCmdShow)
-{
+int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLine, int nCmdShow){
 	RenderWindow* renderWindow = new RenderWindow();
+
+
+	//UIElement::setStaticVertexAndPixelShaders(ShadersContent::defaultVS, ShadersContent::onlyTexturePS);
+
+
 	Camera* mainCamera = new Camera(renderWindow, true);
-	
+	mainCamera->position = { 0, 2, -2 };
+	//renderWindow->setCamera(mainCamera);
+
+	StrategyCamera* strategyCamera = new StrategyCamera(renderWindow, { 0, 10, 0 }, { 3.14 / 3, 0, 0 });
+	renderWindow->setCamera(strategyCamera);
+
 	FT_Library* ftLibrary = new FT_Library();
 
 	FT_Error error = FT_Init_FreeType(ftLibrary);
@@ -40,6 +50,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLin
 
 	Font font = Font(renderWindow, ftLibrary, "fonts//Roboto-Regular.ttf");
 
+<<<<<<< HEAD
 	//DirectX::SpriteBatch* spriteBatch = new DirectX::SpriteBatch(renderWindow->graphics->deviceCon);
 	//DirectX::SpriteFont* spriteFont = new DirectX::SpriteFont(renderWindow->graphics->device, L"fonts//Lato-ThinItalic.ttf");
 
@@ -50,15 +61,25 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLin
 
 	StrategyCamera* strategyCamera = new StrategyCamera(renderWindow, { 0, 10, 0 }, { 3.14 / 3, 0, 0 });
 	renderWindow->setCamera(strategyCamera);
+=======
+	World* world = new World(renderWindow, 1, 1);
+>>>>>>> 920b3f0e29860e9655a49f2dec2019a089cc3dd9
 
 	TexturesContent::load(renderWindow);
 	ShadersContent::load(renderWindow);
 	ModelsContent::load(renderWindow);
+<<<<<<< HEAD
 
+=======
+	InnerModelsContent::load(renderWindow, ShadersContent::defaultVS, ShadersContent::defaultPS);
+	InnerTexturesContent::load(renderWindow);
+	Register::init(world);
+>>>>>>> 920b3f0e29860e9655a49f2dec2019a089cc3dd9
 	UIElement::setStaticVertexAndPixelShaders(ShadersContent::defaultVS, ShadersContent::onlyTexturePS);
 
 
 	Sphere* sphere = new Sphere(renderWindow);
+	sphere->setPosition(float3{ 0, 0, 1 });
 	ModeledObject* plane = new ModeledObject(renderWindow, ModelsContent::plane);
 	plane->setTexture(TexturesContent::stoneWallAlbedo, 0);
 	plane->setTexture(TexturesContent::stoneWallNormalMap, 1);
@@ -148,7 +169,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLin
 	toggleGroupe->add(toggle3);
 
 	Toggle* fontAtlas = new Toggle(renderWindow, { 0, 0 }, toggleSize, whiteLightsStyle);
-	fontAtlas->color = { 1, 1, 1, 1 };
+	fontAtlas->overlayColor = { 1, 1, 1, 1 };
 	fontAtlas->hoverColor = { 1, 1, 1, 1 };
 	fontAtlas->pressColor = { 1, 1, 1, 1 };
 	fontAtlas->onColor = { 1, 1, 1, 1 };
@@ -156,23 +177,6 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLin
 	fontAtlas->onPressColor = { 1, 1, 1, 1 };
 	fontAtlas->setPivot({ 0, 0 });
 	fontAtlas->setSizeInPixels(float2{ (float)font.texture->width, (float)font.texture->height});
-
-	Toggle* cube = new Toggle(renderWindow, { 0, 0 }, toggleSize, whiteLightsStyle);
-	//UIElement* cube = new UIElement(renderWindow);
-	//cube->color = { 1, 1, 1, 1 };
-	//cube->hoverColor = { 1, 1, 1, 1 };
-	//cube->pressColor = { 1, 1, 1, 1 };
-	//cube->onColor = { 1, 1, 1, 1 };
-	//cube->onHoverColor = { 1, 1, 1, 1 };
-	//cube->onPressColor = { 1, 1, 1, 1 };
-
-	//cube->setPosition(float3{ -0.5f, 0, 1 });
-	cube->setPositionInPixels(float2{ 25, 25 });
-	cube->setSizeInPixels(float2{ 50, 50 });
-
-
-	
-	Text* text = new Text(renderWindow, std::string("Hello world!"), &font, ShadersContent::defaultVS, ShadersContent::onlyTexturePS);
 
 	SkySphere* skySphere = new SkySphere(renderWindow, TexturesContent::textureSky);
 
@@ -182,8 +186,6 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLin
 	D3D11_BLEND_DESC blendDesc{};
 	auto &brt = blendDesc.RenderTarget[0];
 
-	//blendDesc.AlphaToCoverageEnable;
-	//blendDesc.IndependentBlendEnable;
 	brt.BlendEnable = true;
 	brt.SrcBlend = D3D11_BLEND_SRC_ALPHA;
 	brt.DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
@@ -196,18 +198,53 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLin
 	HRESULT hr = renderWindow->graphics->device->CreateBlendState(&blendDesc, &blendState);
 	if (FAILED(hr)) throw;
 
+	UIText* fpsCounter = new UIText(renderWindow, 256, ShadersContent::defaultVS, ShadersContent::TextPS);
+	fpsCounter->text->setFont(&font);
+	fpsCounter->text->setFontSize(13);
+	fpsCounter->text->setAttachment(float2{ 0, 0.5f });
+	fpsCounter->text->setTextOrigin(float2{ 0.1f, -0.2f });
+	fpsCounter->setSizeInPixels(float2{ 400, 30 });
+	fpsCounter->setPositionInPixels(float2{ 0, 6 });
+	fpsCounter->setAnchor({ 0, 0 });
+	fpsCounter->setPivot({ 0, 0 });
 
+	UIText* positionInfo = new UIText(renderWindow, 256, ShadersContent::defaultVS, ShadersContent::TextPS);
+	positionInfo->text->setFont(&font);
+	positionInfo->text->setFontSize(13);
+	positionInfo->text->setAttachment(float2{0, 0.5f});
+	positionInfo->text->setTextOrigin(float2{0.1f, -0.2f});
+	positionInfo->setSizeInPixels(float2{400, 30});
+	positionInfo->setPositionInPixels(float2{0, 26});
+	positionInfo->setAnchor({ 0, 0 });
+	positionInfo->setPivot({ 0, 0 });
 
-
-
+	Text* text = new Text(renderWindow, 256, ShadersContent::defaultVS, ShadersContent::TextPS);
+	text->setFont(&font);
+	text->setText("Hello world!");
+	text->setStringsGap(0.5f);
+	text->setAttachment(float2{0.5f, 0.5f});
 
 	World* world = new World(renderWindow, 1, 1);
 
+
+	Sprite* testSpirte = new Sprite(renderWindow, TexturesContent::bugAlbedo, float4{ 0.45f, 0.45f, 0.55f, 0.55f }, ShadersContent::defaultVS, ShadersContent::UIElementPS);
+	testSpirte->overlayColor = {1, 0, 0, 1};
+	testSpirte->shadeColor = {0, 0, 1, 1};
+	testSpirte->setAnchor(float2{1, 0});
+	testSpirte->setPivot(float2{1, 0});
+	testSpirte->setShade(0);
+	testSpirte->setOverlay(0);
+
+
+	float a = 0;
 	float k = 0;
 	while (renderWindow->isOpen)
 	{
 		//renderWindow->graphics->deviceCon->OMSetBlendState(blendState, nullptr, 0xFFFFFFFFu);
 		k += renderWindow->graphics->deltaTime * 3.14f;
+		a += 1 * renderWindow->graphics->deltaTime;
+		renderWindow->graphics->deviceCon->OMSetBlendState(blendState, nullptr, 0xFFFFFFFFu);
+
 		renderWindow->startDeltaTime();
 		renderWindow->dispatchEvents();
 		renderWindow->update();
@@ -218,12 +255,9 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLin
 		toggleGroupe->update();
 
 
-
-
-
-
 		renderWindow->Draw(skySphere, false);
 		//renderWindow->Draw(sphere);
+
 
 		pointLight->turn(toggle1->getState());
 		pointLight1->turn(toggle2->getState());
@@ -247,30 +281,9 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLin
 		renderWindow->Draw(box);
 
 		world->update();
-		//renderWindow->Draw(world);
-
 		font.texture->bind(0);
-		//renderWindow->Draw(text);
-		//renderWindow->Draw(fontAtlas, false, false, false);
-
-
-		//strategyCamera->perspectiveCoof = 1;
-		//mainCamera->perspectiveCoof = 1;
-
-
-
-
-
-
-
-
-
-
-
-
 		RECT clientRect;
 		GetClientRect(renderWindow->window->hwnd, &clientRect);
-
 		float width = clientRect.right;
 		float height = clientRect.bottom;
 		float angle = renderWindow->boundCamera->angle;
@@ -311,13 +324,25 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLin
 
 
 
-
-
-
-
-
+		renderWindow->Draw(text);
 		mainCamera->setPerspectiveCoof(1);
-		renderWindow->Draw(cube, false, false);
+
+
+		//testSquare->setAnchor(positionInfo->getAnchor());
+		//testSquare->setPivot(positionInfo->getPivot());
+		//testSquare->setSizeInPixels(positionInfo->getSizeInPixels());
+		//renderWindow->Draw(testSquare, false, false);
+
+		fpsCounter->text->setText("FPS: " + std::to_string(1 / renderWindow->graphics->deltaTime));
+		renderWindow->Draw(fpsCounter, false, false);
+
+		positionInfo->text->setText("Position: "
+			+ std::to_string(renderWindow->boundCamera->position.x) + " "
+			+ std::to_string(renderWindow->boundCamera->position.y) + " "
+			+ std::to_string(renderWindow->boundCamera->position.z)
+		);
+
+		renderWindow->Draw(positionInfo, false, false);
 		renderWindow->Draw(button, false, false);
 		renderWindow->Draw(toggle1, false, false);
 		renderWindow->Draw(toggle2, false, false);
@@ -326,24 +351,8 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLin
 		renderWindow->Draw(checkbox1, false, false);
 		renderWindow->Draw(checkbox2, false, false);
 		renderWindow->Draw(checkbox3, false, false);
+		renderWindow->Draw(testSpirte, false, false);
 		mainCamera->setPerspectiveCoof(0);
-
-		//mainCamera->perspectiveCoof = 0;
-		//strategyCamera->perspectiveCoof = 0;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 		renderWindow->display();
 		renderWindow->endDeltaTime();
