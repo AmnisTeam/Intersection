@@ -175,7 +175,7 @@
     <ClCompile Include="GameClient.cpp" />
     <ClCompile Include="ModelsContent.cpp" />
     <ClCompile Include="Buildings\RegisterBuildings.cpp" />
-    <ClCompile Include="Register.cpp" />
+    <ClCompile Include="entities\RegisterEntities.cpp" />
     <ClCompile Include="ShadersContent.cpp" />
     <ClCompile Include="SkySphere.cpp" />
     <ClCompile Include="Source.cpp" />
@@ -264,7 +264,7 @@
     <ClInclude Include="EventSwitchValue.h" />
     <ClInclude Include="ModelsContent.h" />
     <ClInclude Include="Buildings\RegisterBuildings.h" />
-    <ClInclude Include="Register.h" />
+    <ClInclude Include="entities\RegisterEntities.h" />
     <ClInclude Include="ShadersContent.h" />
     <ClInclude Include="SkySphere.h" />
     <ClInclude Include="Sphere.h" />

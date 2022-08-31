@@ -160,6 +160,7 @@
     <ClInclude Include="CompositeCollider.h" />
     <ClInclude Include="Event.h" />
     <ClInclude Include="Font.h" />
+    <ClInclude Include="IColliderable.h" />
     <ClInclude Include="Ray.h" />
     <ClInclude Include="text.h" />
     <ClInclude Include="UI\ToggleGroupe.h" />

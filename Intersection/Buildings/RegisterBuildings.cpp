@@ -1,6 +1,10 @@
 #include "RegisterBuildings.h"
 
-std::vector<Building*> RegisterBuildings::buildings;
+RegisterBuildings::RegisterBuildings(World* world)
+{
+	this->world = world;
+	init();
+}
 
 void RegisterBuildings::addBuilding(Building* building)
 {
@@ -17,7 +21,7 @@ Building* RegisterBuildings::createBuilding(int id, int posX, int posY)
 	return building;
 }
 
-void RegisterBuildings::init(World* world)
+void RegisterBuildings::init()
 {
 	addBuilding(new EnergyOrderer(world, 0, 0));
 	addBuilding(new ChaosFurnace(world, 0, 0));

@@ -1,11 +1,14 @@
 #include "Entity.h"
+#include "../World.h"
 
-Entity::Entity(RenderWindow* renderWindow, AmnModel* model)
+Entity::Entity(World* world, AmnModel* model)
 {
-	this->renderWindow = renderWindow;
-	this->model = new ModeledObject(renderWindow, model);
+	this->world = world;
+	this->model = new ModeledObject(world->renderWindow, model);
 	oldPosition = getPosition();
 	this->model->setTexture(TexturesContent::flatNormalMap, 1);
+
+	boxCollider = new BoxCollider(getOrigin(), getPosition(), getScale());
 }
 
 void Entity::moveTo(float3 const position)
@@ -18,6 +21,11 @@ void Entity::moveTo(float3 const position)
 		float3 moveDir = mymath::normalize(diff);
 		velocity = moveDir * moveSpeed;
 	}
+}
+
+bool Entity::raycast(Ray ray, RayHitPoint* hitPoint, ColliderState colliderState)
+{
+	return boxCollider->raycast(ray, hitPoint, colliderState);
 }
 
 void Entity::goToPosition(float3 position)
@@ -86,7 +94,7 @@ void Entity::movementToTargets()
 void Entity::update()
 {
 	movementToTargets();
-	setPosition(getPosition() + velocity * renderWindow->graphics->deltaTime);
+	setPosition(getPosition() + velocity * world->renderWindow->graphics->deltaTime);
 }
 
 void Entity::draw(RenderTarget* renderTarget, RenderState state)
@@ -97,3 +105,26 @@ void Entity::draw(RenderTarget* renderTarget, RenderState state)
 }
 
 
+void Entity::setPosition(float3 position)
+{
+	Transformable::setPosition(position);
+	boxCollider->setPosition(position);
+}
+
+void Entity::setRotation(float3 rotation)
+{
+	Transformable::setRotation(rotation);
+	boxCollider->setRotation(rotation);
+}
+
+void Entity::setScale(float3 scale)
+{
+	Transformable::setScale(scale);
+	boxCollider->setScale(scale);
+}
+
+void Entity::setOrigin(float3 origin)
+{
+	Transformable::setOrigin(origin);
+	//boxCollider->setOrigin(origin);
+}

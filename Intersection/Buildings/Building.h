@@ -4,12 +4,11 @@
 #include <ModeledObject.h>
 #include "Inventory.h"
 #include "../IClonable.h"
-#include "../IChoosable.h"
 #include "BoxCollider.h"
 
 class World;
 
-class Building : public Transformable, public IDrawable, public IClonable, public IChoosable
+class Building : public Transformable, public IDrawable, public IClonable, public IColliderable
 {
 public:
 	int id;
@@ -24,7 +23,6 @@ public:
 	BoxCollider* boxCollider;
 	Building(World* world, AmnModel* model, int health, int posX, int posY, int width, int height);
 	virtual void draw(RenderTarget* renderTarget, RenderState state) override;
-	virtual void* getObject() override;
 
 	int getWidth() const;
 	int getHeight() const;
@@ -32,13 +30,11 @@ public:
 	int getPosY() const;
 	float getHealth() const;
 
-	virtual void setPosition(float3 position);
-	virtual void setRotation(float3 rotation);
-	virtual void setScale(float3 scale);
-	virtual void setOrigin(float3 origin);
-
 	Inventory* getInv() const;
-	virtual Collider* getCollider() override;
 
 	void damage(float value);
+
+	// Унаследовано через IColliderable
+	virtual bool raycast(Ray ray, RayHitPoint* hitPoint, ColliderState colliderState = ColliderState()) override;
+
 };

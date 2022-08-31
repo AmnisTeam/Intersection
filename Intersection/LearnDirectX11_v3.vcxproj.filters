@@ -69,13 +69,13 @@
     <ClCompile Include="Buildings\RegisterBuildings.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="Register.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
     <ClCompile Include="GameClient.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="Terrain.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="entities\RegisterEntities.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
@@ -152,9 +152,6 @@
     <ClInclude Include="IClonable.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="Register.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
     <ClInclude Include="GameClient.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
@@ -162,6 +159,9 @@
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="Terrain.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="entities\RegisterEntities.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

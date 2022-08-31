@@ -8,4 +8,5 @@ public:
 
 	DirectX::XMMATRIX state;
 	DECL ColliderState();
+	DECL ColliderState(DirectX::XMMATRIX state);
 };

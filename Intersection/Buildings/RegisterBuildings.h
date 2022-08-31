@@ -5,11 +5,14 @@
 class RegisterBuildings
 {
 public:
-	static std::vector<Building*> buildings;
+	World* world;
+	std::vector<Building*> buildings;
 
-	static void addBuilding(Building* building);
-	static Building* createBuilding(int id, int posX, int posY);
+	RegisterBuildings(World* world);
 
-	static void init(World* world);
+	void addBuilding(Building* building);
+	Building* createBuilding(int id, int posX, int posY);
+
+	void init();
 };
 

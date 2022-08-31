@@ -17,7 +17,6 @@
 #include "UI/Button.h"
 #include "EventSwitchValue.h"
 #include <UI/Toggle.h>
-#include "Register.h"
 #include "BoxCollider.h"
 
 #include <UI/ToggleGroupe.h>
@@ -52,12 +51,10 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLin
 	StrategyCamera* strategyCamera = new StrategyCamera(renderWindow, { 0, 10, 0 }, { 3.14 / 3, 0, 0 });
 	renderWindow->setCamera(strategyCamera);
 
-	World* world = new World(renderWindow, 1, 1);
-
 	TexturesContent::load(renderWindow);
 	ShadersContent::load(renderWindow);
 	ModelsContent::load(renderWindow);
-	Register::init(world);
+
 	UIElement::setStaticVertexAndPixelShaders(ShadersContent::defaultVS, ShadersContent::onlyTexturePS);
 
 
@@ -204,7 +201,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLin
 
 
 
-	world->start();
+	World* world = new World(renderWindow, 1, 1);
 
 	float k = 0;
 	while (renderWindow->isOpen)

@@ -10,14 +10,15 @@ class GameClient : public IDrawable
 {
 public:
 	World* world;
-	std::vector<IChoosable*> choosedObjects;
+	std::vector<IColliderable*> choosedObjects;
 	int idBuildingsToSet = 1;
 
 	ModeledObject* setPoint;
 
 	GameClient(World* world);
-	void addChoosedObject(IChoosable* object);
+	void addChoosedObject(IColliderable* object);
 	void setBuilgingByMouse();
+	void moveEntitiesByMouse();
 	void update();
 
 	// Унаследовано через IDrawable

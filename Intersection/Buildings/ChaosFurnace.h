@@ -8,6 +8,5 @@ public:
 
 	ChaosFurnace(World* world, int posX, int posY);
 	virtual void* clone() override;
-	virtual Collider* getCollider() override;
 };
 

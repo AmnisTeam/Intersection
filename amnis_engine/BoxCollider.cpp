@@ -106,6 +106,7 @@ bool BoxCollider::raycast(Ray ray, RayHitPoint* hitPoint, ColliderState collider
 	//Определение пересечения коробки
 	double minDistance = 999999;
 	bool intersect = false;
+	RayHitPoint temp;
 
 	for (int x = 0; x < 6; x++)
 	{
@@ -126,7 +127,7 @@ bool BoxCollider::raycast(Ray ray, RayHitPoint* hitPoint, ColliderState collider
 
 				if (inBox && boxHitPoint[x].distance <= minDistance)
 				{
-					*hitPoint = boxHitPoint[x];
+					temp = boxHitPoint[x];
 					minDistance = boxHitPoint[x].distance;
 					intersect = true;
 				}
@@ -134,5 +135,9 @@ bool BoxCollider::raycast(Ray ray, RayHitPoint* hitPoint, ColliderState collider
 		}
 	}
 
+	if (!hitPoint->needCheckNear || temp.distance <= hitPoint->distance)
+		*hitPoint = temp;
+
+	hitPoint->needCheckNear = true;
 	 return intersect;
 }
