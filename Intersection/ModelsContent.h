@@ -10,6 +10,7 @@ public:
 	static AmnModel* plane;
 	static AmnModel* tree;
 	static AmnModel* ghosthz;
+	static AmnModel* box;
 	static RenderWindow* renderWindow;
 
 	static void load(RenderWindow* renderWindow);

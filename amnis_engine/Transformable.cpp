@@ -19,6 +19,11 @@ void Transformable::setScale(float3 scale)
 	updateModelMatrix();
 }
 
+void Transformable::setOrigin(float3 origin)
+{
+	this->origin = origin;
+}
+
 float3 Transformable::getPosition() const
 {
 	return position;
@@ -34,9 +39,15 @@ float3 Transformable::getScale() const
 	return scale;
 }
 
+float3 Transformable::getOrigin() const
+{
+	return origin;
+}
+
 void Transformable::updateModelMatrix()
 {
 	modelMatrix = 
+		DirectX::XMMatrixTranslation(origin.x, origin.y, origin.z) *
 		DirectX::XMMatrixScaling(scale.x, scale.y, scale.z) *
 		DirectX::XMMatrixRotationX(rotation.x) * 
 		DirectX::XMMatrixRotationY(rotation.y) *

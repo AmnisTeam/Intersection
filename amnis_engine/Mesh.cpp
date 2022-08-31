@@ -87,7 +87,6 @@ void Mesh::update(RenderTarget* renderTarget, RenderState state)
 	Graphics* graphics = state.renderWindow->graphics;
 	DirectX::XMMATRIX modelMatrix = state.modelMatrix;
 	DirectX::XMMATRIX preTransopesedMVP = DirectX::XMMatrixIdentity();
-
 	preTransopesedMVP *= modelMatrix;
 	if (state.viewMatrixOn == true)
 		preTransopesedMVP *= camera->viewMatrix;

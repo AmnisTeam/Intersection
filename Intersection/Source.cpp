@@ -17,6 +17,9 @@
 #include "UI/Button.h"
 #include "EventSwitchValue.h"
 #include <UI/Toggle.h>
+#include "Register.h"
+#include "BoxCollider.h"
+
 #include <UI/ToggleGroupe.h>
 #include <Font.h>
 #include <ft2build.h>
@@ -29,12 +32,7 @@
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLine, int nCmdShow){
 	RenderWindow* renderWindow = new RenderWindow();
 
-	TexturesContent::load(renderWindow);
-	ModelsContent::load(renderWindow);
-	ShadersContent::load(renderWindow);
-	InnerModelsContent::load(renderWindow, ShadersContent::defaultVS, ShadersContent::defaultPS);
-	InnerTexturesContent::load(renderWindow);
-	UIElement::setStaticVertexAndPixelShaders(ShadersContent::defaultVS, ShadersContent::UIElementPS);
+
 	//UIElement::setStaticVertexAndPixelShaders(ShadersContent::defaultVS, ShadersContent::onlyTexturePS);
 
 
@@ -54,12 +52,40 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLin
 
 	Font font = Font(renderWindow, ftLibrary, "fonts//Roboto-Regular.ttf");
 
+	//DirectX::SpriteBatch* spriteBatch = new DirectX::SpriteBatch(renderWindow->graphics->deviceCon);
+	//DirectX::SpriteFont* spriteFont = new DirectX::SpriteFont(renderWindow->graphics->device, L"fonts//Lato-ThinItalic.ttf");
+
+
+	//mainCamera->position = { 0, 3, -10 };
+	mainCamera->position = { 0, 0, 0 };
+	//renderWindow->setCamera(mainCamera);
+
+	StrategyCamera* strategyCamera = new StrategyCamera(renderWindow, { 0, 10, 0 }, { 3.14 / 3, 0, 0 });
+	renderWindow->setCamera(strategyCamera);
+
+	World* world = new World(renderWindow, 1, 1);
+
+	TexturesContent::load(renderWindow);
+	ShadersContent::load(renderWindow);
+	ModelsContent::load(renderWindow);
+	InnerModelsContent::load(renderWindow, ShadersContent::defaultVS, ShadersContent::defaultPS);
+	InnerTexturesContent::load(renderWindow);
+	Register::init(world);
+	UIElement::setStaticVertexAndPixelShaders(ShadersContent::defaultVS, ShadersContent::onlyTexturePS);
+
+
 	Sphere* sphere = new Sphere(renderWindow);
 	sphere->setPosition(float3{ 0, 0, 1 });
 	ModeledObject* plane = new ModeledObject(renderWindow, ModelsContent::plane);
 	plane->setTexture(TexturesContent::stoneWallAlbedo, 0);
 	plane->setTexture(TexturesContent::stoneWallNormalMap, 1);
 	plane->setScale({100, 1, 100});
+
+	ModeledObject* box = new ModeledObject(renderWindow, ModelsContent::box);
+	box->setTexture(TexturesContent::stoneWallAlbedo, 0);
+	box->setTexture(TexturesContent::stoneWallNormalMap, 1);
+
+	BoxCollider* boxCollider = new BoxCollider(box->getOrigin(), box->getPosition(), box->getScale());
 
 	//EntityTree* entityTree = new EntityTree(renderWindow);
 
@@ -151,8 +177,6 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLin
 
 	SkySphere* skySphere = new SkySphere(renderWindow, TexturesContent::textureSky);
 
-	World* world = new World(renderWindow, 100, 100, 1, 1);
-
 	PointLight* mousePointLight = new PointLight(renderWindow, ModelsContent::sphere, { 20, 5, 0 }, { 1, 1, 1, 1 });
 
 	ID3D11BlendState* blendState;
@@ -199,6 +223,11 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLin
 	text->setAttachment(float2{0.5f, 0.5f});
 	text->setColor(float4{1, 0, 0, 1});
 
+
+
+	world->start();
+
+	float k = 0;
 	Sprite* testSpirte = new Sprite(renderWindow, TexturesContent::bugAlbedo, float4{ 0.45f, 0.45f, 0.55f, 0.55f }, ShadersContent::defaultVS, ShadersContent::UIElementPS);
 	testSpirte->overlayColor = {1, 0, 0, 1};
 	testSpirte->shadeColor = {0, 0, 1, 1};
@@ -214,6 +243,8 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLin
 	float a = 0;
 	while (renderWindow->isOpen)
 	{
+		//renderWindow->graphics->deviceCon->OMSetBlendState(blendState, nullptr, 0xFFFFFFFFu);
+		k += renderWindow->graphics->deltaTime * 3.14f;
 		a += 1 * renderWindow->graphics->deltaTime;
 		renderWindow->graphics->deviceCon->OMSetBlendState(blendState, nullptr, 0xFFFFFFFFu);
 
@@ -249,7 +280,10 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLin
 		renderWindow->Draw(pointLight5);
 
 
-		renderWindow->Draw(plane);
+	//	renderWindow->Draw(plane);
+		renderWindow->Draw(box);
+
+		world->update();
 		//renderWindow->Draw(world);
 		font.texture->bind(0);
 		RECT clientRect;
@@ -271,8 +305,29 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLin
 
 		float3 direction = mymath::normalize(spacedNormalizedMousePosition - renderWindow->boundCamera->position);
 
-		mousePointLight->setPosition(renderWindow->boundCamera->position + direction * 3);
+		//mousePointLight->setPosition(renderWindow->boundCamera->position + direction * 3);
+
+		box->setRotation({ k, 0, 0});
+		box->setOrigin({-0.5f, -0.5f, -0.5f});
+		box->setPosition({0, 0, 5});
+
+		boxCollider->setRotation({k, 0, 0});
+		boxCollider->setOrigin({ -0.5f, -0.5f, -0.5f });
+		boxCollider->setPosition({ 0, 0, 5 });
+
+		mousePointLight->setScale({0.2f, 0.2f, 0.2f});
+		RayHitPoint hitPoint;
+		bool intersect = boxCollider->raycast({ renderWindow->boundCamera->position, direction }, &hitPoint);
+		if(intersect)
+			mousePointLight->setPosition(hitPoint.position);
+		else
+			mousePointLight->setPosition({0, 0, 9999});
+
 		renderWindow->Draw(mousePointLight);
+		renderWindow->Draw(world);
+
+
+
 		renderWindow->Draw(text);
 		mainCamera->setPerspectiveCoof(1);
 

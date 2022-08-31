@@ -287,3 +287,15 @@ struct Vertex
 	float3 bitangent;
 };
 
+struct int2
+{
+	int x;
+	int y;
+};
+
+struct int3
+{
+	int x;
+	int y;
+	int z;
+};

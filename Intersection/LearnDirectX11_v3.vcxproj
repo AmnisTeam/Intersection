@@ -165,19 +165,24 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Buildings\Building.cpp" />
-    <ClCompile Include="EnergyOrderer.cpp" />
+    <ClCompile Include="Buildings\ChaosFurnace.cpp" />
+    <ClCompile Include="Buildings\EnergyOrderer.cpp" />
     <ClCompile Include="entities\Entity.cpp" />
     <ClCompile Include="entities\EntityTree.cpp" />
     <ClCompile Include="Buildings\grids\GridElement.cpp" />
     <ClCompile Include="Buildings\grids\Grid.cpp" />
     <ClCompile Include="Buildings\Inventory.cpp" />
+    <ClCompile Include="GameClient.cpp" />
     <ClCompile Include="ModelsContent.cpp" />
+    <ClCompile Include="Buildings\RegisterBuildings.cpp" />
+    <ClCompile Include="Register.cpp" />
     <ClCompile Include="ShadersContent.cpp" />
     <ClCompile Include="SkySphere.cpp" />
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="Sphere.cpp" />
     <ClCompile Include="Spherenic.cpp" />
     <ClCompile Include="StrategyCamera.cpp" />
+    <ClCompile Include="Terrain.cpp" />
     <ClCompile Include="TexturesContent.cpp" />
     <ClCompile Include="World.cpp" />
   </ItemGroup>
@@ -266,11 +271,16 @@
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="cpp.hint" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Buildings\Building.h" />
-    <ClInclude Include="EnergyOrderer.h" />
+    <ClInclude Include="Buildings\ChaosFurnace.h" />
+    <ClInclude Include="Buildings\EnergyOrderer.h" />
+    <ClInclude Include="GameClient.h" />
+    <ClInclude Include="IChoosable.h" />
+    <ClInclude Include="IClonable.h" />
     <ClInclude Include="entities\Entity.h" />
     <ClInclude Include="entities\EntityTree.h" />
     <ClInclude Include="Buildings\grids\GridElement.h" />
@@ -279,11 +289,14 @@
     <ClInclude Include="Buildings\InventoryItem.h" />
     <ClInclude Include="EventSwitchValue.h" />
     <ClInclude Include="ModelsContent.h" />
+    <ClInclude Include="Buildings\RegisterBuildings.h" />
+    <ClInclude Include="Register.h" />
     <ClInclude Include="ShadersContent.h" />
     <ClInclude Include="SkySphere.h" />
     <ClInclude Include="Sphere.h" />
     <ClInclude Include="Spherenic.h" />
     <ClInclude Include="StrategyCamera.h" />
+    <ClInclude Include="Terrain.h" />
     <ClInclude Include="TexturesContent.h" />
     <ClInclude Include="World.h" />
   </ItemGroup>

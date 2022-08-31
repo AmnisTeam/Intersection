@@ -151,3 +151,39 @@ void Camera::setPerspectiveCoof(float value)
 	perspectiveCoof = value;
 	update();
 }
+
+Ray Camera::castRay(float pX, float pY)
+{
+	RECT clientRect;
+	GetClientRect(renderWindow->window->hwnd, &clientRect);
+
+	float width = clientRect.right;
+	float height = clientRect.bottom;
+	float angle = this->angle;
+	float nearPlane = this->angle;
+	float aspect = this->aspect;
+
+	float3 normalizedMousePosition = float3
+	{
+	((renderWindow->window->mousePos.x / width) * 2 - 1) / aspect,
+	-((renderWindow->window->mousePos.y / height) * 2 - 1),
+	nearPlane
+	};
+
+	float3 spacedNormalizedMousePosition = position + bitangent * normalizedMousePosition.x + normal * normalizedMousePosition.y + tangent * normalizedMousePosition.z;
+	float3 direction = mymath::normalize(spacedNormalizedMousePosition - position);
+
+	Ray ray;
+	ray.position = spacedNormalizedMousePosition;
+	ray.direction = direction;
+	
+	return ray;
+}
+
+Ray Camera::castRayFromMouse()
+{
+	Camera* camera = renderWindow->boundCamera;
+	float2 mousePos = renderWindow->window->mousePos;
+	Ray ray = camera->castRay(mousePos.x, mousePos.y);
+	return ray;
+}

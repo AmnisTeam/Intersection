@@ -8,7 +8,7 @@ public:
 	void setBuilding(Building* building);
 	void setObstacle(bool haveObstacle);
 
-	void* getBuilding() const;
+	Building* getBuilding() const;
 	bool getObstacle() const;
 private:
 	Building* building = nullptr;
