@@ -191,7 +191,6 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLin
 	positionInfo->setAnchor({ 0, 0 });
 	positionInfo->setPivot({ 0, 0 });
 	positionInfo->overlayColor = { 0, 1, 1, 1 };
-	positionInfo->text->setColor(float4{ 1, 0, 0, 1 });
 
 	Text* text = new Text(renderWindow, 256, ShadersContent::defaultVS, ShadersContent::TextPS);
 	text->setFont(&font);
