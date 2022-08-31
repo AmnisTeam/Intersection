@@ -2,9 +2,10 @@
 #include "AmnModel.h"
 #include "decl.h"
 
+class RenderWindow;
 class DirectLightSource : public AmnModel
 {
 public:
-	DECL DirectLightSource(Graphics* graphics, char* modelPath);
+	DECL DirectLightSource(RenderWindow* graphics, char* modelPath);
 };
 

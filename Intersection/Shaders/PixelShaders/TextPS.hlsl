@@ -10,11 +10,6 @@ struct glyph_info
 
 StructuredBuffer<glyph_info> glyphs : register(t20);
 
-cbuffer ColorData : register(b0)
-{
-	float4 color;
-};
-
 cbuffer TextData : register(b1)
 {
 	unsigned int textCharsCount;
@@ -22,6 +17,7 @@ cbuffer TextData : register(b1)
 	float2 modelScale;
 	float2 textOrigin;
 	float fontSize;
+	float4 color;
 	float2 attachment;
 };
 
@@ -53,7 +49,7 @@ bool withinArea(float2 inputPoint, float left, float top, float right, float bot
 
 float4 main(Input input) : SV_TARGET
 {
-	float4 color = 0;
+	float4 resultColor = 0;
 	input.texCoord.xy = float2(input.texCoord.x * modelScale.x, input.texCoord.y * modelScale.y);
 	float2 attachedTextOrigin = textOrigin;
 	
@@ -107,11 +103,9 @@ float4 main(Input input) : SV_TARGET
 		if (withinArea(float2(input.texCoord.x, input.texCoord.y), left, top, right, bottom))
 		{
 			float2 posInGlyph = float2(x0 + (input.texCoord.x - left) / fontSize, y0 + (input.texCoord.y - top) / fontSize);
-			color = float4(color.xyz, textureAtlas.Sample(samplerState, posInGlyph).r);
-			//color = float4(0, 0, 0, textureAtlas.Sample(samplerState, posInGlyph).r);
-			//color = float4(1, 1, 1, 1);
+			resultColor = float4(color.rgb, textureAtlas.Sample(samplerState, posInGlyph).r * color.a);
 		}
 		penX += glyphs[i].advance * fontSize;
 	}
-	return color;
+	return resultColor;
 }

@@ -33,6 +33,10 @@ public:
 	DECL void setTextOrigin(const float2 textOrigin);
 	DECL void setFontSize(const float fontSize);
 	DECL void setAttachment(const float2 attachment);
+
+	DECL void setColor(const float4 color);
+	DECL float4 getColor() const;
+
 	virtual DECL void draw(RenderTarget* renderTarget, RenderState state) override;
 protected:
 	RenderWindow* renderWindow;
@@ -41,12 +45,17 @@ protected:
 	std::vector<Vertex> vertices;
 	std::vector<int> indices;
 	unsigned int maxCharsCount;
+
 	unsigned int textCharsCount = 0;
+	const unsigned int textDataCbuffSlot_ = 1;
+	const unsigned int glyphsSvrSlot_ = 20;
+
 	float stringsGap = 0.1f;
 	float2 textOrigin = {0.02f, 0.05f};
 	float2 modelScale = {1, 1};
 	float2 textSize = {1, 1};
 	float fontSize = 1;
+	float4 color_ = {1, 1, 1, 1};
 	float2 attachment = float2{};
 	std::vector<Font::glyph_info> textCharacters;
 	ID3D11Buffer* textCharactersBuffer;

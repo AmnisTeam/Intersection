@@ -154,6 +154,7 @@
     <ClInclude Include="AMNFormat.h" />
     <ClInclude Include="Blender.h" />
     <ClInclude Include="Buffer.h" />
+    <ClInclude Include="ConstantBuffersSystem.h" />
     <ClInclude Include="Event.h" />
     <ClInclude Include="Font.h" />
     <ClInclude Include="InnerModelsContent.h" />
@@ -196,6 +197,7 @@
   <ItemGroup>
     <ClCompile Include="Blender.cpp" />
     <ClCompile Include="Buffer.cpp" />
+    <ClCompile Include="ConstantBuffersSystem.cpp" />
     <ClCompile Include="Event.cpp" />
     <ClCompile Include="Font.cpp" />
     <ClCompile Include="InnerModelsContent.cpp" />

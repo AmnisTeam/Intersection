@@ -21,7 +21,7 @@ Text::Text(RenderWindow* renderWindow, unsigned int const max_chars_count, Verte
 	indices.push_back(1);
 	indices.push_back(2);
 
-	textFrameModel = new AmnModel(renderWindow->graphics, vertices, indices, vertexShader, pixelShader);
+	textFrameModel = new AmnModel(renderWindow, vertices, indices, vertexShader, pixelShader);
 	textFrame = new ModeledObject(renderWindow, textFrameModel, vertexShader, pixelShader);
 
 
@@ -46,14 +46,14 @@ Text::Text(RenderWindow* renderWindow, unsigned int const max_chars_count, Verte
 	hr = renderWindow->graphics->device->CreateShaderResourceView(textCharactersBuffer, &srvDesc, &textCharactersSRV);
 	if (FAILED(hr)) throw;
 
-	textFrame->PSConstBufAdd(1);
-	textFrame->PSConstBufAddValue(1, &textCharsCount, "TextCharsCount", sizeof(float));
-	textFrame->PSConstBufAddValue(1, &stringsGap, "StringsGap", sizeof(float));
-	textFrame->PSConstBufAddValue(1, &modelScale, "ModelScale", sizeof(float2));
-	textFrame->PSConstBufAddValue(1, &textOrigin, "TextOrigin", sizeof(float2));
-	textFrame->PSConstBufAddValue(1, &fontSize, "FontSize", sizeof(float2));
-	textFrame->PSConstBufAddValue(1, &attachment, "Attachment", sizeof(float4));
-	textFrame->PSConstBufInit(1);
+	textFrame->constantBuffersSystem->PSAddValue(textDataCbuffSlot_, &textCharsCount, "TextCharsCount", sizeof(float));
+	textFrame->constantBuffersSystem->PSAddValue(textDataCbuffSlot_, &stringsGap, "StringsGap", sizeof(float));
+	textFrame->constantBuffersSystem->PSAddValue(textDataCbuffSlot_, &modelScale, "ModelScale", sizeof(float2));
+	textFrame->constantBuffersSystem->PSAddValue(textDataCbuffSlot_, &textOrigin, "TextOrigin", sizeof(float2));
+	textFrame->constantBuffersSystem->PSAddValue(textDataCbuffSlot_, &fontSize, "FontSize", sizeof(float2));
+	textFrame->constantBuffersSystem->PSAddValue(textDataCbuffSlot_, &color_, "Color", sizeof(color_));
+	textFrame->constantBuffersSystem->PSAddValue(textDataCbuffSlot_, &attachment, "Attachment", sizeof(float4));
+	textFrame->constantBuffersSystem->PSInit(textDataCbuffSlot_);
 }
 
 Text::~Text()
@@ -117,8 +117,7 @@ void Text::setText(std::string const text)
 		}
 	}
 	renderWindow->graphics->deviceCon->Unmap(textCharactersBuffer, NULL);
-	//textFrame->PSConstBufUpdateValue(1, 0, &textCharsCount);
-	textFrame->PSConstBufUpdateValue(1, true, "TextCharsCount", &textCharsCount);
+	textFrame->constantBuffersSystem->PSUpdateValue(textDataCbuffSlot_, "TextCharsCount", &textCharsCount);
 }
 
 void Text::setFont(Font* const font)
@@ -129,38 +128,49 @@ void Text::setFont(Font* const font)
 void Text::setScale(float3 scale)
 {
 	modelScale = { scale.x, scale.y };
-	textFrame->PSConstBufUpdateValue(1, true, "ModelScale", &modelScale);
+	textFrame->constantBuffersSystem->PSUpdateValue(textDataCbuffSlot_, "ModelScale", &modelScale);
 	Transformable::setScale(scale);
 }
 
 void Text::setStringsGap(const float gap)
 {
 	stringsGap = gap;
-	textFrame->PSConstBufUpdateValue(1, true, "StringsGap", &stringsGap);
+	textFrame->constantBuffersSystem->PSUpdateValue(textDataCbuffSlot_, "StringsGap", &stringsGap);
 }
 
 void Text::setTextOrigin(const float2 textOrigin)
 {
 	this->textOrigin = textOrigin;
-	textFrame->PSConstBufUpdateValue(1, true, "TextOrigin", &this->textOrigin);
+	textFrame->constantBuffersSystem->PSUpdateValue(textDataCbuffSlot_, "TextOrigin", &this->textOrigin);
 }
 
 void Text::setFontSize(const float fontSize)
 {
 	this->fontSize = fontSize;
-	textFrame->PSConstBufUpdateValue(1, true, "FontSize", &this->fontSize);
+	textFrame->constantBuffersSystem->PSUpdateValue(textDataCbuffSlot_, "FontSize", &this->fontSize);
 }
 
 void Text::setAttachment(const float2 attachment)
 {
 	this->attachment = attachment;
-	textFrame->PSConstBufUpdateValue(1, true, "Attachment", &this->attachment);
+	textFrame->constantBuffersSystem->PSUpdateValue(textDataCbuffSlot_, "Attachment", &this->attachment);
+}
+
+void Text::setColor(const float4 color)
+{
+	color_ = color;
+	textFrame->constantBuffersSystem->PSUpdateValue(textDataCbuffSlot_, "Color", &color_);
+}
+
+float4 Text::getColor() const
+{
+	return color_;
 }
 
 void Text::draw(RenderTarget* renderTarget, RenderState state)
 {
 	state.modelMatrix = state.modelMatrix * modelMatrix;
-	renderWindow->graphics->deviceCon->PSSetShaderResources(20, 1, &textCharactersSRV);
+	renderWindow->graphics->deviceCon->PSSetShaderResources(glyphsSvrSlot_, 1, &textCharactersSRV);
 	textFrame->setTexture(font->texture, 3);
 	renderTarget->draw(textFrame, state);
 }

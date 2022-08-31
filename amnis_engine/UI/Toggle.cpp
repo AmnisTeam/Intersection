@@ -83,14 +83,14 @@ void Toggle::updateColor()
 	{
 		if (getPressed())
 		{
-			coloredModel->PSConstBufUpdateValue(0, true, "OverlayColor", &onPressColor);
+			coloredModel->constantBuffersSystem->PSUpdateValue(0, "OverlayColor", &onPressColor);
 		}
 		else
 		{
 			if (getHover())
-				coloredModel->PSConstBufUpdateValue(0, true, "OverlayColor", &onHoverColor);
+				coloredModel->constantBuffersSystem->PSUpdateValue(0, "OverlayColor", &onHoverColor);
 			else
-				coloredModel->PSConstBufUpdateValue(0, true, "OverlayColor", &onColor);
+				coloredModel->constantBuffersSystem->PSUpdateValue(0, "OverlayColor", &onColor);
 		}
 	}
 }

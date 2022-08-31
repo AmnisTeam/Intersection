@@ -34,8 +34,8 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLin
 	ShadersContent::load(renderWindow);
 	InnerModelsContent::load(renderWindow, ShadersContent::defaultVS, ShadersContent::defaultPS);
 	InnerTexturesContent::load(renderWindow);
-	//UIElement::setStaticVertexAndPixelShaders(ShadersContent::defaultVS, ShadersContent::UIElementPS);
-	UIElement::setStaticVertexAndPixelShaders(ShadersContent::defaultVS, ShadersContent::onlyTexturePS);
+	UIElement::setStaticVertexAndPixelShaders(ShadersContent::defaultVS, ShadersContent::UIElementPS);
+	//UIElement::setStaticVertexAndPixelShaders(ShadersContent::defaultVS, ShadersContent::onlyTexturePS);
 
 
 	Camera* mainCamera = new Camera(renderWindow, true);
@@ -191,15 +191,16 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLin
 	positionInfo->setAnchor({ 0, 0 });
 	positionInfo->setPivot({ 0, 0 });
 	positionInfo->overlayColor = { 0, 1, 1, 1 };
+	positionInfo->text->setColor(float4{ 1, 0, 0, 1 });
 
 	Text* text = new Text(renderWindow, 256, ShadersContent::defaultVS, ShadersContent::TextPS);
 	text->setFont(&font);
 	text->setText("Hello world!");
 	text->setStringsGap(0.5f);
 	text->setAttachment(float2{0.5f, 0.5f});
+	text->setColor(float4{1, 0, 0, 1});
 
 	Sprite* testSpirte = new Sprite(renderWindow, TexturesContent::bugAlbedo, float4{ 0.45f, 0.45f, 0.55f, 0.55f }, ShadersContent::defaultVS, ShadersContent::UIElementPS);
-	//Sprite* testSpirte = new Sprite(renderWindow, InnerTexturesContent::pureWhite, float4{ 0.45f, 0.45f, 0.55f, 0.55f }, ShadersContent::defaultVS, ShadersContent::UIElementPS);
 	testSpirte->overlayColor = {1, 0, 0, 1};
 	testSpirte->shadeColor = {0, 0, 1, 1};
 	testSpirte->setShade(0);
@@ -210,23 +211,6 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLin
 	//testSquare->setPivot(positionInfo->getPivot());
 	//testSquare->setSizeInPixels(positionInfo->getSizeInPixels());
 	//testSquare->setPositionInPixels(positionInfo->getPositionInPixels());
-
-	int value0 = 0;
-	int value1 = 1;
-	int value2 = 2;
-	int value3 = 3;
-
-
-	ConstantBuffer testConstBuffer = ConstantBuffer(renderWindow->graphics);
-	testConstBuffer.add(&value0, "ddddd", sizeof(value0));
-	testConstBuffer.add(&value1, "aaaaaa", sizeof(value1));
-	testConstBuffer.add(&value2, "bbbbbb", sizeof(value2));
-	testConstBuffer.add(&value3, "ccccccc", sizeof(value3));
-
-	testConstBuffer.init();
-
-
-
 
 	float a = 0;
 	while (renderWindow->isOpen)

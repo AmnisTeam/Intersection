@@ -9,7 +9,7 @@ std::vector<int> InnerModelsContent::indices;
 void InnerModelsContent::load(RenderWindow* renderWindow, VertexShader* vertexShader, PixelShader* pixelShader)
 {
     initSquare(&vertices, &indices);
-    square = new AmnModel(renderWindow->graphics, vertices, indices, vertexShader, pixelShader);
+    square = new AmnModel(renderWindow, vertices, indices, vertexShader, pixelShader);
 }
 
 void InnerModelsContent::initSquare(std::vector<Vertex>* vertices, std::vector<int>* indices)

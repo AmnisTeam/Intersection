@@ -5,9 +5,11 @@
 #include "AMNFormat.h"
 #include "decl.h"
 
+
 class ConstantBuffer : public Buffer
 {
 public:
+	friend class ConstantBuffersSystem;
 	struct ConstantElement
 	{
 		const char* key;
@@ -20,14 +22,11 @@ public:
 	DECL void add(void* value, const char* key, unsigned int const size);
 	DECL void updateValue(const char* key, void* value);
 	DECL void updateBuffer();
-	//void updateBufferKeyed();
 	DECL void VSSet(unsigned int slot);
 	DECL void PSSet(unsigned int slot);
 private:
 	Graphics* graphics;
-	std::vector<ConstantElement> values;
-	std::map<std::string, ConstantElement> valuesKeyed;
-	std::map<std::string, unsigned int> valuePoses;
+	std::map<std::string, ConstantElement> values;
 	unsigned int lastSizeSum = 0;
 };
 

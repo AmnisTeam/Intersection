@@ -30,8 +30,7 @@ void UIText::draw(RenderTarget* renderTarget, RenderState state)
 
 	float3 scale = float3{ DirectX::XMVectorGetX(state.modelMatrix.r[0]), DirectX::XMVectorGetY(state.modelMatrix.r[1]), DirectX::XMVectorGetZ(state.modelMatrix.r[2]) };
 	text->modelScale = float2{ scale.x / scale.y, 1};
-	//text->textFrame->PSConstBufUpdateValue(1, 2, &text->modelScale);
-	text->textFrame->PSConstBufUpdateValue(1, true, "ModelScale", &text->modelScale);
+	text->textFrame->constantBuffersSystem->PSUpdateValue(1, "ModelScale", &text->modelScale);
 
 	renderTarget->draw(text, state);
 }

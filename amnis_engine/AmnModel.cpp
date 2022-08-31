@@ -1,38 +1,32 @@
 #include "pch.h"
 #include "AmnModel.h"
+#include "RenderWindow.h"
 
-AmnModel::AmnModel(Graphics* const graphics, std::vector<Vertex> const vertices, std::vector<int> const indices, VertexShader* vertexShader, PixelShader* pixelShader)
+AmnModel::AmnModel(RenderWindow* const renderWindow, std::vector<Vertex> const vertices, std::vector<int> const indices, VertexShader* vertexShader, PixelShader* pixelShader)
 {
-	this->graphics = graphics;
-	Mesh* mesh = new Mesh(graphics, vertices, indices, vertexShader, pixelShader);
+	this->renderWindow = renderWindow;
+	Mesh* mesh = new Mesh(renderWindow, vertices, indices, vertexShader, pixelShader);
 	meshes.push_back(*mesh);
 }
 
-AmnModel::AmnModel(Graphics* graphics, char* modelPath)
+AmnModel::AmnModel(RenderWindow* const renderWindow, char* modelPath)
 {
-	this->graphics = graphics;
-	loadModel(graphics, modelPath, new DefaultVertexShader(graphics, L"VertexShader.hlsl"), new PixelShader(graphics, L"PixelShader.hlsl"));
+	this->renderWindow = renderWindow;
+	loadModel(renderWindow, modelPath, new DefaultVertexShader(renderWindow->graphics, L"VertexShader.hlsl"), new PixelShader(renderWindow->graphics, L"PixelShader.hlsl"));
 }
 
-AmnModel::AmnModel(Graphics* graphics, char* modelPath, VertexShader* vertexShader, PixelShader* pixelShader)
+AmnModel::AmnModel(RenderWindow* const renderWindow, char* modelPath, VertexShader* vertexShader, PixelShader* pixelShader)
 {
-	this->graphics = graphics;
-	loadModel(graphics, modelPath, vertexShader, pixelShader);
+	this->renderWindow = renderWindow;
+	loadModel(renderWindow, modelPath, vertexShader, pixelShader);
 }
 
 void AmnModel::setTexture(Texture* texture, unsigned int slot)
 {
-	//textures[slot] = texture;
-	//textures.push_back(new TextureStruct{ texture, slot });
 	textures[slot] = texture;
 }
 
-void AmnModel::deleteTexture(unsigned int slot)
-{
-	//textures[slot] = nullptr;
-}
-
-std::vector<Texture*> AmnModel::loadMaterialTextures(Graphics* graphics, aiMaterial* mat, aiTextureType type)
+std::vector<Texture*> AmnModel::loadMaterialTextures(RenderWindow* const renderWindow, aiMaterial* mat, aiTextureType type)
 {
 	std::vector<Texture*> textures;
 	for (unsigned int i = 0; i < mat->GetTextureCount(type); i++)
@@ -62,7 +56,7 @@ std::vector<Texture*> AmnModel::loadMaterialTextures(Graphics* graphics, aiMater
 		wchar_t* texFileNameWChar = new wchar_t[cSize];
 		MultiByteToWideChar(0, 0, path.c_str(), cSize, texFileNameWChar, cSize);
 
-		Texture* texture = new Texture(graphics, texFileNameWChar);
+		Texture* texture = new Texture(renderWindow->graphics, texFileNameWChar);
 		textures.push_back(texture);
 
 		delete[cSize] texFileNameWChar;
@@ -75,18 +69,6 @@ void AmnModel::draw(RenderTarget* renderTarget, RenderState renderState)
 	for (auto it = textures.begin(); it != textures.end(); it++)
 		it->second->bind(it->first);
 
-	for (auto it = constantBuffersVS.begin(); it != constantBuffersVS.end(); it++)
-	{
-		it->second->updateBuffer();
-		it->second->VSSet(it->first);
-	}
-
-	for (auto it = constantBuffersPS.begin(); it != constantBuffersPS.end(); it++)
-	{
-		it->second->updateBuffer();
-		it->second->PSSet(it->first);
-	}
-
 	for (int i = 0; i < meshes.size(); i++)
 	{
 		meshes[i].drawDepthStencil = drawDepthStencil;
@@ -94,62 +76,7 @@ void AmnModel::draw(RenderTarget* renderTarget, RenderState renderState)
 	}
 }
 
-void AmnModel::PSConstBufSet(ConstantBuffer* constantBuffer, unsigned int const slot)
-{
-	constantBuffersPS[slot] = constantBuffer;
-}
-
-void AmnModel::VSConstBufAdd(unsigned int const slot)
-{
-	ConstantBuffer* constantBufferVS = new ConstantBuffer(graphics);
-	VSConstBufSet(constantBufferVS, slot);
-}
-
-void AmnModel::PSConstBufAdd(unsigned int const slot)
-{
-	ConstantBuffer* constantBufferPS = new ConstantBuffer(graphics);
-	PSConstBufSet(constantBufferPS, slot);
-}
-
-void AmnModel::VSConstBufAddValue(unsigned int slot, void* value, const char* key, unsigned int const size)
-{
-	constantBuffersVS[slot]->add(value, key, size);
-	//constantBuffersVS[std::pair<unsigned int, std::string>(slot, key)]->add(value, key, size);
-}
-
-void AmnModel::PSConstBufAddValue(unsigned int slot, void* value, const char* key, unsigned int const size)
-{
-	constantBuffersPS[slot]->add(value, key, size);
-	//constantBuffersVS[std::pair<unsigned int, std::string>(slot, key)]->add(value, key, size);
-}
-
-void AmnModel::VSConstBufSet(ConstantBuffer* constantBuffer, unsigned int const slot)
-{
-	constantBuffersVS[slot] = constantBuffer;
-	//constantBuffersVS[std::pair<unsigned int, std::string>(slot, key)] = constantBuffer;
-}
-
-void AmnModel::VSConstBufUpdateValue(unsigned int const slot, const char* key, void* data)
-{
-	constantBuffersVS[slot]->updateValue(key, data);
-}
-
-void AmnModel::PSConstBufUpdateValue(unsigned int const slot, const char* key, void* data)
-{
-	constantBuffersPS[slot]->updateValue(key, data);
-}
-
-void AmnModel::VSConstBufInit(unsigned int const slot)
-{
-	constantBuffersVS[slot]->init();
-}
-
-void AmnModel::PSConstBufInit(unsigned int const slot)
-{
-	constantBuffersPS[slot]->init();
-}
-
-void AmnModel::loadModel(Graphics* graphics, std::string path, VertexShader* vertexShader, PixelShader* pixelShader)
+void AmnModel::loadModel(RenderWindow* const renderWindow, std::string path, VertexShader* vertexShader, PixelShader* pixelShader)
 {
 
 	extension = path.substr(path.find_last_of('.') + 1, path.size());
@@ -160,21 +87,21 @@ void AmnModel::loadModel(Graphics* graphics, std::string path, VertexShader* ver
 		throw;
 	//cout << "ERROR::ASSIMP::" << import.GetErrorString() << endl;
 	directory = path.substr(0, path.find_last_of('\\')) + "\\";
-	processNode(graphics, scene->mRootNode, scene, vertexShader, pixelShader);
+	processNode(renderWindow, scene->mRootNode, scene, vertexShader, pixelShader);
 }
 
-void AmnModel::processNode(Graphics* graphics, aiNode* node, const aiScene* scene, VertexShader* vertexShader, PixelShader* pixelShader)
+void AmnModel::processNode(RenderWindow* const renderWindow, aiNode* node, const aiScene* scene, VertexShader* vertexShader, PixelShader* pixelShader)
 {
 	for (int i = 0; i < node->mNumMeshes; i++)
 	{
 		aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
-		meshes.push_back(processMesh(graphics, scene, mesh, vertexShader, pixelShader));
+		meshes.push_back(processMesh(renderWindow, scene, mesh, vertexShader, pixelShader));
 	}
 	for (unsigned int i = 0; i < node->mNumChildren; i++)
-		processNode(graphics, node->mChildren[i], scene, vertexShader, pixelShader);
+		processNode(renderWindow, node->mChildren[i], scene, vertexShader, pixelShader);
 }
 
-Mesh AmnModel::processMesh(Graphics* graphics, const aiScene* scene, aiMesh* mesh, VertexShader* vertexShader, PixelShader* pixelShader)
+Mesh AmnModel::processMesh(RenderWindow* const renderWindow, const aiScene* scene, aiMesh* mesh, VertexShader* vertexShader, PixelShader* pixelShader)
 {
 	std::vector<Vertex> vertices;
 	std::vector<int> indices;
@@ -220,7 +147,7 @@ Mesh AmnModel::processMesh(Graphics* graphics, const aiScene* scene, aiMesh* mes
 		for (unsigned int j = 0; j < face.mNumIndices; j++)
 			indices.push_back(face.mIndices[j]);
 	}
-	Mesh outputMesh = Mesh(graphics, vertices, indices, vertexShader, pixelShader);
+	Mesh outputMesh = Mesh(renderWindow, vertices, indices, vertexShader, pixelShader);
 
 	if (mesh->mMaterialIndex >= 0)
 	{
@@ -255,8 +182,8 @@ Mesh AmnModel::processMesh(Graphics* graphics, const aiScene* scene, aiMesh* mes
 		//	int k =	 0;
 		//}
 
-		std::vector<Texture*> texturesDiffuse = loadMaterialTextures(graphics, material, aiTextureType_DIFFUSE);
-		std::vector<Texture*> texturesBaseColor = loadMaterialTextures(graphics, material, aiTextureType_BASE_COLOR);
+		std::vector<Texture*> texturesDiffuse = loadMaterialTextures(renderWindow, material, aiTextureType_DIFFUSE);
+		std::vector<Texture*> texturesBaseColor = loadMaterialTextures(renderWindow, material, aiTextureType_BASE_COLOR);
 
 		if (texturesDiffuse.size() > 0)
 			outputMesh.textures[0] = texturesDiffuse[0];
