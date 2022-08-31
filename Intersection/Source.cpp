@@ -39,8 +39,8 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLin
 	mainCamera->position = { 0, 2, -2 };
 	//renderWindow->setCamera(mainCamera);
 
-	StrategyCamera* strategyCamera = new StrategyCamera(renderWindow, { 0, 10, 0 }, { 3.14 / 3, 0, 0 });
-	renderWindow->setCamera(strategyCamera);
+	//StrategyCamera* strategyCamera = new StrategyCamera(renderWindow, { 0, 10, 0 }, { 3.14 / 3, 0, 0 });
+	//renderWindow->setCamera(strategyCamera);
 
 	FT_Library* ftLibrary = new FT_Library();
 
@@ -50,7 +50,6 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLin
 
 	Font font = Font(renderWindow, ftLibrary, "fonts//Roboto-Regular.ttf");
 
-<<<<<<< HEAD
 	//DirectX::SpriteBatch* spriteBatch = new DirectX::SpriteBatch(renderWindow->graphics->deviceCon);
 	//DirectX::SpriteFont* spriteFont = new DirectX::SpriteFont(renderWindow->graphics->device, L"fonts//Lato-ThinItalic.ttf");
 
@@ -59,24 +58,16 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLin
 	mainCamera->position = { 0, 0, 0 };
 	//renderWindow->setCamera(mainCamera);
 
-	StrategyCamera* strategyCamera = new StrategyCamera(renderWindow, { 0, 10, 0 }, { 3.14 / 3, 0, 0 });
-	renderWindow->setCamera(strategyCamera);
-=======
-	World* world = new World(renderWindow, 1, 1);
->>>>>>> 920b3f0e29860e9655a49f2dec2019a089cc3dd9
-
 	TexturesContent::load(renderWindow);
 	ShadersContent::load(renderWindow);
 	ModelsContent::load(renderWindow);
-<<<<<<< HEAD
-
-=======
 	InnerModelsContent::load(renderWindow, ShadersContent::defaultVS, ShadersContent::defaultPS);
 	InnerTexturesContent::load(renderWindow);
-	Register::init(world);
->>>>>>> 920b3f0e29860e9655a49f2dec2019a089cc3dd9
 	UIElement::setStaticVertexAndPixelShaders(ShadersContent::defaultVS, ShadersContent::onlyTexturePS);
 
+	StrategyCamera* strategyCamera = new StrategyCamera(renderWindow, { 0, 10, 0 }, { 3.14 / 3, 0, 0 });
+	renderWindow->setCamera(strategyCamera);
+	World* world = new World(renderWindow, 1, 1);
 
 	Sphere* sphere = new Sphere(renderWindow);
 	sphere->setPosition(float3{ 0, 0, 1 });
@@ -223,8 +214,6 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLin
 	text->setText("Hello world!");
 	text->setStringsGap(0.5f);
 	text->setAttachment(float2{0.5f, 0.5f});
-
-	World* world = new World(renderWindow, 1, 1);
 
 
 	Sprite* testSpirte = new Sprite(renderWindow, TexturesContent::bugAlbedo, float4{ 0.45f, 0.45f, 0.55f, 0.55f }, ShadersContent::defaultVS, ShadersContent::UIElementPS);

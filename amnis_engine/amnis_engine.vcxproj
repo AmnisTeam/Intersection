@@ -161,13 +161,10 @@
     <ClInclude Include="CompositeCollider.h" />
     <ClInclude Include="Event.h" />
     <ClInclude Include="Font.h" />
-<<<<<<< HEAD
     <ClInclude Include="IColliderable.h" />
-=======
     <ClInclude Include="InnerModelsContent.h" />
     <ClInclude Include="InnerTexturesContent.h" />
     <ClInclude Include="UI\Sprite.h" />
->>>>>>> 920b3f0e29860e9655a49f2dec2019a089cc3dd9
     <ClInclude Include="Ray.h" />
     <ClInclude Include="text.h" />
     <ClInclude Include="UI\UIText.h" />
