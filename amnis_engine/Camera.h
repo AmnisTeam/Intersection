@@ -37,7 +37,7 @@ public:
 	DirectX::XMMATRIX projectionMatrix;
 	DECL Camera(RenderWindow* renderWindow, float3 camPos, float3 camRotation, bool responded);
 	DECL Camera(RenderWindow* renderWindow, bool responded);
-	DECL void update();
+	DECL virtual void update();
 	DECL virtual void responseInput(MainWindow* mainWindow);
 	DECL void setPerspectiveCoof(float value);
 	DECL Ray castRay(float pX, float pY);

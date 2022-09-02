@@ -78,6 +78,13 @@ LRESULT MainWindow::handleMessage(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lP
             mousePos = { (float)GET_X_LPARAM(lParam), (float)GET_Y_LPARAM(lParam) };
             break;
         }
+
+        case WM_MOUSEWHEEL:
+        {
+           wheelDelta = GET_WHEEL_DELTA_WPARAM(wParam);
+           return 0;
+        }
+
         case WM_CLOSE:
         {
             PostQuitMessage(0);

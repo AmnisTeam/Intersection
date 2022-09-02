@@ -12,6 +12,58 @@ struct float2
 {
 	float x;
 	float y;
+
+	float2 operator/(float val)
+	{
+		return float2{ x / val, y / val};
+	}
+
+	float2 operator*(float val)
+	{
+		return float2{ x * val, y * val };
+	}
+
+	void operator/=(float val)
+	{
+		x /= val;
+		y /= val;
+	}
+
+	void operator*=(float val)
+	{
+		x *= val;
+		y *= val;
+	}
+
+	void operator+=(float2 vec)
+	{
+		x += vec.x;
+		y += vec.y;
+	}
+
+	void operator-=(float2 vec)
+	{
+		x -= vec.x;
+		y -= vec.y;
+	}
+
+	float2 operator-(float2 vec) const
+	{
+		return { x - vec.x, y - vec.y};
+	}
+
+	float2 operator+(float2 vec) const
+	{
+		return { x + vec.x, y + vec.y};
+	}
+
+	bool operator!=(float2 const vec) const
+	{
+		if (x != vec.x || y != vec.y)
+			return true;
+		else
+			return false;
+	}
 };
 
 struct float3
@@ -126,9 +178,43 @@ struct float4
 	float w;
 };
 
+struct Vertex
+{
+	float3 pos;
+	float2 texCoord;
+	float3 normal;
+	float3 tangent;
+	float3 bitangent;
+};
+
+struct int2
+{
+	int x;
+	int y;
+};
+
+struct int3
+{
+	int x;
+	int y;
+	int z;
+};
+
+struct BazierPoint
+{
+	float2 position;
+	float2 direction;
+	float radius;
+};
+
 class mymath
 {
 public:
+	static float getLength(float2 vec)
+	{
+		return std::sqrt(vec.x * vec.x + vec.y * vec.y);
+	}
+
 	static float getLength(float3 vec)
 	{
 		return std::sqrt(vec.x * vec.x + vec.y * vec.y + vec.z * vec.z);
@@ -137,6 +223,11 @@ public:
 	static double getLength(double3 vec)
 	{
 		return std::sqrt(vec.x * vec.x + vec.y * vec.y + vec.z * vec.z);
+	}
+
+	static float2 normalize(float2 vec)
+	{
+		return vec / getLength(vec);
 	}
 
 	static float3 normalize(float3 vec)
@@ -162,6 +253,31 @@ public:
 	static float interpolate(float a, float b, float t)
 	{
 		return a + (b - a) * t;
+	}
+
+	static float toValue(float from, float to, float speed)
+	{
+		speed = from > to ? -abs(speed) : abs(speed);
+		if ((from - to) / (from - to + speed) <= 0)
+			return to;
+		else
+			return from + speed;
+	}
+
+	static float2 getBazierValue(float t, float2* points, int countPoints)
+	{
+		float2 point;
+		float2* pointsOnLine = new float2[countPoints - 1];
+		for (int x = 0; x < countPoints - 1; x++)
+			pointsOnLine[x] = points[x] + (points[x + 1] - points[x]) * t;
+
+		if (countPoints == 1)
+			point = pointsOnLine[0];
+		else
+			point = getBazierValue(t, pointsOnLine, countPoints - 1);
+		delete[countPoints - 1] pointsOnLine;
+
+		return point;
 	}
 
 	static bool rayCrossPointRayed(float3 origin, float3 end, float3 point)
@@ -278,24 +394,3 @@ public:
 	}
 };
 
-struct Vertex
-{
-	float3 pos;
-	float2 texCoord;
-	float3 normal;
-	float3 tangent;
-	float3 bitangent;
-};
-
-struct int2
-{
-	int x;
-	int y;
-};
-
-struct int3
-{
-	int x;
-	int y;
-	int z;
-};

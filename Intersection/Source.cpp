@@ -323,6 +323,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLin
 		//renderWindow->Draw(testSquare, false, false);
 
 		fpsCounter->text->setText("FPS: " + std::to_string(1 / renderWindow->graphics->deltaTime));
+		//fpsCounter->text->setText("FPS: " + std::to_string(renderWindow->window->wheelDelta));
 		renderWindow->Draw(fpsCounter, false, false);
 
 		positionInfo->text->setText("Position: "

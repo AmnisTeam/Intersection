@@ -26,7 +26,6 @@ void StrategyCamera::responseInput(MainWindow* mainWindow)
 	this->normal = { DirectX::XMVectorGetX(normal), DirectX::XMVectorGetY(normal) , DirectX::XMVectorGetZ(normal) };
 
 
-
 	float tickIncreaseSpeed = (renderWindow->graphics->deltaTime / maxSpeedTime) * moveSpeed;
 	bool moved = false;
 
@@ -69,5 +68,41 @@ void StrategyCamera::responseInput(MainWindow* mainWindow)
 	if (mymath::getLength(velocity) > moveSpeed)
 		mymath::setLength(&velocity, moveSpeed);
 
-	position += velocity * renderWindow->graphics->deltaTime;
+	lookPoint += velocity * renderWindow->graphics->deltaTime;
+
+
+	if (renderWindow->window->wheelDelta != 0)
+	{
+		tempWheelDelta = renderWindow->window->wheelDelta > 0 ? 1 : -1;
+	}
+
+	velocityRotation = mymath::toValue(
+		velocityRotation, 
+		tempWheelDelta * speedRotation,
+		speedRotation * renderWindow->graphics->deltaTime / velocityTimeMin);
+
+	velocityRadius = mymath::toValue(
+		velocityRadius, 
+		tempWheelDelta * speedChangeRadius,
+		speedChangeRadius * renderWindow->graphics->deltaTime / velocityTimeMin);
+
+	if (abs(velocityRotation) == speedRotation && abs(velocityRadius) == speedChangeRadius)
+		tempWheelDelta = 0;
+
+	rotation.x -= velocityRotation;
+	radius -= velocityRadius;
+
+	DirectX::XMMATRIX matrix = DirectX::XMMatrixTranslation(0, 0, -radius) *
+		DirectX::XMMatrixRotationX(rotation.x) *
+		DirectX::XMMatrixRotationY(rotation.y) *
+		DirectX::XMMatrixRotationZ(rotation.z) *
+		DirectX::XMMatrixTranslation(lookPoint.x, lookPoint.y, lookPoint.z);
+
+	DirectX::XMVECTOR XMPosition = DirectX::XMVector3Transform(DirectX::XMVECTOR(), matrix);
+	position = { DirectX::XMVectorGetX(XMPosition), DirectX::XMVectorGetY(XMPosition) , DirectX::XMVectorGetZ(XMPosition) };
+}
+
+void StrategyCamera::update()
+{
+	Camera::update();
 }
