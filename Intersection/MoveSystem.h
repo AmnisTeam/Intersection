@@ -10,6 +10,7 @@ public:
 	virtual void clearMoveTargets() = 0;
 	virtual void rotateViewDirectionTo(float3 dir) = 0;
 	virtual void updateMovableSystem(double deltaTime) = 0;
+	virtual int getMoveTargetsCount() = 0;
 };
 
 class MoveSystem : public IMovable
@@ -24,11 +25,13 @@ public:
 
 	MoveSystem(Transformable* parent);
 
+	// Унаследовано через IMovable
 	virtual void goToPosition(float3 position) override;
 	virtual void addMoveTarget(float3 position) override;
 	virtual void clearMoveTargets() override;
 	virtual void rotateViewDirectionTo(float3 dir) override;
 	virtual void updateMovableSystem(double deltaTime) override;
+	virtual int getMoveTargetsCount() override;
 	
 	void setOldPosition(float3 oldPosition);
 protected:
@@ -39,5 +42,7 @@ protected:
 	float3 tempPosition_;
 	void movementToTargets();
 	void moveTo(float3 const position);
+
+
 };
 

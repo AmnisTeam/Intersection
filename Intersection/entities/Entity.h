@@ -37,6 +37,7 @@ public:
 	virtual void clearMoveTargets() override;
 	virtual void rotateViewDirectionTo(float3 dir) override;
 	virtual void updateMovableSystem(double deltaTime) override;
+	virtual int getMoveTargetsCount() override;
 
 	void goToPositionAstar(float3 position);
 

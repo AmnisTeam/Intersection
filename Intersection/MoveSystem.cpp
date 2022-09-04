@@ -83,3 +83,8 @@ void MoveSystem::moveTo(float3 const position)
 		movement = moveDir * moveSpeed;
 	}
 }
+
+int MoveSystem::getMoveTargetsCount()
+{
+	return moveTargets.size();
+}

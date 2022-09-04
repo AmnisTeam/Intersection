@@ -48,6 +48,11 @@ void Entity::updateMovableSystem(double deltaTime)
 	moveSystem_->updateMovableSystem(deltaTime);
 }
 
+int Entity::getMoveTargetsCount()
+{
+	return moveSystem_->getMoveTargetsCount();
+}
+
 void Entity::goToPositionAstar(float3 position)
 {
 	int nGrids;
