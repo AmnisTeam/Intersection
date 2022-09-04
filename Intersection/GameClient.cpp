@@ -72,10 +72,14 @@ void GameClient::moveEntitiesByMouse()
 
 					endX = hitPoint.position.x < 0 ? endX - 1 : endX;
 					endZ = hitPoint.position.z < 0 ? endZ - 1 : endZ;
-					endZ += 1;
+					endX -= 1;
+					endZ -= 1;
 
 					int countGrids;
-					int2* path = world->grid->findPath({ startX, startZ }, { endX, endZ }, &countGrids);
+					int2* path = world->grid->findPath(int2{ startX, startZ }, int2{ endX, endZ }, &countGrids);
+
+					//int countGrids;
+					//int2* path = world->grid->findPath(entityPosition, hitPoint.position, &countGrids);
 
 					for(int y = 0; y < countGrids; y++)
 						entity->addMoveTarget({(float)path[y].x * world->grid->sizeElementX, 0, (float)path[y].y * world->grid->sizeElementY });

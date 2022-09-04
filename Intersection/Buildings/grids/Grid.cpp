@@ -366,3 +366,24 @@ int2* Grid::findPath(int2 point1, int2 point2, int* countGrids, int countStep)
 	*countGrids = count;
 	return path;
 }
+
+int2* Grid::findPath(float3 point1, float3 point2, int* countGrids, int countStep)
+{
+
+	int startX = (float)point1.x / sizeElementX;
+	int startZ = (float)point1.z / sizeElementY;
+
+	startX = point2.x < 0 ? startX - 1 : startX;
+	startZ = point2.z < 0 ? startZ - 1 : startZ;
+	startZ += 1;
+
+
+	int endX = (float)point2.x / sizeElementX;
+	int endZ = (float)point2.z / sizeElementY;
+
+	endX = point2.x < 0 ? endX - 1 : endX;
+	endZ = point2.z < 0 ? endZ - 1 : endZ;
+	endZ += 1;
+
+	return findPath(int2{ startX, startZ }, int2{ endX, endZ }, countGrids);
+}

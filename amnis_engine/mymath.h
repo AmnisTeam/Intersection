@@ -66,6 +66,14 @@ struct float3
 		return { x + vec.x, y + vec.y, z + vec.z };
 	}
 
+	bool operator==(float3 const vec) const
+	{
+		if (x == vec.x && y == vec.y && z == vec.z)
+			return true;
+		else
+			return false;
+	}
+
 	bool operator!=(float3 const vec) const
 	{
 		if (x != vec.x || y != vec.y || z != vec.z)
@@ -188,6 +196,9 @@ public:
 
 	static bool pointIntersected(float3 origin, float3 end, float3 point, float pointRadius)
 	{
+		if (point == end)
+			return true;
+
 		float denomX = (end.x - origin.x);
 		float denomY = (end.y - origin.y);
 		float denomZ = (end.z - origin.z);

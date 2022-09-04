@@ -176,6 +176,7 @@
     <ClCompile Include="ModelsContent.cpp" />
     <ClCompile Include="Buildings\RegisterBuildings.cpp" />
     <ClCompile Include="entities\RegisterEntities.cpp" />
+    <ClCompile Include="MoveSystem.cpp" />
     <ClCompile Include="ShadersContent.cpp" />
     <ClCompile Include="SkySphere.cpp" />
     <ClCompile Include="Source.cpp" />
@@ -291,6 +292,7 @@
     <ClInclude Include="ModelsContent.h" />
     <ClInclude Include="Buildings\RegisterBuildings.h" />
     <ClInclude Include="entities\RegisterEntities.h" />
+    <ClInclude Include="MoveSystem.h" />
     <ClInclude Include="ShadersContent.h" />
     <ClInclude Include="SkySphere.h" />
     <ClInclude Include="Sphere.h" />

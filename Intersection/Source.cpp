@@ -126,16 +126,12 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLin
 	toggle1->onHoverColor = mymath::getColor({ 225, 0, 0, 255 });
 	toggle1->onPressColor = mymath::getColor({ 255, 0, 0, 255 });
 
-
-
 	Toggle* toggle2 = new Toggle(renderWindow, { 0, -toggleOffset.y }, toggleSize, style);
 	toggle2->setAnchor({ 0.5f, 1 });
 	toggle2->setPivot({ 0.5f, 1 });
 	toggle2->onColor = mymath::getColor({ 0, 195, 0, 255 });
 	toggle2->onHoverColor = mymath::getColor({ 0, 225, 0, 255 });
 	toggle2->onPressColor = mymath::getColor({ 0, 255, 0, 255 });
-
-
 
 	Toggle* toggle3 = new Toggle(renderWindow, { toggleSize.x + toggleOffset.x, -toggleOffset.y }, toggleSize, style);
 	toggle3->setAnchor({ 0.5f, 1 });
@@ -223,7 +219,6 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLin
 	testSpirte->setPivot(float2{1, 0});
 	testSpirte->setShade(0);
 	testSpirte->setOverlay(0);
-
 
 	float a = 0;
 	float k = 0;

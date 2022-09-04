@@ -9,12 +9,29 @@ World::World(RenderWindow* renderWindow, float sizeElementGridX, float sizeEleme
 	this->renderWindow = renderWindow;
     grid = new Grid(sizeElementGridX, sizeElementGridY);
 
+	grid->setObstacle(2, 1);
+	grid->setObstacle(3, 1);
+	grid->setObstacle(3, 2);
+
+	int countGrids;
+	int2 point1 = { 1, 2 };
+	int2 point2 = { 5, 2 };
+	int2* path = grid->findPath(point1, point2, &countGrids);
+
+	for (int x = 0; x < countGrids; x++)
+	{
+		int2 point = path[x];
+		int pointsdf = 0;
+	}
+
+	int k = 0;
+
 	//int2 startPoint = {100, 2};
 	//for(int x = startPoint.x - 2; x <= startPoint.x + 2; x++)
 	//	for(int y = startPoint.y - 2; y <= startPoint.y + 2; y++)
 	//		if(!(x == startPoint.x && y == startPoint.y))
 	//			grid->setObstacle(x, y);
-
+	
 	//grid->setObstacle(2, 1);
 	//grid->setObstacle(3, 1);
 	//grid->setObstacle(3, 2);
@@ -56,9 +73,23 @@ World::World(RenderWindow* renderWindow, float sizeElementGridX, float sizeEleme
 	//addBuilding(e1);
 	//addBuilding(e2);
 
-	EntityTree* tree = new EntityTree(this);
-	tree->setPosition({0, 0, 10});
-	addEntity(tree);
+	//EntityTree* tree = new EntityTree(this);
+
+	//tree->setPosition({1, 0, 2});
+	//addEntity(tree);
+
+	EntityTree* leftEntity = new EntityTree(this);
+	EntityTree* rightEntity = new EntityTree(this);
+
+	leftEntity->setPosition(float3{-5, 0, 0});
+	leftEntity->activateAttackBehavior(true);
+	leftEntity->setAttackTarget(rightEntity);
+	addEntity(leftEntity);
+
+	rightEntity->setPosition(float3{5, 0, 0});
+	rightEntity->activateAttackBehavior(true);
+	rightEntity->setAttackTarget(leftEntity);
+	addEntity(rightEntity);
 }
 
 bool World::addBuilding(Building* building)
@@ -125,7 +156,10 @@ void World::update()
 {
 	for (int x = 0; x < entities.size(); x++)
 		if (entities[x] != nullptr)
+		{
 			entities[x]->update();
+		}
+
 	gameClient->update();
 }
 
