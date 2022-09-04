@@ -86,7 +86,7 @@ World::World(RenderWindow* renderWindow, float sizeElementGridX, float sizeEleme
 	leftEntity->setAttackTarget(rightEntity);
 	addEntity(leftEntity);
 
-	rightEntity->setPosition(float3{5, 0, 0});
+	rightEntity->setPosition(float3{5, 0, 10});
 	rightEntity->activateAttackBehavior(true);
 	rightEntity->setAttackTarget(leftEntity);
 	addEntity(rightEntity);

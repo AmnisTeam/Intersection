@@ -17,12 +17,6 @@ bool Entity::raycast(Ray ray, RayHitPoint* hitPoint, ColliderState colliderState
 	return boxCollider->raycast(ray, hitPoint, colliderState);
 }
 
-//void Entity::setPositionWithoutSettingOldPosition(float3 position)
-//{
-//	Transformable::setPosition(position);
-//	boxCollider->setPosition(position);
-//}
-
 void Entity::goToPosition(float3 position)
 {
 	moveSystem_->goToPosition(position);
@@ -85,11 +79,21 @@ void Entity::activateAttackBehavior(bool state)
 
 void Entity::updateAttackBehavior()
 {
-	clearMoveTargets();
 	if (attackTarget_)
 	{
 		clearMoveTargets();
-		goToPosition(attackTarget_->getPosition());
+
+		float distance = mymath::getLength(getPosition() - attackTarget_->getPosition());
+		if (distance >= attackTarget_->entityRadius + entityRadius)
+		{			
+			goToPosition(attackTarget_->getPosition());
+		}
+		else
+		{
+			clearMoveTargets();
+			//moveSystem_->velocity = {};
+			//moveSystem_->movement = {};
+		}
 	}
 }
 
@@ -115,4 +119,9 @@ void Entity::setOrigin(float3 origin)
 {
 	Transformable::setOrigin(origin);
 	//boxCollider->setOrigin(origin);
+}
+
+void Entity::OnDeath()
+{
+
 }

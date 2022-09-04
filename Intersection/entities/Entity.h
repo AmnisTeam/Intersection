@@ -6,10 +6,11 @@
 #include "../IClonable.h"
 #include "BoxCollider.h"
 #include "../MoveSystem.h"
+#include "../HealthSystem.h"
 
 class World;
 
-class Entity : public Transformable, public IMovable, public IDrawable, public IClonable, public IColliderable
+class Entity : public Transformable, public IMovable, public IDrawable, public IClonable, public IColliderable, public IHealthable
 {
 public:
 	friend class MoveSystem;
@@ -38,6 +39,9 @@ public:
 	virtual void rotateViewDirectionTo(float3 dir) override;
 	virtual void updateMovableSystem(double deltaTime) override;
 
+	// Inherited via IHealthable
+	virtual void OnDeath();
+
 	void goToPositionAstar(float3 position);
 
 	virtual bool raycast(Ray ray, RayHitPoint* hitPoint, ColliderState colliderState = ColliderState()) override;
@@ -48,6 +52,7 @@ private:
 	float radiusOfPoint = 0.01f;
 	const double maxMoveSpeedToNotLoseVelocity = 900000;
 	float3 oldPosition;
-
-	//void setPositionWithoutSettingOldPosition(float3 position);
+	
+	// AttackSystem
+	float entityRadius = 1;
 };
