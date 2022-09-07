@@ -8,32 +8,43 @@ World::World(RenderWindow* renderWindow, float sizeElementGridX, float sizeEleme
 {
 	this->renderWindow = renderWindow;
     grid = new Grid(sizeElementGridX, sizeElementGridY);
+	decorAnimalBug1 = new DecorAnimalBug(this, float3{ 3,0,3 }, 3);
+	decorAnimalBug2 = new DecorAnimalBug(this, float3{ -3,0,-3 }, 3);
+
+
+	grid->setObstacle(2, 1);
+	grid->setObstacle(3, 1);
+	grid->setObstacle(3, 2);
+
+	int countGrids;
+	int2 point1 = { 1, 2 };
+	int2 point2 = { 5, 2 };
+	int2* path = grid->findPath(point1, point2, &countGrids);
+
+	for (int x = 0; x < countGrids; x++)
+	{
+		int2 point = path[x];
+		int pointsdf = 0;
+	}
+
+	int k = 0;
 
 	//int2 startPoint = {100, 2};
 	//for(int x = startPoint.x - 2; x <= startPoint.x + 2; x++)
 	//	for(int y = startPoint.y - 2; y <= startPoint.y + 2; y++)
 	//		if(!(x == startPoint.x && y == startPoint.y))
 	//			grid->setObstacle(x, y);
-
 	//grid->setObstacle(2, 1);
 	//grid->setObstacle(3, 1);
 	//grid->setObstacle(3, 2);
-
-
-
-
-
 	//grid->setObstacle(4, 1);
 	//grid->setObstacle(5, 1);
 	//grid->setObstacle(6, 1);
-
 	//grid->setObstacle(4, 2);
 	//grid->setObstacle(6, 2);
-
 	//grid->setObstacle(4, 3);
 	//grid->setObstacle(5, 3);
 	//grid->setObstacle(6, 3);
-
 	//int countGrids;
 	//int2* path = grid->findPath({1, 2}, { 5, 2 }, &countGrids, 10);
 	//
@@ -51,13 +62,24 @@ World::World(RenderWindow* renderWindow, float sizeElementGridX, float sizeEleme
 	gameClient = new GameClient(this);
 	//EnergyOrderer* e1 = new EnergyOrderer(this, 0, 0);
 	//EnergyOrderer* e2 = new EnergyOrderer(this, 5, 0);
-
 	//addBuilding(e1);
 	//addBuilding(e2);
+	//EntityTree* tree = new EntityTree(this);
+	//tree->setPosition({1, 0, 2});
+	//addEntity(tree);
 
-	EntityTree* tree = new EntityTree(this);
-	tree->setPosition({0, 0, 10});
-	addEntity(tree);
+	EntityTree* leftEntity = new EntityTree(this);
+	EntityTree* rightEntity = new EntityTree(this);
+
+	leftEntity->setPosition(float3{-5, 0, 0});
+	leftEntity->activateAttackBehavior(true);
+	leftEntity->setAttackTarget(rightEntity);
+	addEntity(leftEntity);
+
+	rightEntity->setPosition(float3{5, 0, 0});
+	rightEntity->activateAttackBehavior(true);
+	rightEntity->setAttackTarget(leftEntity);
+	addEntity(rightEntity);
 }
 
 bool World::addBuilding(Building* building)
@@ -124,7 +146,13 @@ void World::update()
 {
 	for (int x = 0; x < entities.size(); x++)
 		if (entities[x] != nullptr)
+		{
 			entities[x]->update();
+		}
+
+
+	decorAnimalBug1->update();
+	decorAnimalBug2->update();
 	gameClient->update();
 }
 
@@ -156,6 +184,9 @@ void World::draw(RenderTarget* renderTarget, RenderState state)
 	for(int x = 0; x < entities.size(); x++)
 		if (entities[x] != nullptr)
 			renderTarget->draw(entities[x], state);
+
+	renderTarget->draw(decorAnimalBug1, state);
+	renderTarget->draw(decorAnimalBug2, state);
 
 	renderTarget->draw(terrain, state);
 	renderTarget->draw(gameClient, state);

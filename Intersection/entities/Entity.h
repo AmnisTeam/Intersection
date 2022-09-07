@@ -5,44 +5,50 @@
 #include "../TexturesContent.h"
 #include "../IClonable.h"
 #include "BoxCollider.h"
+#include "../MoveSystem.h"
 
 class World;
 
-class Entity : public Transformable, public IDrawable, public IClonable, public IColliderable
+class Entity : public Transformable, public IMovable, public IDrawable, public IClonable, public IColliderable
 {
 public:
+	friend class MoveSystem;
 	ModeledObject* model;
 	World* world;
-	float3 viewDirecton = {0, 0, 1};
-	float3 velocity = {};
 	BoxCollider* boxCollider;
 	int id;
-	double moveSpeed = 2;
-	double turningSpeed = PI * 0.5;
-	std::vector<float3> moveTargets;
 	Entity(World* world, AmnModel* model);
-	void goToPosition(float3 position);
-	void addMoveTarget(float3 position);
-	void clearMoveTargets();
-	void rotateViewDirectionTo(float3 dir);
 	virtual void update();
 	virtual void draw(RenderTarget* renderTarget, RenderState state) override;
 
-	virtual void setPosition(float3 position);
-	virtual void setRotation(float3 rotation);
-	virtual void setScale(float3 scale);
-	virtual void setOrigin(float3 origin);
+	void setAttackTarget(Entity* entity);
+	void activateAttackBehavior(bool state);
+	void updateAttackBehavior();
 
-	// Унаследовано через IColliderable
+	// Inherited via Transformable
+	virtual void setPosition(float3 position) override;
+	virtual void setRotation(float3 rotation) override;
+	virtual void setScale(float3 scale) override;
+	virtual void setOrigin(float3 origin) override;
+
+	// Inherited via IMovable
+	virtual void goToPosition(float3 position) override;
+	virtual void addMoveTarget(float3 position) override;
+	virtual void clearMoveTargets() override;
+	virtual void rotateViewDirectionTo(float3 dir) override;
+	virtual void updateMovableSystem(double deltaTime) override;
+	virtual int getMoveTargetsCount() override;
+
+	void goToPositionAstar(float3 position);
+
 	virtual bool raycast(Ray ray, RayHitPoint* hitPoint, ColliderState colliderState = ColliderState()) override;
-
 private:
+	MoveSystem* moveSystem_;
+	Entity* attackTarget_;
+	bool activatedAttackBehavior = false;
 	float radiusOfPoint = 0.01f;
 	const double maxMoveSpeedToNotLoseVelocity = 900000;
 	float3 oldPosition;
-	void movementToTargets();
-	void movementToTargets2();
-	void moveTo(float3 const position);
 
-
+	//void setPositionWithoutSettingOldPosition(float3 position);
 };

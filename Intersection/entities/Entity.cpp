@@ -9,18 +9,7 @@ Entity::Entity(World* world, AmnModel* model)
 	this->model->setTexture(TexturesContent::flatNormalMap, 1);
 
 	boxCollider = new BoxCollider(getOrigin(), getPosition(), getScale());
-}
-
-void Entity::moveTo(float3 const position)
-{
-	float3 entityPosition = getPosition();
-	if (position != entityPosition)
-	{
-		float3 diff = position - entityPosition;
-		float distance = mymath::getLength(diff);
-		float3 moveDir = mymath::normalize(diff);
-		velocity = moveDir * moveSpeed;
-	}
+	moveSystem_ = new MoveSystem(this);
 }
 
 bool Entity::raycast(Ray ray, RayHitPoint* hitPoint, ColliderState colliderState)
@@ -28,73 +17,58 @@ bool Entity::raycast(Ray ray, RayHitPoint* hitPoint, ColliderState colliderState
 	return boxCollider->raycast(ray, hitPoint, colliderState);
 }
 
+//void Entity::setPositionWithoutSettingOldPosition(float3 position)
+//{
+//	Transformable::setPosition(position);
+//	boxCollider->setPosition(position);
+//}
+
 void Entity::goToPosition(float3 position)
 {
-	moveTargets.clear();
-	moveTargets.push_back(position);
+	moveSystem_->goToPosition(position);
 }
 
 void Entity::addMoveTarget(float3 position)
 {
-	moveTargets.push_back(position);
+	moveSystem_->addMoveTarget(position);
 }
 
 void Entity::clearMoveTargets()
 {
-	moveTargets.clear();
+	moveSystem_->clearMoveTargets();
 }
 
 void Entity::rotateViewDirectionTo(float3 dir)
 {
-
+	moveSystem_->rotateViewDirectionTo(dir);
 }
 
-void Entity::movementToTargets2()
+void Entity::updateMovableSystem(double deltaTime)
 {
-	if (moveTargets.size() > 0)
-	{
-		float3 entityPosition = getPosition();
-		float3 diff = moveTargets[0] - entityPosition;
-		float distance = mymath::getLength(diff);
-		if (distance <= radiusOfPoint)
-			moveTargets.erase(moveTargets.begin());
-		else
-			moveTo(moveTargets[0]);
-	}
+	moveSystem_->updateMovableSystem(deltaTime);
 }
 
-void Entity::movementToTargets()
+int Entity::getMoveTargetsCount()
 {
-	if (moveTargets.size() > 0)
-	{
-		float3 target = moveTargets[0];
-		float3 entityPosition = getPosition();
-		float3 diff = target - entityPosition;
-		float distance = mymath::getLength(diff);
+	return moveSystem_->getMoveTargetsCount();
+}
 
-		if (mymath::pointIntersected(oldPosition, entityPosition, target, radiusOfPoint))
-		{
-			float3 moveDirection = mymath::normalize(entityPosition - oldPosition);
-			oldPosition = entityPosition;
-			setPosition(target);
-			moveTargets.erase(moveTargets.begin());
-			if (moveSpeed <= maxMoveSpeedToNotLoseVelocity)
-				velocity -= moveDirection * moveSpeed;
-			else
-				velocity = {};
-		}
-		else
-		{
-			oldPosition = entityPosition;
-			moveTo(target);
-		}
-	}
+void Entity::goToPositionAstar(float3 position)
+{
+	int nGrids;
+	int2* path = world->grid->findPath(getPosition(), position, &nGrids);
+
+	for (int i = 0; i < nGrids; i++)
+		addMoveTarget({ (float)path[i].x * world->grid->sizeElementX, 0, (float)path[i].y * world->grid->sizeElementY });
 }
 
 void Entity::update()
 {
-	movementToTargets();
-	setPosition(getPosition() + velocity * world->renderWindow->graphics->deltaTime);
+	if(activatedAttackBehavior)
+		updateAttackBehavior();
+
+	updateMovableSystem(world->renderWindow->graphics->deltaTime);
+	setPosition(getPosition() + moveSystem_->velocity * world->renderWindow->graphics->deltaTime);
 }
 
 void Entity::draw(RenderTarget* renderTarget, RenderState state)
@@ -104,6 +78,25 @@ void Entity::draw(RenderTarget* renderTarget, RenderState state)
 	renderTarget->draw(model, state);
 }
 
+void Entity::setAttackTarget(Entity* entity)
+{
+	attackTarget_ = entity;
+}
+
+void Entity::activateAttackBehavior(bool state)
+{
+	activatedAttackBehavior = state;
+}
+
+void Entity::updateAttackBehavior()
+{
+	clearMoveTargets();
+	if (attackTarget_)
+	{
+		clearMoveTargets();
+		goToPosition(attackTarget_->getPosition());
+	}
+}
 
 void Entity::setPosition(float3 position)
 {

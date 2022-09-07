@@ -167,6 +167,8 @@
     <ClCompile Include="Buildings\Building.cpp" />
     <ClCompile Include="Buildings\ChaosFurnace.cpp" />
     <ClCompile Include="Buildings\EnergyOrderer.cpp" />
+    <ClCompile Include="DecorAnimal.cpp" />
+    <ClCompile Include="DecorAnimalBug.cpp" />
     <ClCompile Include="entities\Entity.cpp" />
     <ClCompile Include="entities\EntityTree.cpp" />
     <ClCompile Include="Buildings\grids\GridElement.cpp" />
@@ -176,6 +178,7 @@
     <ClCompile Include="ModelsContent.cpp" />
     <ClCompile Include="Buildings\RegisterBuildings.cpp" />
     <ClCompile Include="entities\RegisterEntities.cpp" />
+    <ClCompile Include="MoveSystem.cpp" />
     <ClCompile Include="ShadersContent.cpp" />
     <ClCompile Include="SkySphere.cpp" />
     <ClCompile Include="Source.cpp" />
@@ -278,6 +281,8 @@
     <ClInclude Include="Buildings\Building.h" />
     <ClInclude Include="Buildings\ChaosFurnace.h" />
     <ClInclude Include="Buildings\EnergyOrderer.h" />
+    <ClInclude Include="DecorAnimal.h" />
+    <ClInclude Include="DecorAnimalBug.h" />
     <ClInclude Include="GameClient.h" />
     <ClInclude Include="IChoosable.h" />
     <ClInclude Include="IClonable.h" />
@@ -288,9 +293,11 @@
     <ClInclude Include="Buildings\Inventory.h" />
     <ClInclude Include="Buildings\InventoryItem.h" />
     <ClInclude Include="EventSwitchValue.h" />
+    <ClInclude Include="IUpdateable.h" />
     <ClInclude Include="ModelsContent.h" />
     <ClInclude Include="Buildings\RegisterBuildings.h" />
     <ClInclude Include="entities\RegisterEntities.h" />
+    <ClInclude Include="MoveSystem.h" />
     <ClInclude Include="ShadersContent.h" />
     <ClInclude Include="SkySphere.h" />
     <ClInclude Include="Sphere.h" />
