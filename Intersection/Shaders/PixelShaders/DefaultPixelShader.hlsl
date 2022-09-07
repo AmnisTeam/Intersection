@@ -114,13 +114,10 @@ float4 main(Input input) : SV_TARGET
 	//float4 texColor = float4(1, 1, 1, 1);
 	float4 specular = pow(max(dot(reflect(lightDirection.xyz, normal.xyz), viewDir), 0), 32) * specularColor;
 	//float4 specular = 0;
-<<<<<<< HEAD
+
 	float4 ambient = float4(0.4f, 0.6f, 1.0f, 1.0f) * 0.4f;
 	//float4 ambient = float4(0.8f, 0.8f, 1, 1.0f) * 0.8f;
-=======
-	//float4 ambient = float4(0.4f, 0.6f, 1.0f, 1.0f) * 0.4f;
-	float4 ambient = float4(0.8f, 0.8f, 1, 1.0f) * 0.8f;
->>>>>>> f92173aab44771ff621f545f981c1d2c1ec74819
+
 	//float4 ambient = 0;
 	float4 diffusion = max(dot(normal.xyz, lightDirection.xyz), 0);
 	//float4 diffusion = 0;

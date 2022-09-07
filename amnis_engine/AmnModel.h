@@ -7,7 +7,6 @@
 #include "Camera.h"
 #include <vector>
 #include "Transformable.h"
-#include "FbxLoader.h"
 
 class RenderWindow;
 class AmnModel : public Transformable

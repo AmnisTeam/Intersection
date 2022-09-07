@@ -135,7 +135,7 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)FBX SDK\2020.2.1\lib\vs2019\x64\debug;$(SolutionDir)lib;%(AdditionalLibraryDirectories);$(SolutionDir)$(IntDir)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>libfbxsdk.lib;libfbxsdk-md.lib;libfbxsdk-mt.lib;libxml2-md.lib;libxml2-mt.lib;zlib-md.lib;zlib-mt.lib;assimp-vc143-mtd.lib;%(AdditionalDependencies);amnis_engine.lib;freetype.lib</AdditionalDependencies>
+      <AdditionalDependencies>assimp-vc143-mtd.lib;%(AdditionalDependencies);amnis_engine.lib;freetype.lib</AdditionalDependencies>
     </Link>
     <PreBuildEvent>
       <Command>xcopy /y /d "$(SolutionDir)dlls" "$(OutDir)"</Command>
