@@ -10,6 +10,16 @@ Texture* TexturesContent::wheelRobotBaseColor;
 Texture* TexturesContent::wheelRobotNormal;
 Texture* TexturesContent::bugAlbedo;
 Texture* TexturesContent::ghosthzAlbedo;
+Texture* TexturesContent::whiteTexture;
+
+Texture* TexturesContent::createWhiteTexture(RenderWindow* renderWindow)
+{
+	unsigned char* buffer = new unsigned char[3];
+	for (int x = 0; x < 3; x++)
+		buffer[x] = 255;
+
+	return new Texture(renderWindow->graphics, buffer, 1, 1);
+}
 
 void TexturesContent::load(RenderWindow* renderWindow)
 {
@@ -28,4 +38,5 @@ void TexturesContent::load(RenderWindow* renderWindow)
 	wheelRobotNormal = new Texture(renderWindow->graphics, (path + L"Models\\wheeled-robot\\textures\\DefaultMaterial_Normal_OpenGL.png").c_str());
 	bugAlbedo = new Texture(renderWindow->graphics, (path + L"Textures\\Graphosoma.png").c_str());
 	ghosthzAlbedo = new Texture(renderWindow->graphics, (path + L"Models\\ghosthz\\textures\\d9112f1021da1a04.png").c_str());
+	whiteTexture = createWhiteTexture(renderWindow);
 }

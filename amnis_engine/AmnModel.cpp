@@ -38,11 +38,11 @@ std::vector<Texture*> AmnModel::loadMaterialTextures(RenderWindow* const renderW
 
 		if (extension.compare("fbx") == 0)
 		{
-			path = directory.substr( 0, directory.find_last_of('\\'));
-			path = path.substr(0, path.find_last_of('\\')) + "\\textures\\";
+			path = directory.substr( 0, directory.find_last_of('\\')) + "\\";
+			//path = path.substr(0, path.find_last_of('\\')) + "\\textures\\";
 
 			std::string inputPath = str.C_Str();
-			inputPath = inputPath.substr(inputPath.find_last_of('\\') + 1, inputPath.size());
+			//inputPath = inputPath.substr(inputPath.find_last_of('\\') + 1, inputPath.size());
 			path += inputPath;
 		}
 		else
@@ -78,16 +78,26 @@ void AmnModel::draw(RenderTarget* renderTarget, RenderState renderState)
 
 void AmnModel::loadModel(RenderWindow* const renderWindow, std::string path, VertexShader* vertexShader, PixelShader* pixelShader)
 {
-
 	extension = path.substr(path.find_last_of('.') + 1, path.size());
-	Assimp::Importer importer;
-	const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs);
+	if (/*extension.compare("fbx") == 0*/false)
+	{
+		FbxLoader::loadFbxModel(renderWindow, path.c_str(), &meshes, vertexShader, pixelShader);
+	}
+	else
+	{
+		Assimp::Importer importer;
+		const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_ConvertToLeftHanded |
+			aiProcess_RemoveRedundantMaterials |
+			aiProcess_PreTransformVertices |
+			aiProcess_GenUVCoords |
+			aiProcess_OptimizeMeshes);
 
-	if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
-		throw;
-	//cout << "ERROR::ASSIMP::" << import.GetErrorString() << endl;
-	directory = path.substr(0, path.find_last_of('\\')) + "\\";
-	processNode(renderWindow, scene->mRootNode, scene, vertexShader, pixelShader);
+		if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
+			throw;
+		//cout << "ERROR::ASSIMP::" << import.GetErrorString() << endl;
+		directory = path.substr(0, path.find_last_of('\\')) + "\\";
+		processNode(renderWindow, scene->mRootNode, scene, vertexShader, pixelShader);
+	}
 }
 
 void AmnModel::processNode(RenderWindow* const renderWindow, aiNode* node, const aiScene* scene, VertexShader* vertexShader, PixelShader* pixelShader)
@@ -106,12 +116,25 @@ Mesh AmnModel::processMesh(RenderWindow* const renderWindow, const aiScene* scen
 	std::vector<Vertex> vertices;
 	std::vector<int> indices;
 
+	int upAxis = 0;
+	scene->mMetaData->Get<int>("UpAxis", upAxis);
+	int upAxisSign = 1;
+	scene->mMetaData->Get<int>("UpAxisSign", upAxisSign);
+
 	for (int i = 0; i < mesh->mNumVertices; i++)
 	{
 		Vertex vertex{};
 		vertex.pos.x = mesh->mVertices[i].x;
-		vertex.pos.y = mesh->mVertices[i].y;
-		vertex.pos.z = mesh->mVertices[i].z;
+		if (upAxis && false)
+		{
+			vertex.pos.y = -mesh->mVertices[i].z;
+			vertex.pos.z = mesh->mVertices[i].y;
+		}
+		else
+		{
+			vertex.pos.y = mesh->mVertices[i].y;
+			vertex.pos.z = mesh->mVertices[i].z;
+		}
 
 		if (mesh->mNormals)
 		{
@@ -184,6 +207,7 @@ Mesh AmnModel::processMesh(RenderWindow* const renderWindow, const aiScene* scen
 
 		std::vector<Texture*> texturesDiffuse = loadMaterialTextures(renderWindow, material, aiTextureType_DIFFUSE);
 		std::vector<Texture*> texturesBaseColor = loadMaterialTextures(renderWindow, material, aiTextureType_BASE_COLOR);
+		std::vector<Texture*> texturesNormals = loadMaterialTextures(renderWindow, material, aiTextureType_NORMALS);
 
 		if (texturesDiffuse.size() > 0)
 			outputMesh.textures[0] = texturesDiffuse[0];
@@ -191,6 +215,9 @@ Mesh AmnModel::processMesh(RenderWindow* const renderWindow, const aiScene* scen
 
 		if (texturesBaseColor.size() > 0)
 			outputMesh.textures[0] = texturesBaseColor[0];
+
+		if (texturesNormals.size() > 0)
+			outputMesh.textures[1] = texturesNormals[0];
 	}
 	return outputMesh;
 }

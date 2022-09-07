@@ -118,14 +118,14 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)FBX SDK\2020.2.1\include;$(SolutionDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
-      <AdditionalLibraryDirectories>$(SolutionDir)lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>assimp-vc143-mtd.lib;freetype.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)FBX SDK\2020.2.1\lib\vs2019\x64\debug;$(SolutionDir)lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>libfbxsdk.lib;libfbxsdk-md.lib;libfbxsdk-mt.lib;libxml2-md.lib;libxml2-mt.lib;zlib-md.lib;zlib-mt.lib;assimp-vc143-mtd.lib;%(AdditionalDependencies);freetype.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -161,6 +161,7 @@
     <ClInclude Include="CompositeCollider.h" />
     <ClInclude Include="Curve.h" />
     <ClInclude Include="Event.h" />
+    <ClInclude Include="FbxLoader.h" />
     <ClInclude Include="Font.h" />
     <ClInclude Include="IColliderable.h" />
     <ClInclude Include="InnerModelsContent.h" />
@@ -211,6 +212,7 @@
     <ClCompile Include="ConstantBuffersSystem.cpp" />
     <ClCompile Include="Curve.cpp" />
     <ClCompile Include="Event.cpp" />
+    <ClCompile Include="FbxLoader.cpp" />
     <ClCompile Include="Font.cpp" />
     <ClCompile Include="InnerModelsContent.cpp" />
     <ClCompile Include="InnerTexturesContent.cpp" />

@@ -14,7 +14,9 @@ public:
 	static Texture* wheelRobotNormal;
 	static Texture* bugAlbedo;
 	static Texture* ghosthzAlbedo;
+	static Texture* whiteTexture;
 
+	static Texture* createWhiteTexture(RenderWindow* renderWindow);
 	static void load(RenderWindow* renderWindow);
 };
 

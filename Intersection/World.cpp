@@ -49,7 +49,6 @@ World::World(RenderWindow* renderWindow, float sizeElementGridX, float sizeEleme
 
 	terrain = new Terrain(this);
 	gameClient = new GameClient(this);
-	boxColliderModel = new ModeledObject(renderWindow, ModelsContent::box);
 	//EnergyOrderer* e1 = new EnergyOrderer(this, 0, 0);
 	//EnergyOrderer* e2 = new EnergyOrderer(this, 5, 0);
 
@@ -137,22 +136,22 @@ void World::draw(RenderTarget* renderTarget, RenderState state)
 		{
 			buildings[x]->setPosition({ buildings[x]->getPosX() * grid->sizeElementX, 0, buildings[x]->getPosY() * grid->sizeElementY });
 
-			boxColliderModel->setPosition(buildings[x]->getPosition());
+		/*	boxColliderModel->setPosition(buildings[x]->getPosition());
 			boxColliderModel->setScale({ buildings[x]->width * grid->sizeElementX, 1, buildings[x]->height * grid->sizeElementY });
-			boxColliderModel->setOrigin({0, 0, -1});
+			boxColliderModel->setOrigin({0, 0, -1});*/
 			renderTarget->draw(buildings[x], state);
-			renderTarget->draw(boxColliderModel, state);
+			//renderTarget->draw(boxColliderModel, state);
 		}
 
 
-	for (int x = 0; x < entities.size(); x++)
-		if (entities[x] != nullptr)
-		{
-			boxColliderModel->setPosition(entities[x]->getPosition());
-			boxColliderModel->setScale(entities[x]->getScale());
-			boxColliderModel->setOrigin(entities[x]->getOrigin());
-			renderTarget->draw(boxColliderModel, state);
-		}
+	//for (int x = 0; x < entities.size(); x++)
+	//	if (entities[x] != nullptr)
+	//	{
+	//		//boxColliderModel->setPosition(entities[x]->getPosition());
+	//		//boxColliderModel->setScale(entities[x]->getScale());
+	//		//boxColliderModel->setOrigin(entities[x]->getOrigin());
+	//		//renderTarget->draw(boxColliderModel, state);
+	//	}
 
 	for(int x = 0; x < entities.size(); x++)
 		if (entities[x] != nullptr)

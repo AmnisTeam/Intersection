@@ -8,6 +8,9 @@ AmnModel* ModelsContent::plane;
 AmnModel* ModelsContent::tree;
 AmnModel* ModelsContent::ghosthz;
 AmnModel* ModelsContent::box;
+AmnModel* ModelsContent::dragon;
+AmnModel* ModelsContent::wolf;
+AmnModel* ModelsContent::knight;
 RenderWindow* ModelsContent::renderWindow;
 
 void ModelsContent::load(RenderWindow* renderWindow)
@@ -24,7 +27,14 @@ void ModelsContent::load(RenderWindow* renderWindow)
 	sphere = new AmnModel(renderWindow, (char*)(str + "Models\\sphere.obj").c_str(), renderWindow->graphics->defaultVS, renderWindow->graphics->defaultPS);
 	plane = new AmnModel(renderWindow, (char*)(str + "Models\\Plane.obj").c_str(), renderWindow->graphics->defaultVS, renderWindow->graphics->defaultPS);
 	tree = new AmnModel(renderWindow, (char*)(str + "Models\\Tree\\source\\tree2.fbx").c_str(), renderWindow->graphics->defaultVS, renderWindow->graphics->defaultPS);
+	tree->setScale({1 / 100.0, 1 / 100.0 , 1 / 100.0 });
+	
 	ghosthz = new AmnModel(renderWindow, (char*)(str + "Models\\ghosthz\\source\\ghosthz.fbx").c_str(), renderWindow->graphics->defaultVS, renderWindow->graphics->defaultPS);
+	ghosthz->setScale({ 1 / 100.0, 1 / 100.0 , 1 / 100.0 });
+
+	dragon = new AmnModel(renderWindow, (char*)(str + "Models\\dragon\\fbx\\Dragon 2.5_fbx.fbx").c_str(), renderWindow->graphics->defaultVS, renderWindow->graphics->defaultPS);
+	wolf = new AmnModel(renderWindow, (char*)(str + "Models\\Wolf\\Wolf.fbx").c_str(), renderWindow->graphics->defaultVS, renderWindow->graphics->defaultPS);
+	knight = new AmnModel(renderWindow, (char*)(str + "Models\\Knight\\source\\ggfggf.fbx").c_str(), renderWindow->graphics->defaultVS, renderWindow->graphics->defaultPS);
 
 	std::vector<Vertex> boxVertices;
 

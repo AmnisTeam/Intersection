@@ -12,6 +12,7 @@ RenderTarget::RenderTarget()
 void RenderTarget::draw(AmnModel* model, RenderState state)
 {
 	//model->draw(state.renderWindow->graphics, state.renderWindow->boundCamera, state.modelMatrix);
+	state.modelMatrix = model->modelMatrix * state.modelMatrix;
 	model->draw(this, state);
 }
 

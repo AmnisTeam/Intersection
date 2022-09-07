@@ -24,9 +24,7 @@ public:
 	std::vector<Building*> buildings;
 	std::vector<Entity*> entities;
 
-	ModeledObject* boxColliderModel;
-
-	World(RenderWindow* renderWindow, float sizeElementGridX, float sizeElementGridY);
+	World(RenderWindow* renderWindow, float sizeElementGridX, float sizeElementGridY); 
 
 	bool addBuilding(Building* building);
 	bool deleteBuilding(Building* building);
