@@ -81,7 +81,6 @@ void AmnModel::loadModel(RenderWindow* const renderWindow, std::string path, Ver
 	extension = path.substr(path.find_last_of('.') + 1, path.size());
 	if (/*extension.compare("fbx") == 0*/false)
 	{
-		FbxLoader::loadFbxModel(renderWindow, path.c_str(), &meshes, vertexShader, pixelShader);
 	}
 	else
 	{
