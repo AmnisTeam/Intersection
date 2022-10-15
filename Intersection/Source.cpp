@@ -219,6 +219,18 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLin
 	testSpirte->setShade(0);
 	testSpirte->setOverlay(0);
 
+	ModeledObject* trees[10];
+	for (int x = 0; x < 10; x++)
+	{
+		trees[x] = new ModeledObject(renderWindow, ModelsContent::treeModels[x]);
+		trees[x]->setTexture(TexturesContent::flatNormalMap, 1);
+		trees[x]->setPosition({ (float)x * 1, 0, 0 });
+		trees[x]->setScale({1/3.0f, 1 / 3.0f , 1 / 3.0f });
+	}
+
+	ModeledObject* bug = new ModeledObject(renderWindow, ModelsContent::bug);
+	bug->setPosition({-5, 0, 0});
+
 	float a = 0;
 	float k = 0;
 	while (renderWindow->isOpen)
@@ -262,6 +274,11 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLin
 
 	//	renderWindow->Draw(plane);
 		renderWindow->Draw(box);
+
+		for (int x = 0; x < 10; x++)
+			renderWindow->Draw(trees[x]);
+
+		renderWindow->Draw(bug);
 
 		world->update();
 		font.texture->bind(0);

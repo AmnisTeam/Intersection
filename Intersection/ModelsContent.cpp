@@ -11,7 +11,10 @@ AmnModel* ModelsContent::box;
 AmnModel* ModelsContent::dragon;
 AmnModel* ModelsContent::wolf;
 AmnModel* ModelsContent::knight;
+AmnModel* ModelsContent::bug;
 RenderWindow* ModelsContent::renderWindow;
+
+AmnModel* ModelsContent::treeModels[10];
 
 void ModelsContent::load(RenderWindow* renderWindow)
 {
@@ -35,6 +38,15 @@ void ModelsContent::load(RenderWindow* renderWindow)
 	dragon = new AmnModel(renderWindow, (char*)(str + "Models\\dragon\\fbx\\Dragon 2.5_fbx.fbx").c_str(), renderWindow->graphics->defaultVS, renderWindow->graphics->defaultPS);
 	wolf = new AmnModel(renderWindow, (char*)(str + "Models\\Wolf\\Wolf.fbx").c_str(), renderWindow->graphics->defaultVS, renderWindow->graphics->defaultPS);
 	knight = new AmnModel(renderWindow, (char*)(str + "Models\\Knight\\source\\ggfggf.fbx").c_str(), renderWindow->graphics->defaultVS, renderWindow->graphics->defaultPS);
+
+	for (int x = 0; x < 10; x++)
+	{
+		treeModels[x] = new AmnModel(renderWindow, (char*)("Models\\Trees" + std::string("\\Tree") + std::to_string(x + 1) + "\\tree" + std::to_string(x + 1) + ".fbx").c_str(), renderWindow->graphics->defaultVS, renderWindow->graphics->defaultPS);
+		treeModels[x]->setScale({1 / 100.0, 1 / 100.0 , 1 / 100.0});
+	}
+
+	bug = new AmnModel(renderWindow, (char*)"Models\\Bug\\Bug.fbx", renderWindow->graphics->defaultVS, renderWindow->graphics->defaultPS);
+	bug->setScale({ 0.01f, 0.01f, 0.01f});
 
 	std::vector<Vertex> boxVertices;
 

@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+#include <DirectXMath.h>
 #define PI 3.14159265359
 
 struct long2
@@ -235,17 +236,26 @@ public:
 
 	static float2 normalize(float2 vec)
 	{
-		return vec / getLength(vec);
+		if (vec.x == 0 && vec.y == 0)
+			return { 0, 0 };
+		else
+			return vec / getLength(vec);
 	}
 
 	static float3 normalize(float3 vec)
 	{
-		return vec / getLength(vec);
+		if (vec.x == 0 && vec.y == 0 && vec.z == 0)
+			return {0, 0, 0};
+		else
+			return vec / getLength(vec);
 	}
 
 	static double3 normalize(double3 vec)
 	{
-		return vec / getLength(vec);
+		if (vec.x == 0 && vec.y == 0 && vec.z == 0)
+			return { 0, 0, 0 };
+		else
+			return vec / getLength(vec);
 	}
 
 	static void setLength(float3* vec, float length)
@@ -402,6 +412,58 @@ public:
 	static float4 getColor(float4 color)
 	{
 		return float4{color.x / 255.0f, color.y / 255.0f, color.z / 255.0f, color.z / 255.0f };
+	}
+
+	static DirectX::XMMATRIX getRotation(float3 direction)
+	{
+		//float3 oyv = normalize(float3{ direction.x, 0, direction.z });
+		//float3 oxv = normalize(float3{ 0, direction.y, direction.z });
+		//float3 ozv = normalize(float3{ direction.x, direction.y, 0 });
+
+		//float angleY = ((getLength(oyv) != 0) ? (acos(oyv.x) * (oyv.z >= 0 ? 1 : -1)) : 0);
+		////float angleX = (getLength(oxv) != 0) ? (acos(oxv.z) * (oxv.y >= 0 ? 1 : -1)) : 0;
+		//float angleX = PI / 2 - acos(direction.y);
+		//float angleZ = (getLength(ozv) != 0) ? (acos(ozv.x) * (ozv.y >= 0 ? 1 : -1)) : 0;
+
+
+
+
+		//float phi = direction.y * PI / 2;
+		//float theta = acos(direction.x / (1 - direction.y));
+		//float tz = sin(theta) * (1 - (2 * phi) / PI);
+		//if (direction.z > tz - 0.01f && direction.z < tz + 0.01f)
+		//	theta = -theta;
+
+		//float3 v = direction;
+		//float3 p = {1, 0, 0};
+
+		//float b1 = 2 * atan(v.x / p.z);
+		//float b2 = -2 * atan(sqrt(p.z * p.z - v.x * v.x + p.x * p.x) / (v.x + p.x) - p.z / (v.x + p.x));
+		//float b3 = 2 * atan(sqrt(p.z * p.z - v.x * v.x + p.x * p.x) / (v.x + p.x) + p.z / (v.x + p.x))
+
+		//float a1 = -2 * atan(p.y / (p.x * sin(b1) - p.z * cos(b1)));
+
+		float b = asin(direction.y);
+		float a = acos(direction.x / cos(b));
+
+		if (sin(a) * cos(b) > direction.z - 0.001f && sin(a) * cos(b) < direction.z + 0.001f)
+			return DirectX::XMMatrixRotationY(-a) * DirectX::XMMatrixRotationZ(b) * DirectX::XMMatrixRotationY(a) * DirectX::XMMatrixRotationY(a);
+
+		a = -a;
+
+		if (sin(a) * cos(b) > direction.z - 0.001f && sin(a) * cos(b) < direction.z + 0.001f)
+			return DirectX::XMMatrixRotationY(-a) * DirectX::XMMatrixRotationZ(b) * DirectX::XMMatrixRotationY(a) * DirectX::XMMatrixRotationY(a);
+
+		b = PI - b;
+		a = acos(direction.x / cos(b));
+
+		if (sin(a) * cos(b) > direction.z - 0.001f && sin(a) * cos(b) < direction.z + 0.001f)
+			return DirectX::XMMatrixRotationY(-a) * DirectX::XMMatrixRotationZ(b) * DirectX::XMMatrixRotationY(a) * DirectX::XMMatrixRotationY(a);
+
+		a = -a;
+
+		if (sin(a) * cos(b) > direction.z - 0.001f && sin(a) * cos(b) < direction.z + 0.001f)
+			return DirectX::XMMatrixRotationY(-a) * DirectX::XMMatrixRotationZ(b) * DirectX::XMMatrixRotationY(a) * DirectX::XMMatrixRotationY(a);
 	}
 };
 
