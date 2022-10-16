@@ -146,10 +146,11 @@ void World::update()
 {
 	for (int x = 0; x < entities.size(); x++)
 		if (entities[x] != nullptr)
-		{
 			entities[x]->update();
-		}
 
+	for (auto i : buildings)
+		if (i != nullptr)
+			i->update();
 
 	decorAnimalBug1->update();
 	decorAnimalBug2->update();

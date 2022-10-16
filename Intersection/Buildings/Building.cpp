@@ -10,6 +10,7 @@ Building::Building(World* world, AmnModel* model, int health, int posX, int posY
 	this->height = height;
 	this->posX = posX;
 	this->posY = posY;
+	this->inv = new Inventory();
 
 	float3 origin = { 0, 0, -1 };
 	float3 position = { posX * world->grid->sizeElementX, 0, posY * world->grid->sizeElementY };
@@ -32,7 +33,12 @@ void Building::damage(float value) { health -= value; }
 bool Building::raycast(Ray ray, RayHitPoint* hitPoint, ColliderState colliderState)
 {
 	return boxCollider->raycast(ray, hitPoint, colliderState);
-};
+}
+
+void Building::update()
+{
+	inv->update();
+}
 
 void Building::draw(RenderTarget* renderTarget, RenderState state)
 {

@@ -2,13 +2,14 @@
 #include <Transformable.h>
 #include <IDrawable.h>
 #include <ModeledObject.h>
-#include "Inventory.h"
+#include "../inventory/Inventory.h"
 #include "../IClonable.h"
+#include "../IUpdateable.h"
 #include "BoxCollider.h"
 
 class World;
 
-class Building : public Transformable, public IDrawable, public IClonable, public IColliderable
+class Building : public Transformable, public IDrawable, public IClonable, public IColliderable, public IUpdatable
 {
 public:
 	int id;
@@ -36,5 +37,9 @@ public:
 
 	// Унаследовано через IColliderable
 	virtual bool raycast(Ray ray, RayHitPoint* hitPoint, ColliderState colliderState = ColliderState()) override;
+
+
+	// Унаследовано через IUpdatable
+	virtual void update() override;
 
 };

@@ -54,7 +54,7 @@
     <ClCompile Include="Buildings\Building.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="Buildings\Inventory.cpp">
+    <ClCompile Include="inventory\Inventory.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="World.cpp">
@@ -87,10 +87,16 @@
     <ClCompile Include="DecorAnimalBug.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="Buildings\Skill.cpp">
+    <ClCompile Include="inventory\skils\Skill.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="Buildings\SkillSpawner.cpp">
+    <ClCompile Include="inventory\skils\SkillSpawner.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="inventory\skils\SpawnTree.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="inventory\InventoryElement.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
@@ -143,13 +149,13 @@
     <ClInclude Include="Buildings\grids\GridElement.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="Buildings\InventoryItem.h">
+    <ClInclude Include="inventory\InventoryItem.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="Buildings\Building.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="Buildings\Inventory.h">
+    <ClInclude Include="inventory\Inventory.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="World.h">
@@ -194,10 +200,16 @@
     <ClInclude Include="DecorAnimalBug.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="Buildings\Skill.h">
+    <ClInclude Include="inventory\skils\Skill.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="Buildings\SkillSpawner.h">
+    <ClInclude Include="inventory\skils\SkillSpawner.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="inventory\skils\SpawnTree.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="inventory\InventoryElement.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>
