@@ -3,7 +3,8 @@
 
 EntityTree::EntityTree(World* world) : Entity(world, ModelsContent::dragon)
 {
-	model->setScale({1/10.0f, 1 / 10.0f , 1 / 10.0f });
+	model->setScale({1/20.0f, 1 / 20.0f , 1 / 20.0f });
+	setRotation({ 0, PI, 0 });
 }
 
 void EntityTree::draw(RenderTarget* renderTarget, RenderState state)

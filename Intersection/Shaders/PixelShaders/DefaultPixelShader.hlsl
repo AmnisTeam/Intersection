@@ -118,6 +118,7 @@ float4 main(Input input) : SV_TARGET
 	float4 ambient = float4(0.4f, 0.6f, 1.0f, 1.0f) * 0.4f;
 	//float4 ambient = float4(0.8f, 0.8f, 1, 1.0f) * 0.8f;
 
+	//float4 ambient = float4(0.4f, 0.6f, 1.0f, 1.0f) * 0.4f;
 	//float4 ambient = 0;
 	float4 diffusion = max(dot(normal.xyz, lightDirection.xyz), 0);
 	//float4 diffusion = 0;

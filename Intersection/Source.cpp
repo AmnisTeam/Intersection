@@ -231,6 +231,19 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLin
 	ModeledObject* bug = new ModeledObject(renderWindow, ModelsContent::bug);
 	bug->setPosition({-5, 0, 0});
 
+	ModeledObject* points[4];
+	for (int x = 0; x < 4; x++)
+	{
+		points[x] = new ModeledObject(renderWindow, ModelsContent::sphere);
+		//points[x]->setTexture(TexturesContent::stoneWallAlbedo, 0);
+		//points[x]->setScale({0.5f, 0.5f, 0.5f});
+	}
+
+	float3 center = {0, 0, 10};
+	float3 vecA = {1, 0, 1};
+	float3 vecB = {-1, 0, 1};
+	float t = 0;
+
 	float a = 0;
 	float k = 0;
 	while (renderWindow->isOpen)
@@ -248,7 +261,6 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLin
 		renderWindow->clear(float4{ 0, 0, 0, 0 });
 
 		toggleGroupe->update();
-
 
 		renderWindow->Draw(skySphere, false);
 		//renderWindow->Draw(sphere);
@@ -322,6 +334,17 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLin
 		renderWindow->Draw(mousePointLight);
 		renderWindow->Draw(world);
 
+		if (GetAsyncKeyState('R'))
+			t -= renderWindow->graphics->deltaTime;
+		if (GetAsyncKeyState('T'))
+			t += renderWindow->graphics->deltaTime;
+
+		points[0]->setPosition(center + vecA);
+		points[1]->setPosition(center + vecB);
+		points[2]->setPosition(center + mymath::circleLerp(vecA, vecB, t));
+		points[3]->setPosition(center);
+		for (int x = 0; x < 4; x++)
+			renderWindow->Draw(points[x]);
 
 
 		renderWindow->Draw(text);

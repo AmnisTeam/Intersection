@@ -38,11 +38,6 @@ void Entity::clearMoveTargets()
 	moveSystem_->clearMoveTargets();
 }
 
-void Entity::rotateViewDirectionTo(float3 dir)
-{
-	moveSystem_->rotateViewDirectionTo(dir);
-}
-
 void Entity::updateMovableSystem(double deltaTime)
 {
 	moveSystem_->updateMovableSystem(deltaTime);

@@ -80,6 +80,9 @@ World::World(RenderWindow* renderWindow, float sizeElementGridX, float sizeEleme
 	rightEntity->activateAttackBehavior(true);
 	rightEntity->setAttackTarget(leftEntity);
 	addEntity(rightEntity);
+
+	EntityTree* tree = new EntityTree(this);
+	addEntity(tree);
 }
 
 bool World::addBuilding(Building* building)

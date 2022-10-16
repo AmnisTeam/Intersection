@@ -31,11 +31,6 @@ void DecorAnimal::clearMoveTargets()
     moveSystem->clearMoveTargets();
 }
 
-void DecorAnimal::rotateViewDirectionTo(float3 dir)
-{
-    moveSystem->rotateViewDirectionTo(dir);
-}
-
 void DecorAnimal::updateMovableSystem(double deltaTime)
 {
     moveSystem->updateMovableSystem(deltaTime);

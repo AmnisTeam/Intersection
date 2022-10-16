@@ -22,8 +22,13 @@ void MoveSystem::clearMoveTargets()
 	moveTargets.clear();
 }
 
-void MoveSystem::rotateViewDirectionTo(float3 dir)
+void MoveSystem::rotateViewDirectionTo(float3 dir, double deltaTime)
 {
+	dir = mymath::normalize(dir);
+	float3 lookDir = parent_->getDirectionRotation();
+	float angle = acos(mymath::dot(dir, lookDir));
+	if (angle > turningSpeed * deltaTime * 2)
+		parent_->setDirectionRotation(mymath::circleLerp(lookDir, dir, turningSpeed * deltaTime));
 }
 
 void MoveSystem::updateMovableSystem(double deltaTime)
@@ -37,6 +42,8 @@ void MoveSystem::updateMovableSystem(double deltaTime)
 
 	velocity += movement;
 	
+	if(mymath::getLength(movement) != 0)
+		rotateViewDirectionTo(movement, deltaTime);
 	setOldPosition(parentPosition);
 	parent_->setPosition(parentPosition + velocity * deltaTime);
 	tempPosition_ = parent_->getPosition();
