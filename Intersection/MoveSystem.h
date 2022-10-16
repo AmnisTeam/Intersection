@@ -8,7 +8,6 @@ public:
 	virtual void goToPosition(float3 position) = 0;
 	virtual void addMoveTarget(float3 position) = 0;
 	virtual void clearMoveTargets() = 0;
-	virtual void rotateViewDirectionTo(float3 dir) = 0;
 	virtual void updateMovableSystem(double deltaTime) = 0;
 	virtual int getMoveTargetsCount() = 0;
 };
@@ -21,7 +20,7 @@ public:
 	float3 velocity = {};
 	float3 movement = {};
 	double moveSpeed = 2;
-	double turningSpeed = PI * 0.5;
+	double turningSpeed = PI * 2;
 
 	MoveSystem(Transformable* parent);
 
@@ -29,7 +28,7 @@ public:
 	virtual void goToPosition(float3 position) override;
 	virtual void addMoveTarget(float3 position) override;
 	virtual void clearMoveTargets() override;
-	virtual void rotateViewDirectionTo(float3 dir) override;
+	virtual void rotateViewDirectionTo(float3 dir, double deltaTime);
 	virtual void updateMovableSystem(double deltaTime) override;
 	virtual int getMoveTargetsCount() override;
 	

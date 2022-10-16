@@ -15,9 +15,7 @@ public:
 
 
 	virtual void update() override;
-	void draw(RenderTarget* renderTarget, RenderState state) override;
 
 private:
-	
-
+	float speedRotation = 2 * PI;
 };
