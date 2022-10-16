@@ -87,6 +87,12 @@
     <ClCompile Include="DecorAnimalBug.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="Buildings\Skill.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="Buildings\SkillSpawner.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shaders\VertexShaders\DefaultVertexShader.hlsl" />
@@ -186,6 +192,12 @@
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="DecorAnimalBug.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Buildings\Skill.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Buildings\SkillSpawner.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

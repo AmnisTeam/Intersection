@@ -180,6 +180,8 @@
     <ClCompile Include="entities\RegisterEntities.cpp" />
     <ClCompile Include="MoveSystem.cpp" />
     <ClCompile Include="ShadersContent.cpp" />
+    <ClCompile Include="Buildings\Skill.cpp" />
+    <ClCompile Include="Buildings\SkillSpawner.cpp" />
     <ClCompile Include="SkySphere.cpp" />
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="Sphere.cpp" />
@@ -299,6 +301,8 @@
     <ClInclude Include="entities\RegisterEntities.h" />
     <ClInclude Include="MoveSystem.h" />
     <ClInclude Include="ShadersContent.h" />
+    <ClInclude Include="Buildings\Skill.h" />
+    <ClInclude Include="Buildings\SkillSpawner.h" />
     <ClInclude Include="SkySphere.h" />
     <ClInclude Include="Sphere.h" />
     <ClInclude Include="Spherenic.h" />
