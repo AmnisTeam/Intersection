@@ -21,7 +21,7 @@ void GameClient::addChoosedObject(IColliderable* object)
 
 void GameClient::setBuilgingByMouse()
 {
-	if (world->renderWindow->window->rawMouseLeftButtonDown && idBuildingsToSet != -1)
+	if (/*world->renderWindow->window->rawMouseLeftButtonDown*/GetAsyncKeyState('R') && idBuildingsToSet != -1)
 	{
 		Ray ray = world->renderWindow->boundCamera->castRayFromMouse();
 
@@ -70,19 +70,25 @@ void GameClient::moveEntitiesByMouse()
 					int endX = (float)hitPoint.position.x / world->grid->sizeElementX;
 					int endZ = (float)hitPoint.position.z / world->grid->sizeElementY;
 
-					endX = hitPoint.position.x < 0 ? endX - 1 : endX;
-					endZ = hitPoint.position.z < 0 ? endZ - 1 : endZ;
-					endX -= 1;
-					endZ -= 1;
+					endX = hitPoint.position.x <= 0 ? endX - 1 : endX;
+					endZ = hitPoint.position.z <= 0 ? endZ - 1 : endZ;
 
-					int countGrids;
-					int2* path = world->grid->findPath(int2{ startX, startZ }, int2{ endX, endZ }, &countGrids);
+					endZ++;
 
-					//int countGrids;
-					//int2* path = world->grid->findPath(entityPosition, hitPoint.position, &countGrids);
+					GridElement* gridElement;
+					world->grid->getGridElement(endX, endZ, &gridElement);
 
-					for(int y = 0; y < countGrids; y++)
-						entity->addMoveTarget({(float)path[y].x * world->grid->sizeElementX, 0, (float)path[y].y * world->grid->sizeElementY });
+					if (gridElement != nullptr ? !gridElement->getObstacle() : true)
+					{
+						//int countGrids;
+						//float3* path = world->grid->findShortestPath(entityPosition, hitPoint.position, &countGrids);
+
+						int countGrids;
+						int2* path = world->grid->findPath(entityPosition, hitPoint.position, &countGrids);
+
+						for (int y = 0; y < countGrids; y++)
+							entity->addMoveTarget({ (float)path[y].x * world->grid->sizeElementX + world->grid->sizeElementX / 2, 0, (float)path[y].y * world->grid->sizeElementY - world->grid->sizeElementY / 2 });
+					}
 				}
 			}
 		}

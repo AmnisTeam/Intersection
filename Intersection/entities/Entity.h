@@ -16,6 +16,8 @@ public:
 	ModeledObject* model;
 	World* world;
 	BoxCollider* boxCollider;
+	float3 oldPosition;
+	float radiusCollision = 0.5f;
 	int id;
 	Entity(World* world, AmnModel* model);
 	virtual void update();
@@ -24,6 +26,7 @@ public:
 	void setAttackTarget(Entity* entity);
 	void activateAttackBehavior(bool state);
 	void updateAttackBehavior();
+	void collisionWithBuildings();
 
 	// Inherited via Transformable
 	virtual void setPosition(float3 position) override;
@@ -47,7 +50,6 @@ private:
 	bool activatedAttackBehavior = false;
 	float radiusOfPoint = 0.01f;
 	const double maxMoveSpeedToNotLoseVelocity = 900000;
-	float3 oldPosition;
 
 	//void setPositionWithoutSettingOldPosition(float3 position);
 };

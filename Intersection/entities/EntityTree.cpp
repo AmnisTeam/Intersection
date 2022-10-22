@@ -9,6 +9,7 @@ EntityTree::EntityTree(World* world) : Entity(world, ModelsContent::dragon)
 
 void EntityTree::draw(RenderTarget* renderTarget, RenderState state)
 {
+	state.modelMatrix = modelMatrix * state.modelMatrix;
 	Entity::draw(renderTarget, state);
 }
 

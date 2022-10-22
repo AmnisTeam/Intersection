@@ -222,7 +222,7 @@ int2* Grid::findPathInOneDirection(
 		for (int x = activeNode->x - 1; x <= activeNode->x + 1; x++)
 			for (int y = activeNode->y - 1; y <= activeNode->y + 1; y++)
 			{
-				if (!(x == activeNode->x && y == activeNode->y))
+				if (!(x == activeNode->x && y == activeNode->y) && id % 2 != 0)
 					if (pathNodes->find(getKey(x, y)) == pathNodes->end())
 					{
 						bool addNode = element.find(getKey(x, y)) == element.end();
@@ -370,6 +370,17 @@ int2* Grid::findPath(int2 point1, int2 point2, int* countGrids, int countStep)
 int2* Grid::findPath(float3 point1, float3 point2, int* countGrids, int countStep)
 {
 
+	int startX = floor((float)point1.x / sizeElementX);
+	int startZ = floor((float)point1.z / sizeElementY);
+
+	int endX = floor((float)point2.x / sizeElementX);
+	int endZ = floor((float)point2.z / sizeElementY);
+
+	return findPath(int2{ startX, startZ }, int2{ endX, endZ }, countGrids);
+}
+
+float3* Grid::findShortestPath(float3 point1, float3 point2, int* countGrids, int countStep)
+{
 	int startX = (float)point1.x / sizeElementX;
 	int startZ = (float)point1.z / sizeElementY;
 
@@ -377,13 +388,70 @@ int2* Grid::findPath(float3 point1, float3 point2, int* countGrids, int countSte
 	startZ = point2.z < 0 ? startZ - 1 : startZ;
 	startZ += 1;
 
-
 	int endX = (float)point2.x / sizeElementX;
 	int endZ = (float)point2.z / sizeElementY;
 
-	endX = point2.x < 0 ? endX - 1 : endX;
-	endZ = point2.z < 0 ? endZ - 1 : endZ;
-	endZ += 1;
+	endX = point2.x <= 0 ? endX - 1 : endX;
+	endZ = point2.z <= 0 ? endZ - 1 : endZ;
 
-	return findPath(int2{ startX, startZ }, int2{ endX, endZ }, countGrids);
+	endZ++;
+
+	int countCells;
+	int2* cellPath = findPath(float3{ (float)startX, 0, (float)startZ }, float3{ (float)endX, 0, (float)endZ }, &countCells, countStep);
+
+	for (int i = 0; i < countCells; i++)
+	{
+		int2 point = cellPath[i];
+		int p = 0;
+	}
+
+	std::vector<int2> path;
+	std::vector<int2> line;
+	for (int x = 0; x < countCells - 1; x++)
+	{
+		int2 p1 = cellPath[x];
+		path.push_back({});
+		int newId = x;
+		for (int y = x + 1; y < countCells; y++)
+		{
+			int2 p2 = cellPath[y];
+			int size = max(abs(p2.x - p1.x) + 1, abs(p2.y - p1.y) + 1);
+			if(line.size() < size)
+				line.resize(size);
+
+			mymath::restLine({ (float)p1.x, (float)p1.y }, { (float)p2.x, (float)p2.y }, line.data());
+			
+			bool canMove = true;
+			for (int z = 0; z < size; z++)
+			{
+				GridElement* gridElement;
+				getGridElement(line[z].x, line[z].y, &gridElement);
+				canMove = gridElement != nullptr ? !gridElement->getObstacle() : true;
+				if (!canMove) 
+					break;
+			}
+
+			if (canMove)
+			{
+				newId = y;
+				path[path.size() - 1] = p2;
+
+			}
+			else
+				break;
+		}
+
+		if (newId > x)
+			x = newId - 1;
+	}
+
+	float3* pathOut = new float3[path.size()];
+	for (int x = 0; x < path.size(); x++)
+		pathOut[x] = { (float)path[x].x, 0, (float)path[x].y};
+
+	pathOut[path.size() - 1] = point2;
+
+	*countGrids = path.size();
+
+	return pathOut;
 }

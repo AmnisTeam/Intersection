@@ -71,8 +71,8 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLin
 	Sphere* sphere = new Sphere(renderWindow);
 	sphere->setPosition(float3{ 0, 0, 1 });
 	ModeledObject* plane = new ModeledObject(renderWindow, ModelsContent::plane);
-	plane->setTexture(TexturesContent::stoneWallAlbedo, 0);
-	plane->setTexture(TexturesContent::stoneWallNormalMap, 1);
+	plane->setTexture(TexturesContent::grass, 0);
+	plane->setTexture(TexturesContent::grassNormal, 1);
 	plane->setScale({100, 1, 100});
 
 	ModeledObject* box = new ModeledObject(renderWindow, ModelsContent::box);
@@ -219,15 +219,6 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLin
 	testSpirte->setShade(0);
 	testSpirte->setOverlay(0);
 
-	ModeledObject* trees[10];
-	for (int x = 0; x < 10; x++)
-	{
-		trees[x] = new ModeledObject(renderWindow, ModelsContent::treeModels[x]);
-		trees[x]->setTexture(TexturesContent::flatNormalMap, 1);
-		trees[x]->setPosition({ (float)x * 1, 0, 0 });
-		trees[x]->setScale({1/3.0f, 1 / 3.0f , 1 / 3.0f });
-	}
-
 	ModeledObject* bug = new ModeledObject(renderWindow, ModelsContent::bug);
 	bug->setPosition({-5, 0, 0});
 
@@ -287,10 +278,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLin
 	//	renderWindow->Draw(plane);
 		renderWindow->Draw(box);
 
-		for (int x = 0; x < 10; x++)
-			renderWindow->Draw(trees[x]);
-
-		renderWindow->Draw(bug);
+		//renderWindow->Draw(bug);
 
 		world->update();
 		font.texture->bind(0);
@@ -334,30 +322,10 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLin
 		renderWindow->Draw(mousePointLight);
 		renderWindow->Draw(world);
 
-		if (GetAsyncKeyState('R'))
-			t -= renderWindow->graphics->deltaTime;
-		if (GetAsyncKeyState('T'))
-			t += renderWindow->graphics->deltaTime;
-
-		points[0]->setPosition(center + vecA);
-		points[1]->setPosition(center + vecB);
-		points[2]->setPosition(center + mymath::circleLerp(vecA, vecB, t));
-		points[3]->setPosition(center);
-		for (int x = 0; x < 4; x++)
-			renderWindow->Draw(points[x]);
-
-
 		renderWindow->Draw(text);
 		mainCamera->setPerspectiveCoof(1);
 
-
-		//testSquare->setAnchor(positionInfo->getAnchor());
-		//testSquare->setPivot(positionInfo->getPivot());
-		//testSquare->setSizeInPixels(positionInfo->getSizeInPixels());
-		//renderWindow->Draw(testSquare, false, false);
-
 		fpsCounter->text->setText("FPS: " + std::to_string(1 / renderWindow->graphics->deltaTime));
-		//fpsCounter->text->setText("FPS: " + std::to_string(renderWindow->window->wheelDelta));
 		renderWindow->Draw(fpsCounter, false, false);
 
 		positionInfo->text->setText("Position: "

@@ -49,5 +49,6 @@ public:
 		Node*& activeNode);
 	int2* findPath(int2 point1, int2 point2, int* countGrids, int countStep = 1000);
 	int2* findPath(float3 point1, float3 point2, int* countGrids, int countStep = 1000);
+	float3* findShortestPath(float3 point1, float3 point2, int* countGrids, int countStep = 1000);
 };
 

@@ -216,6 +216,51 @@ struct BazierPoint
 	float radius;
 };
 
+class FloatRect
+{
+public:
+	float2 position;
+	float2 size;
+
+	FloatRect(float2 position, float2 size)
+	{
+		this->position = position;
+		this->size = size;
+	}
+
+	FloatRect(float pX, float pY, float sizeX, float sizeY)
+	{
+		this->position = { pX, pY };
+		this->size = { sizeX, sizeY };
+	}
+
+	bool intersect(FloatRect& rect) const
+	{
+		if (position.x + size.x >= rect.position.x && position.x <= rect.position.x + rect.size.x)
+			if (position.y + size.y >= rect.position.y && position.y <= rect.position.y + rect.size.y)
+				return true;
+		return false;
+	}
+
+	void collision(float2 deltaPosition, FloatRect& rect)
+	{
+		float2 offset = {};
+		if (position.y + size.y < rect.position.y + deltaPosition.y)
+			offset.y = -deltaPosition.y;
+
+		if (position.y > rect.position.y + rect.size.y + deltaPosition.y)
+			offset.y = -deltaPosition.y;
+
+		if (position.x + size.x < rect.position.x + deltaPosition.x)
+			offset.x = -deltaPosition.x;
+
+		if (position.x > rect.position.x + rect.size.x + deltaPosition.x)
+			offset.x = -deltaPosition.x;
+
+		position += offset;
+	}
+};
+
 class mymath
 {
 public:
@@ -437,24 +482,6 @@ public:
 
 		float alpha = teta;
 		float beta = angle - alpha;
-			
-		//float dx = a.x * b.y - a.y * b.x;
-		//float rx = (b.y * cos(alpha) - a.y * cos(beta)) / dx;
-		//float lx = (a.y * b.z + b.y * a.z) / dx;
-
-		//float dy = a.y * b.x - a.x * b.y;
-		//float ry = (b.x * cos(alpha) - a.x * cos(beta)) / dy;
-		//float ly = (a.x * b.z - b.x * a.z) / dy;
-
-		//float A = lx * lx + ly * ly + 1;
-		//float B = -2 * (rx * lx + ry * ly);
-		//float C = rx * rx + ry * ry - 1;
-
-		//float cz = (-B + sqrt(B * B - 4 * A * C)) / (2 * A);
-		//float cx = rx - lx * cz;
-		//float cy = ry + ly * cz; 
-
-		//return { cx * lc, cy * lc, cz * lc };
 
 		float3 d = {a.y * b.z - a.z * b.y, a.z * b.x - a.x * b.z, a.x * b.y - a.y * b.x};
 		float detA = a.x * b.y * d.z + a.y * b.z * d.x + b.x * d.y * a.z - a.z * b.y * d.x - a.y * b.x * d.z - b.z * d.y * a.x;
@@ -462,6 +489,66 @@ public:
 		float cy = ((b.z * d.x - b.x * d.z) * cos(alpha) + (a.x * d.z - a.z * d.x) * cos(beta)) / detA;
 		float cz = ((b.x * d.y - b.y * d.x) * cos(alpha) + (a.y * d.x - a.x * d.y) * cos(beta)) / detA;
 		return { cx, cy, cz };
+	}
+
+	private:
+	struct restLineData { int2* path; int id; };
+	static void restLineAction(int x, int y, void* data)
+	{
+		int2* path = (int2*)data;
+		
+	}
+
+	public:
+	//Количество вызовов будет равно max(p2.x - p1.x + 1, p2.y - p1.y + 1)
+	static void restLine(float2 p1, float2 p2, int2* path)
+	{
+		int id = 0;
+		double deltaX = abs(p2.x - p1.x) + 1;
+		double deltaY = abs(p2.y - p1.y) + 1;
+		double k = deltaY < deltaX ? deltaY / deltaX : deltaX / deltaY;
+		int signX = p2.x - p1.x >= 0 ? 1 : -1;
+		int signY = p2.y - p1.y >= 0 ? 1 : -1;
+
+		if (deltaY < deltaX)
+		{
+			double y = 0;
+			for (int x = 0; x < (int)deltaX; x++)
+			{
+				float px = p1.x + x * signX;
+				float py = p1.y + y * signY;
+				path[id].x = px < 0 ? floor(px) : px;
+				path[id].y = py < 0 ? floor(py) : py;
+				y += k;
+				id++;
+			}
+		}
+		else
+		{
+			double x = 0;
+			for (int y = 0; y < (int)deltaY; y++)
+			{
+				float px = p1.x + x * signX;
+				float py = p1.y + y * signY;
+				path[id].x = px < 0 ? floor(px) : px;
+				path[id].y = py < 0 ? floor(py) : py;
+				x += k;
+				id++;
+			}
+		}
+	}
+
+	static int2 getGridId(float3 point, float2 sizeGrid)
+	{
+		int endX = (float)point.x / sizeGrid.x;
+		int endZ = (float)point.z / sizeGrid.y;
+
+		endX = point.x <= 0 ? endX - 1 : endX;
+		endZ = point.z <= 0 ? endZ - 1 : endZ;
+
+		endZ++;
+
+		return {endX, endZ};
 	}
 };
 

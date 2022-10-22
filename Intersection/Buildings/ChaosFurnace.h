@@ -5,7 +5,6 @@
 class ChaosFurnace : public Building
 {
 public:
-
 	ChaosFurnace(World* world, int posX, int posY);
 	virtual void* clone() override;
 };

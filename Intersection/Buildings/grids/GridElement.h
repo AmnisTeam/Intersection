@@ -5,6 +5,8 @@ class GridElement
 public:
 	GridElement();
 
+	static bool isWall(GridElement* gridElement);
+
 	void setBuilding(Building* building);
 	void setObstacle(bool haveObstacle);
 

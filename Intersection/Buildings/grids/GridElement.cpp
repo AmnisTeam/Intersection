@@ -4,6 +4,11 @@ GridElement::GridElement()
 {
 }
 
+bool GridElement::isWall(GridElement* gridElement)
+{
+	return gridElement == nullptr ? false : gridElement->getObstacle();
+}
+
 void GridElement::setBuilding(Building* building)
 {
 	this->building = building;

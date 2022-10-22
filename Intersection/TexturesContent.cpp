@@ -11,6 +11,11 @@ Texture* TexturesContent::wheelRobotNormal;
 Texture* TexturesContent::bugAlbedo;
 Texture* TexturesContent::ghosthzAlbedo;
 Texture* TexturesContent::whiteTexture;
+Texture* TexturesContent::grass;
+Texture* TexturesContent::grassNormal;
+Texture* TexturesContent::brick;
+Texture* TexturesContent::brickNormal;
+
 
 Texture* TexturesContent::createWhiteTexture(RenderWindow* renderWindow)
 {
@@ -39,4 +44,11 @@ void TexturesContent::load(RenderWindow* renderWindow)
 	bugAlbedo = new Texture(renderWindow->graphics, (path + L"Textures\\Graphosoma.png").c_str());
 	ghosthzAlbedo = new Texture(renderWindow->graphics, (path + L"Models\\ghosthz\\textures\\d9112f1021da1a04.png").c_str());
 	whiteTexture = createWhiteTexture(renderWindow);
+
+	grass = new Texture(renderWindow->graphics, (path + L"Textures\\Grass.png").c_str());
+	grassNormal = new Texture(renderWindow->graphics, (path + L"Textures\\GrassNormal.png").c_str());
+
+	brick = new Texture(renderWindow->graphics, (path + L"Textures\\Brick.tif").c_str());
+	brickNormal = new Texture(renderWindow->graphics, (path + L"Textures\\BrickNormal.tif").c_str());
+
 }

@@ -12,54 +12,28 @@ World::World(RenderWindow* renderWindow, float sizeElementGridX, float sizeEleme
 	decorAnimalBug2 = new DecorAnimalBug(this, float3{ -3,0,-3 }, 3);
 
 
-	grid->setObstacle(2, 1);
-	grid->setObstacle(3, 1);
-	grid->setObstacle(3, 2);
-
-	int countGrids;
-	int2 point1 = { 1, 2 };
-	int2 point2 = { 5, 2 };
-	int2* path = grid->findPath(point1, point2, &countGrids);
-
-	for (int x = 0; x < countGrids; x++)
-	{
-		int2 point = path[x];
-		int pointsdf = 0;
-	}
-
-	int k = 0;
-
-	//int2 startPoint = {100, 2};
-	//for(int x = startPoint.x - 2; x <= startPoint.x + 2; x++)
-	//	for(int y = startPoint.y - 2; y <= startPoint.y + 2; y++)
-	//		if(!(x == startPoint.x && y == startPoint.y))
-	//			grid->setObstacle(x, y);
-	//grid->setObstacle(2, 1);
-	//grid->setObstacle(3, 1);
-	//grid->setObstacle(3, 2);
-	//grid->setObstacle(4, 1);
-	//grid->setObstacle(5, 1);
-	//grid->setObstacle(6, 1);
-	//grid->setObstacle(4, 2);
-	//grid->setObstacle(6, 2);
-	//grid->setObstacle(4, 3);
-	//grid->setObstacle(5, 3);
-	//grid->setObstacle(6, 3);
-	//int countGrids;
-	//int2* path = grid->findPath({1, 2}, { 5, 2 }, &countGrids, 10);
-	//
-	//for (int x = 0; x < countGrids; x++)
-	//{
-	//	int2 point = path[x];
-	//	int point1 = 0;
-	//}
-
-
 	registerEntities = new RegisterEntities(this);
 	registerBuildings = new RegisterBuildings(this);
 
 	terrain = new Terrain(this);
 	gameClient = new GameClient(this);
+
+	grid->setObstacle(-1, 2);
+	grid->setObstacle(-1, 1);
+	grid->setObstacle(-1, 0);
+	grid->setObstacle(2, 2);
+	grid->setObstacle(2, 1);
+	grid->setObstacle(2, 0);
+
+	int countGrids;
+	int2* path = grid->findPath({ -1, 0, 3 }, {-1, 0, -1}, &countGrids);
+	for (int x = 0; x < countGrids; x++)
+	{
+		int2 p = path[x];
+		int point = 0;
+	}
+	int point2 = 0;
+
 	//EnergyOrderer* e1 = new EnergyOrderer(this, 0, 0);
 	//EnergyOrderer* e2 = new EnergyOrderer(this, 5, 0);
 	//addBuilding(e1);
@@ -68,18 +42,18 @@ World::World(RenderWindow* renderWindow, float sizeElementGridX, float sizeEleme
 	//tree->setPosition({1, 0, 2});
 	//addEntity(tree);
 
-	EntityTree* leftEntity = new EntityTree(this);
-	EntityTree* rightEntity = new EntityTree(this);
+	//EntityTree* leftEntity = new EntityTree(this);
+	//EntityTree* rightEntity = new EntityTree(this);
 
-	leftEntity->setPosition(float3{-5, 0, 0});
-	leftEntity->activateAttackBehavior(true);
-	leftEntity->setAttackTarget(rightEntity);
-	addEntity(leftEntity);
+	//leftEntity->setPosition(float3{-5, 0, 0});
+	//leftEntity->activateAttackBehavior(true);
+	//leftEntity->setAttackTarget(rightEntity);
+	//addEntity(leftEntity);
 
-	rightEntity->setPosition(float3{5, 0, 0});
-	rightEntity->activateAttackBehavior(true);
-	rightEntity->setAttackTarget(leftEntity);
-	addEntity(rightEntity);
+	//rightEntity->setPosition(float3{5, 0, 0});
+	//rightEntity->activateAttackBehavior(true);
+	//rightEntity->setAttackTarget(leftEntity);
+	//addEntity(rightEntity);
 
 	EntityTree* tree = new EntityTree(this);
 	addEntity(tree);
