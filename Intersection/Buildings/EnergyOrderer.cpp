@@ -1,7 +1,7 @@
 #include "EnergyOrderer.h"
 #include "../World.h"
 
-EnergyOrderer::EnergyOrderer(World* world, int posX, int posY) : Building(world, ModelsContent::tree, 1000, posX, posY, 1, 1)
+EnergyOrderer::EnergyOrderer(World* world, int posX, int posY) : Building(world, ModelsContent::tree, 1000, 100, posX, posY, 1, 1)
 {
 
 }

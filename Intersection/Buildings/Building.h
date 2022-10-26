@@ -6,23 +6,22 @@
 #include "../IClonable.h"
 #include "../IUpdateable.h"
 #include "BoxCollider.h"
+#include "../Healthable.h"
 
 class World;
 
-class Building : public Transformable, public IDrawable, public IClonable, public IColliderable, public IUpdatable
+class Building : public Healthable, public IDrawable, public IClonable, public IColliderable
 {
 public:
 	int id;
-	float health;
 	int width;
 	int height;
 	int posX;
 	int posY;
 	Inventory* inv;
 	ModeledObject* model;
-	World* world;
 	BoxCollider* boxCollider;
-	Building(World* world, AmnModel* model, int health, int posX, int posY, int width, int height);
+	Building(World* world, AmnModel* model, float health, float mana, int posX, int posY, int width, int height);
 	virtual void draw(RenderTarget* renderTarget, RenderState state) override;
 
 	int getWidth() const;
@@ -33,13 +32,16 @@ public:
 
 	Inventory* getInv() const;
 
-	void damage(float value);
-
 	// Унаследовано через IColliderable
 	virtual bool raycast(Ray ray, RayHitPoint* hitPoint, ColliderState colliderState = ColliderState()) override;
 
 
 	// Унаследовано через IUpdatable
 	virtual void update() override;
+
+
+	// Унаследовано через Healthable
+	virtual void death() override;
+
 
 };

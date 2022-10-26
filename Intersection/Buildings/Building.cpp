@@ -1,10 +1,9 @@
 #include "Building.h"
 #include "../World.h"
 
-Building::Building(World* world, AmnModel* model, int health, int posX, int posY, int width, int height)
+Building::Building(World* world, AmnModel* model, float health, float mana, int posX, int posY, int width, int height) : Healthable(world, health, mana)
 {
 	this->model = new ModeledObject(world->renderWindow, model);
-	this->world = world;
 	this->health = health;
 	this->width = width;
 	this->height = height;
@@ -28,8 +27,6 @@ float Building::getHealth() const { return health; }
 
 Inventory* Building::getInv() const { return inv; }
 
-void Building::damage(float value) { health -= value; }
-
 bool Building::raycast(Ray ray, RayHitPoint* hitPoint, ColliderState colliderState)
 {
 	return boxCollider->raycast(ray, hitPoint, colliderState);
@@ -37,7 +34,13 @@ bool Building::raycast(Ray ray, RayHitPoint* hitPoint, ColliderState colliderSta
 
 void Building::update()
 {
+	Healthable::update();
 	inv->update();
+}
+
+void Building::death()
+{
+	world->deleteBuilding(this);
 }
 
 void Building::draw(RenderTarget* renderTarget, RenderState state)

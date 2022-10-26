@@ -1,7 +1,8 @@
 #include "MoveSystem.h"
+#include "ObjectInWorld.h"
+#include "World.h"
 
-
-MoveSystem::MoveSystem(Transformable* parent)
+MoveSystem::MoveSystem(ObjectInWorld* parent)
 {
 	parent_ = parent;
 }
@@ -94,4 +95,15 @@ void MoveSystem::moveTo(float3 const position)
 int MoveSystem::getMoveTargetsCount()
 {
 	return moveTargets.size();
+}
+
+void MoveSystem::goToPositionAstar(float3 position)
+{
+	int countGrids;
+	float3* path = parent_->world->grid->findShortestPath(parent_->getPosition(), position, &countGrids);
+
+	for (int y = 0; y < countGrids; y++)
+		addMoveTarget({ (float)path[y].x, 0, (float)path[y].z });
+
+	delete path;
 }

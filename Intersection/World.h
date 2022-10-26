@@ -27,6 +27,9 @@ public:
 	std::vector<Building*> buildings;
 	std::vector<Entity*> entities;
 
+	std::vector<int> entityToDelete;
+	std::vector<int> buildingsToDelete;
+
 	World(RenderWindow* renderWindow, float sizeElementGridX, float sizeElementGridY); 
 
 	bool addBuilding(Building* building);
@@ -34,6 +37,8 @@ public:
 
 	bool addEntity(Entity* entity);
 	bool deleteEntity(Entity* entity);
+
+	void toDelete();
 
 	virtual void update();
 

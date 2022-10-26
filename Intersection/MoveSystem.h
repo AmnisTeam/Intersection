@@ -1,18 +1,17 @@
 #pragma once
-#include <Transformable.h>
+#include <mymath.h>
 #include <vector>
+
+class MoveSystem;
+class ObjectInWorld;
 
 class IMovable
 {
 public:
-	virtual void goToPosition(float3 position) = 0;
-	virtual void addMoveTarget(float3 position) = 0;
-	virtual void clearMoveTargets() = 0;
-	virtual void updateMovableSystem(double deltaTime) = 0;
-	virtual int getMoveTargetsCount() = 0;
+	virtual MoveSystem* getMoveSystem() = 0;
 };
 
-class MoveSystem : public IMovable
+class MoveSystem
 {
 public:
 	std::vector<float3> moveTargets;
@@ -22,19 +21,20 @@ public:
 	double moveSpeed = 2;
 	double turningSpeed = PI * 2;
 
-	MoveSystem(Transformable* parent);
+	MoveSystem(ObjectInWorld* parent);
 
 	// Унаследовано через IMovable
-	virtual void goToPosition(float3 position) override;
-	virtual void addMoveTarget(float3 position) override;
-	virtual void clearMoveTargets() override;
-	virtual void rotateViewDirectionTo(float3 dir, double deltaTime);
-	virtual void updateMovableSystem(double deltaTime) override;
-	virtual int getMoveTargetsCount() override;
+	void goToPosition(float3 position);
+	void addMoveTarget(float3 position);
+	void clearMoveTargets();
+	void rotateViewDirectionTo(float3 dir, double deltaTime);
+	void updateMovableSystem(double deltaTime);
+	int getMoveTargetsCount();
+	void goToPositionAstar(float3 position);
 	
 	void setOldPosition(float3 oldPosition);
 protected:
-	Transformable* parent_;
+	ObjectInWorld* parent_;
 	const float radiusOfPoint_ = 0.01f;
 	const double maxMoveSpeedToNotLoseVelocity_ = 900000;
 	float3 oldPosition_;

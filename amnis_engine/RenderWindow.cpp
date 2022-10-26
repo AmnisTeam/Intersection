@@ -105,7 +105,8 @@ void RenderWindow::endDeltaTime()
 {
 	auto end = std::chrono::steady_clock::now();
 	long long elapsedTimeNano = (double)std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count();
-	graphics->deltaTime = elapsedTimeNano * 0.000000001;
+	//graphics->deltaTime = elapsedTimeNano * 0.000000001;
+	graphics->deltaTime = 0.01;
 	window->wheelDelta = 0;
 }
 

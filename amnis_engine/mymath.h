@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include <DirectXMath.h>
+#include <vector>
 #define PI 3.14159265359
 
 struct long2
@@ -500,9 +501,10 @@ public:
 	}
 
 	public:
-	//Количество вызовов будет равно max(p2.x - p1.x + 1, p2.y - p1.y + 1)
-	static void restLine(float2 p1, float2 p2, int2* path)
+	//Количество вызовов будет равно max(p2.x - p1.x + 1, p2.y - p1.y + 1) * 3
+	static void restLine(float2 p1, float2 p2, std::vector<int2>& path, int* size)
 	{
+		*size = 0;
 		int id = 0;
 		double deltaX = abs(p2.x - p1.x) + 1;
 		double deltaY = abs(p2.y - p1.y) + 1;
@@ -517,10 +519,17 @@ public:
 			{
 				float px = p1.x + x * signX;
 				float py = p1.y + y * signY;
-				path[id].x = px < 0 ? floor(px) : px;
-				path[id].y = py < 0 ? floor(py) : py;
+				for (int i = -1; i <= 1; i++)
+				{
+					if (id >= path.size())
+						path.push_back({});
+
+					path[id].x = px < 0 ? floor(px) : px;
+					path[id].y = (py < 0 ? floor(py) : py) + i;
+					id++;
+					(*size)++;
+				}
 				y += k;
-				id++;
 			}
 		}
 		else
@@ -530,10 +539,17 @@ public:
 			{
 				float px = p1.x + x * signX;
 				float py = p1.y + y * signY;
-				path[id].x = px < 0 ? floor(px) : px;
-				path[id].y = py < 0 ? floor(py) : py;
+				for (int i = -1; i <= 1; i++)
+				{
+					if (id >= path.size())
+						path.push_back({});
+
+					path[id].x = (px < 0 ? floor(px) : px) + i;
+					path[id].y = py < 0 ? floor(py) : py;
+					id++;
+					(*size)++;
+				}
 				x += k;
-				id++;
 			}
 		}
 	}

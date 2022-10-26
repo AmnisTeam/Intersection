@@ -1,7 +1,7 @@
 #include "EntityTree.h"
 #include "../World.h"
 
-EntityTree::EntityTree(World* world) : Entity(world, ModelsContent::dragon)
+EntityTree::EntityTree(World* world) : Entity(world, ModelsContent::dragon, 100, 200)
 {
 	model->setScale({1/20.0f, 1 / 20.0f , 1 / 20.0f });
 	setRotation({ 0, PI, 0 });

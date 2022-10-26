@@ -18,21 +18,20 @@ World::World(RenderWindow* renderWindow, float sizeElementGridX, float sizeEleme
 	terrain = new Terrain(this);
 	gameClient = new GameClient(this);
 
-	grid->setObstacle(-1, 2);
-	grid->setObstacle(-1, 1);
-	grid->setObstacle(-1, 0);
-	grid->setObstacle(2, 2);
-	grid->setObstacle(2, 1);
-	grid->setObstacle(2, 0);
+	//grid->setObstacle(0, 3);
+	//grid->setObstacle(0, 2);
+	//grid->setObstacle(0, 1);
+	//grid->setObstacle(0, 0);
+	//grid->setObstacle(0, -1);
 
-	int countGrids;
-	int2* path = grid->findPath({ -1, 0, 3 }, {-1, 0, -1}, &countGrids);
-	for (int x = 0; x < countGrids; x++)
-	{
-		int2 p = path[x];
-		int point = 0;
-	}
-	int point2 = 0;
+	//int countGrids;
+	//float3* path = grid->findShortestPath({ -2, 0, 3 }, {2, 0, -3}, &countGrids);
+	//
+	//for (int x = 0; x < countGrids; x++)
+	//{
+	//	float3 p = path[x];
+	//	int point = 0;
+	//}
 
 	//EnergyOrderer* e1 = new EnergyOrderer(this, 0, 0);
 	//EnergyOrderer* e2 = new EnergyOrderer(this, 5, 0);
@@ -78,13 +77,11 @@ bool World::addBuilding(Building* building)
 
 bool World::deleteBuilding(Building* building)
 {
-	grid->unsetBuilding(building);
 	for (int x = 0; x < buildings.size(); x++)
 	{
 		if (buildings[x] == building)
 		{
-			buildings[x] = nullptr;
-			delete building;
+			buildingsToDelete.push_back(x);
 			return true;
 		}
 	}
@@ -111,12 +108,31 @@ bool World::deleteEntity(Entity* entity)
 	{
 		if (entities[x] == entity)
 		{
-			entities[x] = nullptr;
-			delete entity;
+			entityToDelete.push_back(x);
 			return true;
 		}
 	}
 	return false;
+}
+
+void World::toDelete()
+{
+	if (!entityToDelete.empty())
+		for (auto& x : entityToDelete)
+		{
+			delete entities[x];
+			entities[x] = entities.back();
+			entities.pop_back();
+		}
+
+	if (!buildingsToDelete.empty())
+		for (auto& x : buildingsToDelete)
+		{
+			grid->unsetBuilding(buildings[x]);
+			delete buildings[x];
+			buildings[x] = buildings.back();
+			buildings.pop_back();
+		}
 }
 
 void World::update()

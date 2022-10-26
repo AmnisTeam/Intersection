@@ -2,6 +2,7 @@
 #include "World.h"
 #include "Buildings/Building.h"
 #include "entities/EntityTree.h"
+#include "entities/commandSystem/commands/CommandMove.h"
 
 GameClient::GameClient(World* world)
 {
@@ -28,13 +29,13 @@ void GameClient::setBuilgingByMouse()
 		RayHitPoint hitPoint;
 		if (world->terrain->raycast(ray, &hitPoint))
 		{
-			int pX = (float)hitPoint.position.x / world->grid->sizeElementX;
-			int pZ = (float)hitPoint.position.z / world->grid->sizeElementY;
+			int pX = floor((float)hitPoint.position.x / world->grid->sizeElementX);
+			int pZ = floor((float)hitPoint.position.z / world->grid->sizeElementY);
 
-			pX = hitPoint.position.x < 0 ? pX - 1 : pX;
-			pZ = hitPoint.position.z < 0 ? pZ - 1 : pZ;
+			//pX = hitPoint.position.x < 0 ? pX - 1 : pX;
+			//pZ = hitPoint.position.z < 0 ? pZ - 1 : pZ;
 
-			pZ += 1;
+			pZ++;
 
 			Building* building = world->registerBuildings->createBuilding(idBuildingsToSet, pX, pZ);
 			world->addBuilding(building);
@@ -55,24 +56,32 @@ void GameClient::moveEntitiesByMouse()
 				RayHitPoint hitPoint;
 				if (world->terrain->raycast(ray, &hitPoint))
 				{
-					entity->clearMoveTargets();
+					//entity->clearMoveTargets();
 
 					float3 entityPosition = entity->getPosition();
 
-					int startX = (float)entityPosition.x / world->grid->sizeElementX;
-					int startZ = (float)entityPosition.z / world->grid->sizeElementY;
+					//int startX = (float)entityPosition.x / world->grid->sizeElementX;
+					//int startZ = (float)entityPosition.z / world->grid->sizeElementY;
 
-					startX = hitPoint.position.x < 0 ? startX - 1 : startX;
-					startZ = hitPoint.position.z < 0 ? startZ - 1 : startZ;
-					startZ += 1;
+					//startX = hitPoint.position.x < 0 ? startX - 1 : startX;
+					//startZ = hitPoint.position.z < 0 ? startZ - 1 : startZ;
+					//startZ += 1;
 
 
-					int endX = (float)hitPoint.position.x / world->grid->sizeElementX;
-					int endZ = (float)hitPoint.position.z / world->grid->sizeElementY;
+					//int endX = (float)hitPoint.position.x / world->grid->sizeElementX;
+					//int endZ = (float)hitPoint.position.z / world->grid->sizeElementY;
 
-					endX = hitPoint.position.x <= 0 ? endX - 1 : endX;
-					endZ = hitPoint.position.z <= 0 ? endZ - 1 : endZ;
+					//endX = hitPoint.position.x <= 0 ? endX - 1 : endX;
+					//endZ = hitPoint.position.z <= 0 ? endZ - 1 : endZ;
 
+					//endZ++;
+
+					int startX = floor((float)entityPosition.x / world->grid->sizeElementX);
+					int startZ = floor((float)entityPosition.z / world->grid->sizeElementY);
+
+					int endX = floor((float)hitPoint.position.x / world->grid->sizeElementX);
+					int endZ = floor((float)hitPoint.position.z / world->grid->sizeElementY);
+					startZ++;
 					endZ++;
 
 					GridElement* gridElement;
@@ -80,14 +89,15 @@ void GameClient::moveEntitiesByMouse()
 
 					if (gridElement != nullptr ? !gridElement->getObstacle() : true)
 					{
+						entity->addCommand(new CommandMove(hitPoint.position));
 						//int countGrids;
 						//float3* path = world->grid->findShortestPath(entityPosition, hitPoint.position, &countGrids);
 
-						int countGrids;
-						int2* path = world->grid->findPath(entityPosition, hitPoint.position, &countGrids);
+						////int countGrids;
+						////int2* path = world->grid->findPath(entityPosition, hitPoint.position, &countGrids);
 
-						for (int y = 0; y < countGrids; y++)
-							entity->addMoveTarget({ (float)path[y].x * world->grid->sizeElementX + world->grid->sizeElementX / 2, 0, (float)path[y].y * world->grid->sizeElementY - world->grid->sizeElementY / 2 });
+						//for (int y = 0; y < countGrids; y++)
+						//	entity->addMoveTarget({ (float)path[y].x/* * world->grid->sizeElementX + world->grid->sizeElementX / 2*/, 0, (float)path[y].z/* * world->grid->sizeElementY - world->grid->sizeElementY / 2*/ });
 					}
 				}
 			}

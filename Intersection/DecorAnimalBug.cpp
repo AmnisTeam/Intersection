@@ -29,10 +29,10 @@ void DecorAnimalBug::update()
 	timer += world->renderWindow->graphics->deltaTime;
 	k += 0.01f;
 
-	if (getMoveTargetsCount() == 0 && timer > 1) {
+	if (moveSystem->getMoveTargetsCount() == 0 && timer > 1) {
 		if ((rand() % 1000) / static_cast<float>(1000) < chanceStopBug)
 			timer = 0;
 		else
-			addMoveTarget(this->spotPosition_ + float3{ x,0,z });
+			moveSystem->addMoveTarget(this->spotPosition_ + float3{ x,0,z });
 	}
 }

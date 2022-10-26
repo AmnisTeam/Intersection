@@ -1,15 +1,19 @@
 #include "Entity.h"
 #include "../World.h"
 
-Entity::Entity(World* world, AmnModel* model)
+Entity::Entity(World* world, AmnModel* model, float health, float mana) : Commandable(world, health, mana)
 {
-	this->world = world;
 	this->model = new ModeledObject(world->renderWindow, model);
 	oldPosition = getPosition();
 	this->model->setTexture(TexturesContent::flatNormalMap, 1);
 
 	boxCollider = new BoxCollider(getOrigin(), getPosition(), getScale());
 	moveSystem_ = new MoveSystem(this);
+}
+
+MoveSystem* Entity::getMoveSystem()
+{
+	return moveSystem_;
 }
 
 bool Entity::raycast(Ray ray, RayHitPoint* hitPoint, ColliderState colliderState)
@@ -23,47 +27,13 @@ bool Entity::raycast(Ray ray, RayHitPoint* hitPoint, ColliderState colliderState
 //	boxCollider->setPosition(position);
 //}
 
-void Entity::goToPosition(float3 position)
-{
-	moveSystem_->goToPosition(position);
-}
-
-void Entity::addMoveTarget(float3 position)
-{
-	moveSystem_->addMoveTarget(position);
-}
-
-void Entity::clearMoveTargets()
-{
-	moveSystem_->clearMoveTargets();
-}
-
-void Entity::updateMovableSystem(double deltaTime)
-{
-	moveSystem_->updateMovableSystem(deltaTime);
-}
-
-int Entity::getMoveTargetsCount()
-{
-	return moveSystem_->getMoveTargetsCount();
-}
-
-void Entity::goToPositionAstar(float3 position)
-{
-	int nGrids;
-	int2* path = world->grid->findPath(getPosition(), position, &nGrids);
-
-	for (int i = 0; i < nGrids; i++)
-		addMoveTarget({ (float)path[i].x * world->grid->sizeElementX, 0, (float)path[i].y * world->grid->sizeElementY });
-}
-
 void Entity::update()
 {
+	Commandable::update();
 	oldPosition = getPosition();
-	if(activatedAttackBehavior)
-		updateAttackBehavior();
 
-	updateMovableSystem(world->renderWindow->graphics->deltaTime);
+	moveSystem_->updateMovableSystem(world->renderWindow->graphics->deltaTime);
+
 	setPosition(getPosition() + moveSystem_->velocity * world->renderWindow->graphics->deltaTime);
 	collisionWithBuildings();
 }
@@ -78,19 +48,9 @@ void Entity::setAttackTarget(Entity* entity)
 	attackTarget_ = entity;
 }
 
-void Entity::activateAttackBehavior(bool state)
+Entity::~Entity()
 {
-	activatedAttackBehavior = state;
-}
 
-void Entity::updateAttackBehavior()
-{
-	clearMoveTargets();
-	if (attackTarget_)
-	{
-		clearMoveTargets();
-		goToPosition(attackTarget_->getPosition());
-	}
 }
 
 void Entity::collisionWithBuildings()
@@ -105,7 +65,7 @@ void Entity::collisionWithBuildings()
 			if (GridElement::isWall(gridElement))
 			{
 				float radiusWall = world->grid->sizeElementX / 2;
-				float radiusEntity = /*radiusCollision*/ 0.5f;
+				float radiusEntity = radiusCollision;
 
 				float3 entityPosition = getPosition();
 				float2 wallCenter = {x * world->grid->sizeElementX + world->grid->sizeElementX / 2,
@@ -140,6 +100,11 @@ void Entity::collisionWithBuildings()
 			}
 
 		}
+}
+
+void Entity::death()
+{
+	world->deleteEntity(this);
 }
 
 void Entity::setPosition(float3 position)

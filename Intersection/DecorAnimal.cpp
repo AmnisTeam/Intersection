@@ -1,7 +1,7 @@
 #include "DecorAnimal.h"
 #include "World.h"
 
-DecorAnimal::DecorAnimal(World* world, AmnModel* model, float3 spotPosition, float radius)
+DecorAnimal::DecorAnimal(World* world, AmnModel* model, float3 spotPosition, float radius) : ObjectInWorld(world)
 {
     this->spotPosition_ = spotPosition;
     this->radius_ = radius;
@@ -16,32 +16,11 @@ void DecorAnimal::draw(RenderTarget* renderTarget, RenderState state)
     renderTarget->draw(model, state);
 }
 
-void DecorAnimal::goToPosition(float3 position)
-{
-    moveSystem->goToPosition(position);
-}
-
-void DecorAnimal::addMoveTarget(float3 position)
-{
-    moveSystem->addMoveTarget(position);
-}
-
-void DecorAnimal::clearMoveTargets()
-{
-    moveSystem->clearMoveTargets();
-}
-
-void DecorAnimal::updateMovableSystem(double deltaTime)
-{
-    moveSystem->updateMovableSystem(deltaTime);
-}
-
 void DecorAnimal::update()
 {
-    updateMovableSystem(world->renderWindow->graphics->deltaTime);
 }
 
-int DecorAnimal::getMoveTargetsCount()
+MoveSystem* DecorAnimal::getMoveSystem()
 {
-    return moveSystem->getMoveTargetsCount();
+    return moveSystem;
 }
