@@ -18,8 +18,6 @@ public:
 	Grid* grid;
 	GameClient* gameClient;
 	Terrain* terrain;
-	DecorAnimalBug* decorAnimalBug1;
-	DecorAnimalBug* decorAnimalBug2;
 
 	RegisterEntities* registerEntities;
 	RegisterBuildings* registerBuildings;

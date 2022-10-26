@@ -56,7 +56,8 @@ void GameClient::moveEntitiesByMouse()
 				RayHitPoint hitPoint;
 				if (world->terrain->raycast(ray, &hitPoint))
 				{
-					//entity->clearMoveTargets();
+					if (!world->renderWindow->window->getKeyState(VK_SHIFT))
+						entity->clearCommands();
 
 					float3 entityPosition = entity->getPosition();
 

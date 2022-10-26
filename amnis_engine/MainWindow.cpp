@@ -71,6 +71,13 @@ LRESULT MainWindow::handleMessage(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lP
                 freeCursor();
                 showCursor();
             }
+
+            isButtonPressed[wParam] = true;
+            break;
+        }
+        case WM_KEYUP:
+        {
+            isButtonPressed[wParam] = false;
             break;
         }
         case WM_MOUSEMOVE:
@@ -135,4 +142,9 @@ void MainWindow::hideCursor()
 void MainWindow::showCursor()
 {
     while (ShowCursor(true) <= 0);
+}
+
+bool MainWindow::getKeyState(char key)
+{
+    return isButtonPressed[key];
 }

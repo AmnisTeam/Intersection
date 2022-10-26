@@ -101,7 +101,7 @@ float3 myReflect(float3 i, float3 n)
 
 float4 main(Input input) : SV_TARGET
 {
-	float3 lightDirection = normalize(float3(0, 0.5f, 1));
+	float3 lightDirection = normalize(float3(0.5f, 1.0f, -0.2f));
 	float4 lightColor = float4(1, 1, 1, 1);
 	float3 viewDir = normalize(input.worldPos.xyz - input.camPos.xyz);
 	float4 specularColor = float4(1.0f, 1.0f, 1.0f, 1.0f);

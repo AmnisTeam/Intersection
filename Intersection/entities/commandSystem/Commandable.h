@@ -16,6 +16,7 @@ public:
 	void addCommand(Command* command);
 	void popCommand();
 	void toEndCommand();
+	void clearCommands();
 
 	// Унаследовано через IUpdatable
 	virtual void update() override;

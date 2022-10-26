@@ -8,6 +8,7 @@
 class MainWindow : public WindowBase
 {
 public:
+	bool isButtonPressed[256];
 	long2 rawMouseDelta;
 	bool rawMouseLeftButtonDown;
 	bool rawMouseRightButtonDown;
@@ -24,6 +25,7 @@ public:
 	DECL void freeCursor();
 	DECL void hideCursor();
 	DECL void showCursor();
+	DECL bool getKeyState(char key);
 private:
 	std::vector<char> rawInputBuffer;
 };

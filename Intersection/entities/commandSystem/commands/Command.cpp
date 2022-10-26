@@ -25,5 +25,5 @@ void Command::update()
 
 void Command::end()
 {
-	delete this;
+
 }

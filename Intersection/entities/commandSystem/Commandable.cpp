@@ -25,6 +25,15 @@ void Commandable::toEndCommand()
 	endCommand = true;
 }
 
+void Commandable::clearCommands()
+{
+	if (!commands.empty())
+		commands.front()->end();
+	for(auto& x : commands)
+		delete x;
+	commands.clear();
+}
+
 void Commandable::update()
 {
 	Healthable::update();
@@ -34,6 +43,7 @@ void Commandable::update()
 	if (endCommand)
 	{
 		commands.front()->end();
+		delete commands.front();
 		popCommand();
 		endCommand = false;
 	}

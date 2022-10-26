@@ -23,4 +23,5 @@ void CommandMove::update()
 void CommandMove::end()
 {
 	Command::end();
+	dynamic_cast<IMovable*>(commandable)->getMoveSystem()->clearMoveTargets();
 }

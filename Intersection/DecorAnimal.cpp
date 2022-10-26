@@ -18,6 +18,7 @@ void DecorAnimal::draw(RenderTarget* renderTarget, RenderState state)
 
 void DecorAnimal::update()
 {
+    moveSystem->updateMovableSystem(world->renderWindow->graphics->deltaTime);
 }
 
 MoveSystem* DecorAnimal::getMoveSystem()
