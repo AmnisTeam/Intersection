@@ -3,6 +3,7 @@
 #include "Buildings/Building.h"
 #include "entities/EntityTree.h"
 #include "entities/commandSystem/commands/CommandMove.h"
+#include "entities/commandSystem/commands/CommandMoveTo.h"
 
 GameClient::GameClient(World* world)
 {
@@ -48,34 +49,41 @@ void GameClient::moveEntitiesByMouse()
 	if (world->renderWindow->window->rawMouseRightButtonDown)
 	{
 		Ray ray = world->renderWindow->boundCamera->castRayFromMouse();
-		for (int x = 0; x < choosedObjects.size(); x++)
+		RayHitPoint hitPoint;
+		bool isTerrainCollide = world->terrain->raycast(ray, &hitPoint);
+		
+		Entity* entityCollide = nullptr;
+		RayHitPoint entityHitPoint;
+		for (Entity* entity : world->entities)
+			if(entity != nullptr)
+				if (entity->raycast(ray, &entityHitPoint))
+				{
+					entityCollide = entity;
+					break;
+				}
+
+		bool isEntityCollide = entityCollide != nullptr;
+
+		if (isEntityCollide)
 		{
-			Entity* entity = dynamic_cast<Entity*>(choosedObjects[x]);
-			if (entity)
+			for (int x = 0; x < choosedObjects.size(); x++)
 			{
-				RayHitPoint hitPoint;
-				if (world->terrain->raycast(ray, &hitPoint))
+				Entity* entity = dynamic_cast<Entity*>(choosedObjects[x]);
+				if(entity != entityCollide)
+					entity->addCommand(new CommandMoveTo(entityCollide, 2));
+			}
+		} 
+		else if (isTerrainCollide)
+		{
+			for (int x = 0; x < choosedObjects.size(); x++)
+			{
+				Entity* entity = dynamic_cast<Entity*>(choosedObjects[x]);
+				if (entity)
 				{
 					if (!world->renderWindow->window->getKeyState(VK_SHIFT))
 						entity->clearCommands();
 
 					float3 entityPosition = entity->getPosition();
-
-					//int startX = (float)entityPosition.x / world->grid->sizeElementX;
-					//int startZ = (float)entityPosition.z / world->grid->sizeElementY;
-
-					//startX = hitPoint.position.x < 0 ? startX - 1 : startX;
-					//startZ = hitPoint.position.z < 0 ? startZ - 1 : startZ;
-					//startZ += 1;
-
-
-					//int endX = (float)hitPoint.position.x / world->grid->sizeElementX;
-					//int endZ = (float)hitPoint.position.z / world->grid->sizeElementY;
-
-					//endX = hitPoint.position.x <= 0 ? endX - 1 : endX;
-					//endZ = hitPoint.position.z <= 0 ? endZ - 1 : endZ;
-
-					//endZ++;
 
 					int startX = floor((float)entityPosition.x / world->grid->sizeElementX);
 					int startZ = floor((float)entityPosition.z / world->grid->sizeElementY);
@@ -91,14 +99,6 @@ void GameClient::moveEntitiesByMouse()
 					if (gridElement != nullptr ? !gridElement->getObstacle() : true)
 					{
 						entity->addCommand(new CommandMove(hitPoint.position));
-						//int countGrids;
-						//float3* path = world->grid->findShortestPath(entityPosition, hitPoint.position, &countGrids);
-
-						////int countGrids;
-						////int2* path = world->grid->findPath(entityPosition, hitPoint.position, &countGrids);
-
-						//for (int y = 0; y < countGrids; y++)
-						//	entity->addMoveTarget({ (float)path[y].x/* * world->grid->sizeElementX + world->grid->sizeElementX / 2*/, 0, (float)path[y].z/* * world->grid->sizeElementY - world->grid->sizeElementY / 2*/ });
 					}
 				}
 			}
@@ -131,6 +131,8 @@ void GameClient::update()
 				RayHitPoint hitPoint;
 				if (choosable->raycast(ray, &hitPoint))
 				{
+					if (!world->renderWindow->window->getKeyState(VK_SHIFT))
+						choosedObjects.clear();
 					addChoosedObject(choosable);
 					if (!intersect)
 						intersect = true;

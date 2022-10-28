@@ -167,6 +167,7 @@
     <ClCompile Include="Buildings\Building.cpp" />
     <ClCompile Include="Buildings\ChaosFurnace.cpp" />
     <ClCompile Include="Buildings\EnergyOrderer.cpp" />
+    <ClCompile Include="entities\commandSystem\commands\CommandMoveTo.cpp" />
     <ClCompile Include="entities\commandSystem\Commandable.cpp" />
     <ClCompile Include="entities\commandSystem\commands\CommandMove.cpp" />
     <ClCompile Include="entities\commandSystem\commands\CommandAttack.cpp" />
@@ -293,6 +294,7 @@
     <ClInclude Include="Buildings\Building.h" />
     <ClInclude Include="Buildings\ChaosFurnace.h" />
     <ClInclude Include="Buildings\EnergyOrderer.h" />
+    <ClInclude Include="entities\commandSystem\commands\CommandMoveTo.h" />
     <ClInclude Include="entities\commandSystem\Commandable.h" />
     <ClInclude Include="entities\commandSystem\commands\CommandMove.h" />
     <ClInclude Include="entities\commandSystem\commands\CommandAttack.h" />

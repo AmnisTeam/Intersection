@@ -21,6 +21,7 @@ void MoveSystem::addMoveTarget(float3 position)
 void MoveSystem::clearMoveTargets()
 {
 	moveTargets.clear();
+	movement = {};
 }
 
 void MoveSystem::rotateViewDirectionTo(float3 dir, double deltaTime)

@@ -17,6 +17,10 @@ World::World(RenderWindow* renderWindow, float sizeElementGridX, float sizeEleme
 
 	EntityTree* tree = new EntityTree(this);
 	addEntity(tree);
+
+	EntityTree* tree1 = new EntityTree(this);
+	tree1->setPosition({5, 0, 0});
+	addEntity(tree1);
 }
 
 bool World::addBuilding(Building* building)

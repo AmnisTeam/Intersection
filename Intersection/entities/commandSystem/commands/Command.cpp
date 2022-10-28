@@ -8,6 +8,7 @@ Command::Command()
 
 Command::~Command()
 {
+
 }
 
 void Command::toEndCommand()

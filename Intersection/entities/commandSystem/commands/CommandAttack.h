@@ -1,11 +1,14 @@
 #pragma once
-#include "Command.h"
+#include "CommandMoveTo.h"
+#include <mymath.h>
 
-class CommandAttack : public Command
+class CommandAttack : public CommandMoveTo
 {
 public:
+	float3 targetPoint = {};
 
-	CommandAttack();
+	CommandAttack(ObjectInWorld* target, float toDistance);
+	CommandAttack(float3 target, float toDistance);
 
 	virtual void start() override;
 	virtual void update() override;
