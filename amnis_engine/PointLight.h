@@ -21,8 +21,8 @@ public:
 		bool turnedOn;
 	};
 	float kc = 1;
-	float kl = 0.014f;
-	float kq = 0.0007f;
+	float kl = 0.09f;
+	float kq = 0.032f;
 	float4 color = { 1, 1, 1, 1 };
 	bool turnedOn = true;
 

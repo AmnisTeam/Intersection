@@ -12,6 +12,7 @@ PixelShader* ShadersContent::onlyTexturePS;
 PixelShader* ShadersContent::TextPS;
 PixelShader* ShadersContent::colorPS;
 PixelShader* ShadersContent::UIElementPS;
+PixelShader* ShadersContent::PbrPS;
 
 void ShadersContent::load(RenderWindow* renderWindow)
 {
@@ -31,4 +32,5 @@ void ShadersContent::load(RenderWindow* renderWindow)
     TextPS = new PixelShader(renderWindow->graphics, L"Shaders//PixelShaders//TextPS.hlsl");
     colorPS = new PixelShader(renderWindow->graphics, L"Shaders//PixelShaders//ColorPS.hlsl");
     UIElementPS = new PixelShader(renderWindow->graphics, L"Shaders//PixelShaders//UIElementPS.hlsl");
+    PbrPS = new PixelShader(renderWindow->graphics, L"Shaders//PixelShaders//PbrPS.hlsl");
 }

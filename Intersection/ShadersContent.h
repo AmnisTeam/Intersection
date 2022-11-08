@@ -17,8 +17,8 @@ public:
 	static PixelShader* TextPS;
 	static PixelShader* colorPS;
 	static PixelShader* UIElementPS;
+	static PixelShader* PbrPS;
 
 	static void load(RenderWindow* renderWindow);
-
 };
 

@@ -137,6 +137,7 @@
     <FxCompile Include="Shaders\PixelShaders\TextPS.hlsl" />
     <FxCompile Include="Shaders\PixelShaders\ColorPS.hlsl" />
     <FxCompile Include="Shaders\PixelShaders\UIElementPS.hlsl" />
+    <FxCompile Include="Shaders\PixelShaders\PbrPS.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

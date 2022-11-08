@@ -28,6 +28,25 @@
 #include "UI/UIText.h"
 #include "UI/Sprite.h"
 
+void drawUI(RenderWindow* renderWindow, Camera* camer, UIText* fpsCounter)
+{
+	camer->setPerspectiveCoof(1);
+	fpsCounter->text->setText("FPS: " + std::to_string(1 / renderWindow->graphics->deltaTime));
+	renderWindow->Draw(fpsCounter, false, false);
+	camer->setPerspectiveCoof(0);
+}
+
+void prepDraw(RenderWindow* renderWindow, ID3D11BlendState* blendState)
+{
+	renderWindow->graphics->deviceCon->OMSetBlendState(blendState, nullptr, 0xFFFFFFFFu);
+	renderWindow->startDeltaTime();
+	renderWindow->dispatchEvents();
+	renderWindow->update();
+	renderWindow->setBackRenderTargetAndDepthStencil();
+	renderWindow->updatePointLights();
+	renderWindow->clear(float4{ 0, 0, 0, 0 });
+}
+
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLine, int nCmdShow){
 	RenderWindow* renderWindow = new RenderWindow();
 
@@ -42,7 +61,8 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLin
 
 	Font font = Font(renderWindow, ftLibrary, "fonts//Roboto-Regular.ttf");
 
-	mainCamera->position = { 0, 0, 0 };
+	mainCamera->position = { 0, 0, -2 };
+	mainCamera->moveSpeed = 3;
 
 	TexturesContent::load(renderWindow);
 	ShadersContent::load(renderWindow);
@@ -52,8 +72,20 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLin
 	UIElement::setStaticVertexAndPixelShaders(ShadersContent::defaultVS, ShadersContent::onlyTexturePS);
 
 	StrategyCamera* strategyCamera = new StrategyCamera(renderWindow, { 0, 10, 0 }, { 3.14 / 3, 0, 0 });
-	renderWindow->setCamera(strategyCamera);
+	renderWindow->setCamera(mainCamera);
 	World* world = new World(renderWindow, 1, 1);
+
+	PointLight* pointLight1 = new PointLight(renderWindow, ModelsContent::sphere);
+	pointLight1->setPosition({-10, 0, -10 });
+
+	PointLight* pointLight2 = new PointLight(renderWindow, ModelsContent::sphere);
+	pointLight2->setPosition({ -10, 10, -10 });
+
+	PointLight* pointLight3 = new PointLight(renderWindow, ModelsContent::sphere);
+	pointLight3->setPosition({ 10, 10, -10 });
+
+	PointLight* pointLight4 = new PointLight(renderWindow, ModelsContent::sphere);
+	pointLight4->setPosition({ 10, 0, -10 });
 
 	SkySphere* skySphere = new SkySphere(renderWindow, TexturesContent::textureSky);
 
@@ -83,67 +115,26 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLin
 	fpsCounter->setAnchor({ 0, 0 });
 	fpsCounter->setPivot({ 0, 0 });
 
-	UIText* positionInfo = new UIText(renderWindow, 256, ShadersContent::defaultVS, ShadersContent::TextPS);
-	positionInfo->text->setFont(&font);
-	positionInfo->text->setFontSize(13);
-	positionInfo->text->setAttachment(float2{0, 0.5f});
-	positionInfo->text->setTextOrigin(float2{0.1f, -0.2f});
-	positionInfo->setSizeInPixels(float2{400, 30});
-	positionInfo->setPositionInPixels(float2{0, 26});
-	positionInfo->setAnchor({ 0, 0 });
-	positionInfo->setPivot({ 0, 0 });
-
-	Text* text = new Text(renderWindow, 256, ShadersContent::defaultVS, ShadersContent::TextPS);
-	text->setFont(&font);
-	text->setText("Hello world!");
-	text->setStringsGap(0.5f);
-	text->setAttachment(float2{0.5f, 0.5f});
-
-
-	Sprite* testSpirte = new Sprite(renderWindow, TexturesContent::bugAlbedo, float4{ 0.45f, 0.45f, 0.55f, 0.55f }, ShadersContent::defaultVS, ShadersContent::UIElementPS);
-	testSpirte->overlayColor = {1, 0, 0, 1};
-	testSpirte->shadeColor = {0, 0, 1, 1};
-	testSpirte->setAnchor(float2{1, 0});
-	testSpirte->setPivot(float2{1, 0});
-	testSpirte->setShade(0);
-	testSpirte->setOverlay(0);
-
-	ModeledObject* bug = new ModeledObject(renderWindow, ModelsContent::bug);
-	bug->setPosition({-5, 0, 0});
+	ModeledObject* sphere1 = new ModeledObject(renderWindow, ModelsContent::sphere, 
+		ShadersContent::defaultVS, 
+		ShadersContent::PbrPS);
+	sphere1->setTexture(TexturesContent::stoneWallAlbedo, 0);
+	sphere1->setTexture(TexturesContent::flatNormalMap, 1);
 
 	while (renderWindow->isOpen)
 	{
-		renderWindow->graphics->deviceCon->OMSetBlendState(blendState, nullptr, 0xFFFFFFFFu);
-
-		renderWindow->startDeltaTime();
-		renderWindow->dispatchEvents();
-		renderWindow->update();
-		renderWindow->setBackRenderTargetAndDepthStencil();
-		renderWindow->updatePointLights();
-		renderWindow->clear(float4{ 0, 0, 0, 0 });
-
+		prepDraw(renderWindow, blendState);
 		renderWindow->Draw(skySphere, false);
 
-		world->update();
-		font.texture->bind(0);
+		renderWindow->Draw(sphere1);
 
-		renderWindow->Draw(world);
+		renderWindow->Draw(pointLight1);
+		renderWindow->Draw(pointLight2);
+		renderWindow->Draw(pointLight3);
+		renderWindow->Draw(pointLight4);
 
-		renderWindow->Draw(text);
-		mainCamera->setPerspectiveCoof(1);
+		drawUI(renderWindow, mainCamera, fpsCounter);
 
-		fpsCounter->text->setText("FPS: " + std::to_string(1 / renderWindow->graphics->deltaTime));
-		renderWindow->Draw(fpsCounter, false, false);
-
-		positionInfo->text->setText("Position: "
-			+ std::to_string(renderWindow->boundCamera->position.x) + " "
-			+ std::to_string(renderWindow->boundCamera->position.y) + " "
-			+ std::to_string(renderWindow->boundCamera->position.z)
-		);
-
-		renderWindow->Draw(positionInfo, false, false);
-
-		mainCamera->setPerspectiveCoof(0);
 		renderWindow->display();
 		renderWindow->endDeltaTime();
 	}
