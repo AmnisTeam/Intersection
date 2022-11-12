@@ -190,7 +190,7 @@ float2 Mouse::GetRawMouseDelta()
 	return r;
 }
 
-void Mouse::ResizeRawInputData(LPARAM lParam, UINT size) {
+void Mouse::ResizeRawInputData(LPARAM lParam, UINT &size) {
 	if (GetRawInputData((HRAWINPUT)lParam, RID_INPUT, nullptr, &size, sizeof(RAWINPUTHEADER)) == -1)
 		throw;
 	rawInputBuffer.resize(size);

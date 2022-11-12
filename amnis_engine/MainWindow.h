@@ -12,26 +12,26 @@ class MainWindow : public WindowBase
 public:
 	Keyboard keyboard;
 	Mouse mouse;
-	/*bool isButtonPressed[256];*/
-	/*long2 rawMouseDelta;
+	/*bool isButtonPressed[256];
+	long2 rawMouseDelta;
 	bool rawMouseLeftButtonDown;
 	bool rawMouseRightButtonDown;
 	bool rawMouseLeftButtonUp;
 	bool rawMouseRightButtonUp;
 	bool rawMouseRightButtonPressed;
-	bool rawMouseLeftButtonPressed;*/
-	/*float wheelDelta;
+	bool rawMouseLeftButtonPressed;
+	float wheelDelta;
 	float2 mousePos;*/
 	MainWindow();
 	DECL virtual LRESULT handleMessage(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) override;
 	virtual LPCWSTR getClassName() override { return L"MAIN_WINDOW";};
-	//DECL void activateCursor(bool state);
-	//DECL void confineCursor();
-	//DECL void freeCursor();
-	//DECL void hideCursor();
-	//DECL void showCursor();
-	//DECL bool getKeyState(char key);
+	/*DECL void activateCursor(bool state);
+	DECL void confineCursor();
+	DECL void freeCursor();
+	DECL void hideCursor();
+	DECL void showCursor();
+	DECL bool getKeyState(char key);
 private:
-	//std::vector<char> rawInputBuffer;
+	std::vector<char> rawInputBuffer;*/
 };
 

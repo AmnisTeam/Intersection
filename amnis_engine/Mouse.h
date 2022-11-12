@@ -89,9 +89,9 @@ public:
 
 	DECL void SetRawMouseDelta(float x, float y);
 	DECL float2 GetRawMouseDelta();
-	DECL void ResizeRawInputData(LPARAM lParam, UINT size);
+	DECL void ResizeRawInputData(LPARAM lParam, UINT &size);
 
-	bool rawMouseLButtonDown = false;
+	bool rawMouseLButtonDown = false;	//желательно добавить set/get
 	bool rawMouseRButtonDown = false;
 	bool rawMouseLButtonUp = false;
 	bool rawMouseRButtonUp = false;
