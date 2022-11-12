@@ -94,21 +94,21 @@ bool UIElement::getHover() const
 
 bool UIElement::getPressed() const
 {
-    if (getHover() && renderWindow->window->rawMouseLeftButtonPressed)
+    if (getHover() && renderWindow->window->mouse.rawMouseLButtonPressed)//rawMouseLeftButtonPressed
         return true;
     return false;
 }
 
 bool UIElement::onDown()
 {
-    if (getHover() && renderWindow->window->rawMouseLeftButtonDown)
+    if (getHover() && renderWindow->window->mouse.rawMouseLButtonDown)//rawMouseLeftButtonDown
         return true;
     return false;
 }
 
 bool UIElement::onUp()
 {
-    if (getHover() && renderWindow->window->rawMouseLeftButtonUp)
+    if (getHover() && renderWindow->window->mouse.rawMouseLButtonUp)//rawMouseLeftButtonUp
         return true;
     return false;
 }

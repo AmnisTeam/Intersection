@@ -9,10 +9,6 @@ class Mouse
 {
 	friend class MainWindow;
 public:
-	struct RawDelta
-	{
-		float x, y;
-	};
 	class Event
 	{
 	public:
@@ -66,7 +62,7 @@ public:
 	Mouse() = default;
 	Mouse(MainWindow *mainWindow);
 	DECL float2 GetPos() const;
-	DECL RawDelta ReadRawDelta();
+	DECL float2 ReadRawDelta();
 	DECL void SetWheelDelta(float delta);
 	DECL float GetWheelDelta();
 	DECL float GetPosX() const;
@@ -91,13 +87,22 @@ public:
 	DECL void setCursorState(bool isCursorCaptured);
 	DECL bool getCursorState() const;
 
+	DECL void SetRawMouseDelta(float x, float y);
+	DECL float2 GetRawMouseDelta();
+	DECL void ResizeRawInputData(LPARAM lParam, UINT size);
+
+	bool rawMouseLButtonDown = false;
+	bool rawMouseRButtonDown = false;
+	bool rawMouseLButtonUp = false;
+	bool rawMouseRButtonUp = false;
+	bool rawMouseRButtonPressed = false;
+	bool rawMouseLButtonPressed = false;
 
 private:
 	MainWindow* mainWindow;
 	DECL void OnMouseMove(float x, float y);
 	DECL void OnMouseLeave();
 	DECL void OnMouseEnter();
-	DECL void OnRawDelta(float dx, float dy);
 	DECL void OnLeftPressed(float x, float y);
 	DECL void OnLeftReleased(float x, float y);
 	DECL void OnRightPressed(float x, float y);
@@ -108,6 +113,7 @@ private:
 	DECL void ClearRawInputBuffer();
 	DECL void OnWheelDelta(float x, float y, float delta);
 
+
 private:
 	static constexpr unsigned int bufferSize = 16u;
 	float x = 0;
@@ -116,16 +122,12 @@ private:
 	bool rightIsPressed = false;
 	bool isCursorCaptured = true;
 
-	bool rawMouseLButtonDown = false;
-	bool rawMouseRButtonDown = false;
-	bool rawMouseLButtonUp = false;
-	bool rawMouseRButtonUp = false;
-	bool rawMouseRButtonPressed = false;
-	bool rawMouseLButtonPressed = false;
+	const RAWINPUT* rawInput;
 
 	bool isInWindow = false;
 	float wheelDelta = 0.0f;
 	bool rawEnabled = false;
 	std::queue<Event> buffer;
-	std::queue<RawDelta> rawDeltaBuffer;
+	std::queue<float2> rawDeltaBuffer;
+	std::vector<char> rawInputBuffer;
 };

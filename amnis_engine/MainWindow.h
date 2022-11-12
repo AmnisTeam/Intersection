@@ -13,13 +13,13 @@ public:
 	Keyboard keyboard;
 	Mouse mouse;
 	/*bool isButtonPressed[256];*/
-	long2 rawMouseDelta;
+	/*long2 rawMouseDelta;
 	bool rawMouseLeftButtonDown;
 	bool rawMouseRightButtonDown;
 	bool rawMouseLeftButtonUp;
 	bool rawMouseRightButtonUp;
 	bool rawMouseRightButtonPressed;
-	bool rawMouseLeftButtonPressed;
+	bool rawMouseLeftButtonPressed;*/
 	/*float wheelDelta;
 	float2 mousePos;*/
 	MainWindow();
@@ -32,6 +32,6 @@ public:
 	//DECL void showCursor();
 	//DECL bool getKeyState(char key);
 private:
-	std::vector<char> rawInputBuffer;
+	//std::vector<char> rawInputBuffer;
 };
 

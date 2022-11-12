@@ -17,41 +17,44 @@ LRESULT MainWindow::handleMessage(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lP
         UINT size;
         if (GetRawInputData((HRAWINPUT)lParam, RID_INPUT, nullptr, &size, sizeof(RAWINPUTHEADER)) == -1)
             throw;
-        rawInputBuffer.resize(size);
-        if (GetRawInputData((HRAWINPUT)lParam, RID_INPUT, rawInputBuffer.data(), &size, sizeof(RAWINPUTHEADER)) != size)
-            throw;
+        //rawInputBuffer.resize(size);
+        /*if (GetRawInputData((HRAWINPUT)lParam, RID_INPUT, rawInputBuffer.data(), &size, sizeof(RAWINPUTHEADER)) != size)
+            throw;*/
+        mouse.ResizeRawInputData(lParam, size);
 
-        const RAWINPUT* rawInput = (RAWINPUT*)rawInputBuffer.data();
-        if (rawInput->header.dwType == RIM_TYPEMOUSE)
+        //const RAWINPUT* rawInput = (RAWINPUT*)rawInputBuffer.data();
+        mouse.rawInput = (RAWINPUT*)mouse.rawInputBuffer.data();
+        if (mouse.rawInput->header.dwType == RIM_TYPEMOUSE)
         {
-            if (rawInput->data.mouse.lLastX != 0 || rawInput->data.mouse.lLastY != 0)
+            if (mouse.rawInput->data.mouse.lLastX != 0 || mouse.rawInput->data.mouse.lLastY != 0)
             {
-                rawMouseDelta.x += rawInput->data.mouse.lLastX;
-                rawMouseDelta.y += rawInput->data.mouse.lLastY;
+                //rawMouseDelta.x += rawInput->data.mouse.lLastX;
+                //rawMouseDelta.y += rawInput->data.mouse.lLastY;
+                mouse.SetRawMouseDelta(mouse.rawInput->data.mouse.lLastX, mouse.rawInput->data.mouse.lLastY);
             }
 
-            if (rawInput->data.mouse.usButtonFlags & RI_MOUSE_LEFT_BUTTON_DOWN)
+            if (mouse.rawInput->data.mouse.usButtonFlags & RI_MOUSE_LEFT_BUTTON_DOWN)
             {
-                rawMouseLeftButtonDown = true;
-                rawMouseLeftButtonPressed = true;
+                mouse.rawMouseLButtonDown = true;
+                mouse.rawMouseLButtonPressed = true;
             }
 
-            if (rawInput->data.mouse.usButtonFlags & RI_MOUSE_RIGHT_BUTTON_DOWN)
+            if (mouse.rawInput->data.mouse.usButtonFlags & RI_MOUSE_RIGHT_BUTTON_DOWN)
             {
-                rawMouseRightButtonDown = true;
-                rawMouseRightButtonPressed = true;
+                mouse.rawMouseRButtonDown = true;
+                mouse.rawMouseRButtonPressed = true;
             }
 
-            if (rawInput->data.mouse.usButtonFlags & RI_MOUSE_LEFT_BUTTON_UP)
+            if (mouse.rawInput->data.mouse.usButtonFlags & RI_MOUSE_LEFT_BUTTON_UP)
             {
-                rawMouseLeftButtonUp = true;
-                rawMouseLeftButtonPressed = false;
+                mouse.rawMouseLButtonUp = true;
+                mouse.rawMouseLButtonPressed = false;
             }
 
-            if (rawInput->data.mouse.usButtonFlags & RI_MOUSE_RIGHT_BUTTON_UP)
+            if (mouse.rawInput->data.mouse.usButtonFlags & RI_MOUSE_RIGHT_BUTTON_UP)
             {
-                rawMouseRightButtonUp = true;
-                rawMouseRightButtonPressed = false;
+                mouse.rawMouseRButtonUp = true;
+                mouse.rawMouseRButtonPressed = false;
             }
 
         }

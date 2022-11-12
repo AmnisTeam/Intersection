@@ -46,17 +46,6 @@ float2 Mouse::GetPos() const
 	return { x,y };
 }
 
-Mouse::RawDelta Mouse::ReadRawDelta()
-{
-	if (rawDeltaBuffer.empty())
-	{
-		return Mouse::RawDelta();
-	}
-	const RawDelta d = rawDeltaBuffer.front();
-	rawDeltaBuffer.pop();
-	return d;
-}
-
 void Mouse::SetWheelDelta(float delta)
 {
 	wheelDelta = delta;
@@ -184,6 +173,31 @@ bool Mouse::getCursorState() const
 	return isCursorCaptured;
 }
 
+void Mouse::SetRawMouseDelta(float x, float y)
+{
+	rawDeltaBuffer.push({ x,y });
+	ClearBuffer();
+}
+
+float2 Mouse::GetRawMouseDelta() 
+{
+	if (rawDeltaBuffer.empty())
+	{
+		return {0,0};
+	}
+	const float2 r = rawDeltaBuffer.front();
+	rawDeltaBuffer.pop();
+	return r;
+}
+
+void Mouse::ResizeRawInputData(LPARAM lParam, UINT size) {
+	if (GetRawInputData((HRAWINPUT)lParam, RID_INPUT, nullptr, &size, sizeof(RAWINPUTHEADER)) == -1)
+		throw;
+	rawInputBuffer.resize(size);
+	if (GetRawInputData((HRAWINPUT)lParam, RID_INPUT, rawInputBuffer.data(), &size, sizeof(RAWINPUTHEADER)) != size)
+		throw;
+}
+
 
 void Mouse::OnMouseMove(float newx, float newy)
 {
@@ -205,12 +219,6 @@ void Mouse::OnMouseEnter()
 {
 	isInWindow = true;
 	buffer.push(Mouse::Event(Mouse::Event::Type::Enter, *this));
-	ClearBuffer();
-}
-
-void Mouse::OnRawDelta(float dx, float dy)
-{
-	rawDeltaBuffer.push({ dx,dy });
 	ClearBuffer();
 }
 

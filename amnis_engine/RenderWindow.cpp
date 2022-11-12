@@ -57,11 +57,11 @@ void RenderWindow::Draw(IDrawable* object, bool depthStencilOn, bool viewMatrixO
 void RenderWindow::display()
 {
 	graphics->deviceCon->ClearDepthStencilView(graphics->depthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1, 0);
-	window->rawMouseDelta = {};
-	window->rawMouseLeftButtonDown = false;
-	window->rawMouseRightButtonDown = false;
-	window->rawMouseLeftButtonUp = false;
-	window->rawMouseRightButtonUp = false;
+	window->mouse.SetRawMouseDelta(0,0);//todo
+	window->mouse.rawMouseLButtonDown = false;
+	window->mouse.rawMouseRButtonDown = false;
+	window->mouse.rawMouseLButtonUp = false;
+	window->mouse.rawMouseRButtonUp = false;
 	graphics->swapChain->Present(0, 0);
 }
 

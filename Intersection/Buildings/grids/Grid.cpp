@@ -449,7 +449,8 @@ float3* Grid::findShortestPath(float3 point1, float3 point2, int* countGrids, in
 		pathOut[x] = { (float)path[x].x * sizeElementX + sizeElementX / 2, 0, (float)path[x].y * sizeElementY - sizeElementY / 2 };
 
 	//pathOut[0] = point1;
-	pathOut[path.size() - 1] = point2;
+	if (!path.empty())
+		pathOut[path.size() - 1] = point2;
 
 	*countGrids = path.size();
 

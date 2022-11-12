@@ -46,7 +46,7 @@ void GameClient::setBuilgingByMouse()
 
 void GameClient::moveEntitiesByMouse()
 {
-	if (world->renderWindow->window->rawMouseRightButtonDown)
+	if (world->renderWindow->window->mouse.rawMouseRButtonDown)//rawMouseRightButtonDown
 	{
 		Ray ray = world->renderWindow->boundCamera->castRayFromMouse();
 		RayHitPoint hitPoint;
@@ -108,7 +108,7 @@ void GameClient::moveEntitiesByMouse()
 
 void GameClient::update()
 {
-	if (world->renderWindow->window->rawMouseLeftButtonDown)
+	if (world->renderWindow->window->mouse.rawMouseLButtonDown)//rawMouseLeftButtonDown
 	{
 		bool intersect = false;
 		Ray ray = world->renderWindow->boundCamera->castRayFromMouse();

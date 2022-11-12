@@ -76,8 +76,9 @@ void Camera::responseInput(MainWindow* mainWindow)
 {
 	if (responded)
 	{
-		rotation.x += (double)mainWindow->rawMouseDelta.y * rotationSpeed * renderWindow->graphics->deltaTime;
-		rotation.y += (double)mainWindow->rawMouseDelta.x * rotationSpeed * renderWindow->graphics->deltaTime;
+		float2 rawMouseDelta = mainWindow->mouse.GetRawMouseDelta();
+		rotation.x += rawMouseDelta.y * rotationSpeed * renderWindow->graphics->deltaTime;//rawMouseDelta.y
+		rotation.y += rawMouseDelta.x * rotationSpeed * renderWindow->graphics->deltaTime;//rawMouseDelta.x
 
 		DirectX::XMVECTOR tangent = DirectX::XMVector3Transform(DirectX::XMVectorSet(0, 0, 1, 0), DirectX::XMMatrixRotationX(rotation.x) * DirectX::XMMatrixRotationY(rotation.y));
 		DirectX::XMVECTOR binormal = DirectX::XMVector3Transform(DirectX::XMVectorSet(1, 0, 0, 0), DirectX::XMMatrixRotationX(rotation.x) * DirectX::XMMatrixRotationY(rotation.y));
