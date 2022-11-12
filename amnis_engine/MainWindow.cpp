@@ -1,6 +1,13 @@
 #include "pch.h"
 #include "MainWindow.h"
 
+MainWindow::MainWindow()
+{
+    keyboard = Keyboard();
+    mouse = Mouse(this);
+    
+}
+
 LRESULT MainWindow::handleMessage(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
     switch (uMsg)
@@ -48,14 +55,6 @@ LRESULT MainWindow::handleMessage(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lP
             }
 
         }
-        /*else if (rawInput->header.dwType == RIM_TYPEKEYBOARD)
-        {
-            if (rawInput->data.keyboard.VKey == 'c')
-            {
-                confineCursor();
-                hideCursor();
-            }
-        }*/
         break;
     }
     //case WM_KEYDOWN:
@@ -84,14 +83,19 @@ LRESULT MainWindow::handleMessage(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lP
     //    isButtonPressed[wParam] = true;
     //    break;
     //}
+    case WM_SETFOCUS:
+    {
+        mouse.captureCursor(true);
+        break;
+    }
     case WM_KEYDOWN:
     {
         keyboard.OnKeyPressed(static_cast<unsigned char>(wParam));
-        if (keyboard.KeyIsPressed('C'))
-            activateCursor(true);
 
-        if (keyboard.KeyIsPressed(VK_ESCAPE))
-            activateCursor(false);
+        if (keyboard.KeyIsPressed(VK_ESCAPE) && !mouse.getCursorState())
+            mouse.captureCursor(true);
+        else if (keyboard.KeyIsPressed(VK_ESCAPE))
+            mouse.captureCursor(false);
 
         break;
     }
@@ -165,45 +169,45 @@ LRESULT MainWindow::handleMessage(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lP
     }
 }
 
-void MainWindow::activateCursor(bool state)
-{
-    if (state)
-    {
-        confineCursor();
-        hideCursor();
-    }
-    else
-    {
-        freeCursor();
-        showCursor();
-
-    }
-}
-
-void MainWindow::confineCursor()
-{
-    RECT rect;
-    GetClientRect(hwnd, &rect);
-    MapWindowPoints(hwnd, nullptr, (POINT*)&rect, 2);
-    ClipCursor(&rect);
-}
-
-void MainWindow::freeCursor()
-{
-    ClipCursor(nullptr);
-}
-
-void MainWindow::hideCursor()
-{
-    //while (ShowCursor(false) >= 0);
-}
-
-void MainWindow::showCursor()
-{
-    while (ShowCursor(true) <= 0);
-}
-
-bool MainWindow::getKeyState(char key)
-{
-    return keyboard.KeyIsPressed(key);
-}
+//void MainWindow::activateCursor(bool state)
+//{
+//    if (state)
+//    {
+//        confineCursor();
+//        hideCursor();
+//    }
+//    else
+//    {
+//        freeCursor();
+//        showCursor();
+//
+//    }
+//}
+//
+//void MainWindow::confineCursor()
+//{
+//    RECT rect;
+//    GetClientRect(hwnd, &rect);
+//    MapWindowPoints(hwnd, nullptr, (POINT*)&rect, 2);
+//    ClipCursor(&rect);
+//}
+//
+//void MainWindow::freeCursor()
+//{
+//    ClipCursor(nullptr);
+//}
+//
+//void MainWindow::hideCursor()
+//{
+//    //while (ShowCursor(false) >= 0);
+//}
+//
+//void MainWindow::showCursor()
+//{
+//    while (ShowCursor(true) <= 0);
+//}
+//
+//bool MainWindow::getKeyState(char key)
+//{
+//    return keyboard.KeyIsPressed(key);
+//}

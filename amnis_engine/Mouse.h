@@ -64,12 +64,15 @@ public:
 
 public:
 	Mouse() = default;
+	Mouse(MainWindow *mainWindow);
 	DECL float2 GetPos() const;
 	DECL RawDelta ReadRawDelta();
 	DECL void SetWheelDelta(float delta);
 	DECL float GetWheelDelta();
 	DECL float GetPosX() const;
 	DECL float GetPosY() const;
+	DECL void SetPosX(float x);
+	DECL void SetPosY(float y);
 	DECL bool IsInWindow() const;
 	DECL bool LeftIsPressed() const;
 	DECL bool RightIsPressed() const;
@@ -80,7 +83,17 @@ public:
 	DECL void DisableRaw();
 	DECL bool RawEnabled() const;
 
+	DECL void captureCursor(bool state);
+	DECL void confineCursor();
+	DECL void freeCursor();
+	DECL void hideCursor();
+	DECL void showCursor();
+	DECL void setCursorState(bool isCursorCaptured);
+	DECL bool getCursorState() const;
+
+
 private:
+	MainWindow* mainWindow;
 	DECL void OnMouseMove(float x, float y);
 	DECL void OnMouseLeave();
 	DECL void OnMouseEnter();
@@ -101,13 +114,14 @@ private:
 	float y = 0;
 	bool leftIsPressed = false;
 	bool rightIsPressed = false;
+	bool isCursorCaptured = true;
 
-	bool rawMouseLeftButtonDown = false;
-	bool rawMouseRightButtonDown = false;
-	bool rawMouseLeftButtonUp = false;
-	bool rawMouseRightButtonUp = false;
-	bool rawMouseRightButtonPressed = false;
-	bool rawMouseLeftButtonPressed = false;
+	bool rawMouseLButtonDown = false;
+	bool rawMouseRButtonDown = false;
+	bool rawMouseLButtonUp = false;
+	bool rawMouseRButtonUp = false;
+	bool rawMouseRButtonPressed = false;
+	bool rawMouseLButtonPressed = false;
 
 	bool isInWindow = false;
 	float wheelDelta = 0.0f;

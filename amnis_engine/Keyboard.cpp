@@ -86,6 +86,7 @@ bool Keyboard::AutorepeatIsEnabled() const
 	return autorepeatEnabled;
 }
 
+
 void Keyboard::OnKeyPressed(unsigned char keycode)
 {
 	keyStates[keycode] = true;

@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Mouse.h"
+#include "MainWindow.h"
 
 Mouse::Event::Type Mouse::Event::GetType() const
 {
@@ -35,6 +36,11 @@ bool Mouse::Event::RightIsPressed() const
 
 
 
+Mouse::Mouse(MainWindow *mainWindow)
+{
+	this->mainWindow = mainWindow;
+}
+
 float2 Mouse::GetPos() const
 {
 	return { x,y };
@@ -64,6 +70,16 @@ float Mouse::GetPosX() const
 float Mouse::GetPosY() const
 {
 	return y;
+}
+
+void Mouse::SetPosX(float x)
+{
+	this->x = x;
+}
+
+void Mouse::SetPosY(float y)
+{
+	this->y = y;
 }
 
 bool Mouse::IsInWindow() const
@@ -118,6 +134,56 @@ bool Mouse::RawEnabled() const
 {
 	return rawEnabled;
 }
+
+void Mouse::captureCursor(bool state)
+{
+	if (state)
+	{
+		confineCursor();
+		hideCursor();
+		isCursorCaptured = true;
+	}
+	else
+	{
+		freeCursor();
+		showCursor();
+		isCursorCaptured = false;
+	}
+}
+
+void Mouse::confineCursor()
+{
+	RECT rect;
+	GetClientRect(mainWindow->hwnd, &rect);
+	MapWindowPoints(mainWindow->hwnd, nullptr, (POINT*)&rect, 2);
+	ClipCursor(&rect);
+}
+
+void Mouse::freeCursor()
+{
+	ClipCursor(nullptr);
+}
+
+void Mouse::hideCursor()
+{
+	//while (ShowCursor(false) >= 0);
+}
+
+void Mouse::showCursor()
+{
+	while (ShowCursor(true) <= 0);
+}
+
+void Mouse::setCursorState(bool isCursorCaptured)
+{
+	this->isCursorCaptured = isCursorCaptured;
+}
+
+bool Mouse::getCursorState() const
+{
+	return isCursorCaptured;
+}
+
 
 void Mouse::OnMouseMove(float newx, float newy)
 {

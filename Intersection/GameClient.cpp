@@ -80,7 +80,7 @@ void GameClient::moveEntitiesByMouse()
 				Entity* entity = dynamic_cast<Entity*>(choosedObjects[x]);
 				if (entity)
 				{
-					if (!world->renderWindow->window->getKeyState(VK_SHIFT))
+					if (!world->renderWindow->window->keyboard.KeyIsPressed(VK_SHIFT))//getKeyState(VK_SHIFT)
 						entity->clearCommands();
 
 					float3 entityPosition = entity->getPosition();
@@ -131,7 +131,7 @@ void GameClient::update()
 				RayHitPoint hitPoint;
 				if (choosable->raycast(ray, &hitPoint))
 				{
-					if (!world->renderWindow->window->getKeyState(VK_SHIFT))
+					if (!world->renderWindow->window->keyboard.KeyIsPressed(VK_SHIFT))//getKeyState(VK_SHIFT)
 						choosedObjects.clear();
 					addChoosedObject(choosable);
 					if (!intersect)

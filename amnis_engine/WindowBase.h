@@ -5,7 +5,7 @@
 class WindowBase
 {
 public:
-    HWND hwnd;
+   HWND hwnd;
    DECL static LRESULT wndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
    DECL void create(
         LPCWSTR lpWindowName,

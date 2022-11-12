@@ -11,6 +11,8 @@ RenderWindow::RenderWindow()
 	graphics->initDepthStencil();
 	ShowWindow(window->hwnd, 1);
 
+	//window->mouse.activateCursor(true);
+
 	RAWINPUTDEVICE rid{};
 	rid.usUsagePage = 0x01;
 	rid.usUsage = 0x02;
