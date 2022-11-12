@@ -4,11 +4,15 @@
 #include "mymath.h"
 #include <vector>
 #include "decl.h"
+#include "Keyboard.h"
+#include "Mouse.h"
 
 class MainWindow : public WindowBase
 {
 public:
-	bool isButtonPressed[256];
+	Keyboard keyboard;
+	Mouse mouse;
+	/*bool isButtonPressed[256];*/
 	long2 rawMouseDelta;
 	bool rawMouseLeftButtonDown;
 	bool rawMouseRightButtonDown;
@@ -16,8 +20,8 @@ public:
 	bool rawMouseRightButtonUp;
 	bool rawMouseRightButtonPressed;
 	bool rawMouseLeftButtonPressed;
-	float wheelDelta;
-	float2 mousePos;
+	/*float wheelDelta;
+	float2 mousePos;*/
 	DECL virtual LRESULT handleMessage(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) override;
 	virtual LPCWSTR getClassName() override { return L"MAIN_WINDOW";};
 	DECL void activateCursor(bool state);

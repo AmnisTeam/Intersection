@@ -165,8 +165,8 @@ Ray Camera::castRay(float pX, float pY)
 
 	float3 normalizedMousePosition = float3
 	{
-	((renderWindow->window->mousePos.x / width) * 2 - 1) / aspect,
-	-((renderWindow->window->mousePos.y / height) * 2 - 1),
+	((renderWindow->window->mouse.GetPosX() / width) * 2 - 1) / aspect,
+	-((renderWindow->window->mouse.GetPosY() / height) * 2 - 1),
 	nearPlane
 	};
 
@@ -183,7 +183,7 @@ Ray Camera::castRay(float pX, float pY)
 Ray Camera::castRayFromMouse()
 {
 	Camera* camera = renderWindow->boundCamera;
-	float2 mousePos = renderWindow->window->mousePos;
+	float2 mousePos = renderWindow->window->mouse.GetPos();
 	Ray ray = camera->castRay(mousePos.x, mousePos.y);
 	return ray;
 }

@@ -29,25 +29,25 @@ void StrategyCamera::responseInput(MainWindow* mainWindow)
 	float tickIncreaseSpeed = (renderWindow->graphics->deltaTime / maxSpeedTime) * moveSpeed;
 	bool moved = false;
 
-	if (mainWindow->mousePos.x <= rect.left) // Left
-	{
+	if (mainWindow->mouse.GetPosX() <= rect.left) // Left
+	{//renderWindow->window->mouse.GetPosX()
 		velocity += { -tickIncreaseSpeed, 0, 0 };
 		moved = true;
 	}
 
-	if (mainWindow->mousePos.x >= rect.right - 1) // Right
+	if (mainWindow->mouse.GetPosX() >= rect.right - 1) // Right
 	{
 		velocity += { tickIncreaseSpeed, 0, 0 };
 		moved = true;
 	}
 
-	if (mainWindow->mousePos.y <= rect.top) // Top
+	if (mainWindow->mouse.GetPosY() <= rect.top) // Top
 	{
 		velocity += { 0, 0, tickIncreaseSpeed };
 		moved = true;
 	}
 
-	if (mainWindow->mousePos.y >= rect.bottom - 1) // Bottom
+	if (mainWindow->mouse.GetPosY() >= rect.bottom - 1) // Bottom
 	{
 		velocity += { 0, 0, -tickIncreaseSpeed };
 		moved = true;
@@ -71,9 +71,9 @@ void StrategyCamera::responseInput(MainWindow* mainWindow)
 	lookPoint += velocity * renderWindow->graphics->deltaTime;
 
 
-	if (renderWindow->window->wheelDelta != 0)
+	if (renderWindow->window->mouse.GetWheelDelta() != 0)
 	{
-		tempWheelDelta = renderWindow->window->wheelDelta > 0 ? 1 : -1;
+		tempWheelDelta = renderWindow->window->mouse.GetWheelDelta() > 0 ? 1 : -1;
 	}
 
 	velocityRotation = mymath::toValue(

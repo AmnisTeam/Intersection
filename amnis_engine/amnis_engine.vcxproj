@@ -165,6 +165,8 @@
     <ClInclude Include="IColliderable.h" />
     <ClInclude Include="InnerModelsContent.h" />
     <ClInclude Include="InnerTexturesContent.h" />
+    <ClInclude Include="Keyboard.h" />
+    <ClInclude Include="Mouse.h" />
     <ClInclude Include="UI\Sprite.h" />
     <ClInclude Include="Ray.h" />
     <ClInclude Include="text.h" />
@@ -214,6 +216,8 @@
     <ClCompile Include="Font.cpp" />
     <ClCompile Include="InnerModelsContent.cpp" />
     <ClCompile Include="InnerTexturesContent.cpp" />
+    <ClCompile Include="Keyboard.cpp" />
+    <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="UI\Sprite.cpp" />
     <ClCompile Include="text.cpp" />
     <ClCompile Include="UI\UIText.cpp" />

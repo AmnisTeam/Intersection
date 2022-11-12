@@ -75,7 +75,7 @@ float2 UIElement::getAnchor() const
 
 bool UIElement::getHover() const
 {
-    float2 mousePos = renderWindow->window->mousePos;
+    float2 mousePos = renderWindow->window->mouse.GetPos();
 
     float2 uiElementPos =  screenPosition;
     float2 uiElementSize = sizeInPixels;
