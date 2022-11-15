@@ -76,16 +76,20 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLin
 	World* world = new World(renderWindow, 1, 1);
 
 	PointLight* pointLight1 = new PointLight(renderWindow, ModelsContent::sphere);
-	pointLight1->setPosition({-10, 0, -10 });
+	//pointLight1->setPosition({-10, 0, -10 });
+	pointLight1->setPosition({-10, 0, 0 });
 
 	PointLight* pointLight2 = new PointLight(renderWindow, ModelsContent::sphere);
 	pointLight2->setPosition({ -10, 10, -10 });
+	pointLight2->turn(false);
 
 	PointLight* pointLight3 = new PointLight(renderWindow, ModelsContent::sphere);
 	pointLight3->setPosition({ 10, 10, -10 });
+	pointLight3->turn(false);
 
 	PointLight* pointLight4 = new PointLight(renderWindow, ModelsContent::sphere);
 	pointLight4->setPosition({ 10, 0, -10 });
+	pointLight4->turn(false);
 
 	SkySphere* skySphere = new SkySphere(renderWindow, TexturesContent::textureSky);
 
@@ -115,23 +119,24 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLin
 	fpsCounter->setAnchor({ 0, 0 });
 	fpsCounter->setPivot({ 0, 0 });
 
-	ModeledObject* sphere1 = new ModeledObject(renderWindow, ModelsContent::sphere, 
+	ModeledObject* sphere1 = new ModeledObject(renderWindow, ModelsContent::knight, 
 		ShadersContent::defaultVS, 
 		ShadersContent::PbrPS);
+	sphere1->setScale({ 0.05f, 0.05f, 0.05f });
 	sphere1->setTexture(TexturesContent::stoneWallAlbedo, 0);
 	sphere1->setTexture(TexturesContent::flatNormalMap, 1);
 
 	while (renderWindow->isOpen)
 	{
 		prepDraw(renderWindow, blendState);
-		renderWindow->Draw(skySphere, false);
+		//renderWindow->Draw(skySphere, false);
 
 		renderWindow->Draw(sphere1);
 
 		renderWindow->Draw(pointLight1);
-		renderWindow->Draw(pointLight2);
-		renderWindow->Draw(pointLight3);
-		renderWindow->Draw(pointLight4);
+		//renderWindow->Draw(pointLight2);
+		//renderWindow->Draw(pointLight3);
+		//renderWindow->Draw(pointLight4);
 
 		drawUI(renderWindow, mainCamera, fpsCounter);
 

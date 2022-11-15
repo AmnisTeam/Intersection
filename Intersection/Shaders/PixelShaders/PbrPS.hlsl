@@ -120,26 +120,40 @@ float4 main(Input input) : SV_TARGET
 
 	//float4 ambient = float4(0.4f, 0.6f, 1.0f, 1.0f) * 0.4f;
 	//float4 ambient = 0;
-	float4 diffusion = max(dot(normal.xyz, lightDirection.xyz), 0);
-	//float4 diffusion = 0;
+	//float4 diffusion = max(dot(normal.xyz, lightDirection.xyz), 0);
+	float4 diffusion = 0;
+	
+	//float4 aura = dot(normal.xyz, viewDir) * float4(0, 0, 1, 1);
+	
+	
+	
+	
+	
+	float4 aura = pow(1 - max(dot(normal.xyz, normalize(input.camPos.xyz - input.worldPos.xyz)), 0), 4) * float4(0.8, 0.8, 1, 1);
 
-	for (int i = 0; i < pointLightsCount; i++)
-	{
-		if (pointLights[i].turnedOn)
+	
+	//if (pow(1 - max(dot(normal.xyz, normalize(input.camPos.xyz - input.worldPos.xyz)), 0), 3.5) > 0.3)
+	//	aura = float4(0, 0, 1, 1);
+	
+		for (int i = 0; i < pointLightsCount; i++)
 		{
-			float3 direction = pointLights[i].position - input.worldPos.xyz;
-			float3 pointLightDir = normalize(direction);
-			float distance = length(direction);
+			if (pointLights[i].turnedOn)
+			{
+				float3 direction = pointLights[i].position - input.worldPos.xyz;
+				float3 pointLightDir = normalize(direction);
+				float distance = length(direction);
 
-			float k = 1.0 / (pointLights[i].kc + pointLights[i].kl * distance + pointLights[i].kq * pointLights[i].kq * distance);
+				float k = 1.0 / (pointLights[i].kc + pointLights[i].kl * distance + pointLights[i].kq * pointLights[i].kq * distance);
 
-			//specular += pow(max(dot(reflect(pointLightDir.xyz, normal.xyz), viewDir), 0), 32) * pointLights[i].color * k;
-			float3 medianVec = normalize((pointLightDir.xyz + viewDir));
-			specular += pow(dot(medianVec, normal.xyz), 32) * pointLights[i].color * k;
-			diffusion += max(dot(normal.xyz, pointLightDir), 0) * pointLights[i].color * k;
+				specular += pow(max(dot(reflect(pointLightDir.xyz, normal.xyz), viewDir), 0), 32) * pointLights[i].color * k;
+			//float3 medianVec = normalize((pointLightDir.xyz + viewDir));
+			//specular += pow(dot(medianVec, normal.xyz), 32) * pointLights[i].color * k;
+				diffusion += max(dot(normal.xyz, pointLightDir), 0) * pointLights[i].color * k;
+			}
 		}
-	}
 
-	return float4(diffusion.xyz * texColor.xyz + specular.xyz * texColor.xyz + ambient.xyz * texColor.xyz, 1); // For tranparency to work
+	return float4((diffusion.xyz * texColor.xyz + specular.xyz * texColor.xyz + ambient.xyz * texColor.xyz) * float3(0.6, 0.6, 0.8) + float3(0.1505, 0.15, 0.20) + aura.xyz
+	
+	, 1); // For tranparency to work
 	//return color; // For tranparency to work
 }
