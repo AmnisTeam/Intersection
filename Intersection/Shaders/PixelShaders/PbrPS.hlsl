@@ -133,7 +133,9 @@ float4 main(Input input) : SV_TARGET
 
 			float k = 1.0 / (pointLights[i].kc + pointLights[i].kl * distance + pointLights[i].kq * pointLights[i].kq * distance);
 
-			specular += pow(max(dot(reflect(pointLightDir.xyz, normal.xyz), viewDir), 0), 32) * pointLights[i].color * k;
+			//specular += pow(max(dot(reflect(pointLightDir.xyz, normal.xyz), viewDir), 0), 32) * pointLights[i].color * k;
+			float3 medianVec = normalize((pointLightDir.xyz + viewDir));
+			specular += pow(dot(medianVec, normal.xyz), 32) * pointLights[i].color * k;
 			diffusion += max(dot(normal.xyz, pointLightDir), 0) * pointLights[i].color * k;
 		}
 	}
