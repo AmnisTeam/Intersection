@@ -76,20 +76,20 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLin
 	World* world = new World(renderWindow, 1, 1);
 
 	PointLight* pointLight1 = new PointLight(renderWindow, ModelsContent::sphere);
-	//pointLight1->setPosition({-10, 0, -10 });
-	pointLight1->setPosition({-10, 0, 0 });
+	pointLight1->setPosition({-10, 0, -10 });
+	//pointLight1->setPosition({-10, 0, 0 });
 
 	PointLight* pointLight2 = new PointLight(renderWindow, ModelsContent::sphere);
 	pointLight2->setPosition({ -10, 10, -10 });
-	pointLight2->turn(false);
+	//pointLight2->turn(false);
 
 	PointLight* pointLight3 = new PointLight(renderWindow, ModelsContent::sphere);
 	pointLight3->setPosition({ 10, 10, -10 });
-	pointLight3->turn(false);
+	//pointLight3->turn(false);
 
 	PointLight* pointLight4 = new PointLight(renderWindow, ModelsContent::sphere);
 	pointLight4->setPosition({ 10, 0, -10 });
-	pointLight4->turn(false);
+	//pointLight4->turn(false);
 
 	SkySphere* skySphere = new SkySphere(renderWindow, TexturesContent::textureSky);
 
@@ -119,24 +119,99 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLin
 	fpsCounter->setAnchor({ 0, 0 });
 	fpsCounter->setPivot({ 0, 0 });
 
-	ModeledObject* sphere1 = new ModeledObject(renderWindow, ModelsContent::knight, 
+	ModeledObject* sphere1 = new ModeledObject(renderWindow, ModelsContent::sphere, 
 		ShadersContent::defaultVS, 
 		ShadersContent::PbrPS);
-	sphere1->setScale({ 0.05f, 0.05f, 0.05f });
+	//sphere1->setScale({ 0.05f, 0.05f, 0.05f });
 	sphere1->setTexture(TexturesContent::stoneWallAlbedo, 0);
-	sphere1->setTexture(TexturesContent::flatNormalMap, 1);
+	sphere1->setTexture(TexturesContent::stoneWallNormalMap, 1);
+
+	float roughness = 0.6f;
+	float metallic = 0.2f;
+
+	sphere1->constantBuffersSystem->PSAddValue(12, &roughness, "roughness", sizeof(roughness));
+	sphere1->constantBuffersSystem->PSAddValue(12, &metallic, "metallic", sizeof(float3));
+	sphere1->constantBuffersSystem->PSInit(12);
+
+
+	int spheresCountX = 7;
+	int spheresCountY = 7;
+	ModeledObject*** spheres = new ModeledObject**[spheresCountX];
+
+	for (int x = 0; x < spheresCountX; x++)
+		spheres[x] = new ModeledObject * [spheresCountY];
+		
+	for(int y = 0; y < spheresCountY; y++)
+		for (int x = 0; x < spheresCountX; x++)
+		{
+			spheres[x][y] = new ModeledObject(renderWindow, ModelsContent::sphere,
+				ShadersContent::defaultVS,
+				ShadersContent::PbrPS);
+			//spheres[x][y]->setScale({0.01, 0.01, 0.01});
+			spheres[x][y]->setTexture(TexturesContent::flatNormalMap, 0);
+			spheres[x][y]->setTexture(TexturesContent::flatNormalMap, 1);
+
+			float offset = 1;
+			float lengthX = offset * spheresCountX + spheresCountX * 1;
+			float lengthY = offset * spheresCountX + spheresCountY * 1;
+			float normalizedX = (float)x / spheresCountX;
+			float normalizedY = (float)y / spheresCountY;
+
+			spheres[x][y]->setPosition({ normalizedX * lengthX - lengthX * 0.5f, normalizedY * lengthY - lengthY * 0.5f, 0 });
+
+			float roughnessTemp = mymath::interpolate(0.04f, 1, normalizedX);
+			float metallicTemp = normalizedY;
+
+			spheres[x][y]->constantBuffersSystem->PSAddValue(12, &roughnessTemp, "roughness", sizeof(float));
+			spheres[x][y]->constantBuffersSystem->PSAddValue(12, &metallicTemp, "metallic", sizeof(float3));
+			spheres[x][y]->constantBuffersSystem->PSInit(12);
+		}
+
+	//for (int i = 0; i < spheresCount; i++) 
+	//{
+	//	spheres[i] = new ModeledObject(renderWindow, ModelsContent::sphere,
+	//		ShadersContent::defaultVS,
+	//		ShadersContent::PbrPS);
+	//	spheres[i]->setTexture(TexturesContent::stoneWallAlbedo, 0);
+	//	spheres[i]->setTexture(TexturesContent::flatNormalMap, 1);
+
+	//	float offset = 1;
+	//	float length = offset * spheresCount + spheresCount * spheres[i]->getScale().x;
+	//	float normalized = (float)i / spheresCount;
+
+	//	spheres[i]->setPosition({ normalized * length - length * 0.5f, 0, 0});
+
+	//	float roughnessTemp = (float)i / spheresCount;
+	//	float metallicTemp = 0.2f;
+
+	//	spheres[i]->constantBuffersSystem->PSAddValue(12, &roughnessTemp, "roughness", sizeof(float));
+	//	spheres[i]->constantBuffersSystem->PSAddValue(12, &metallicTemp, "metallic", sizeof(float3));
+	//	spheres[i]->constantBuffersSystem->PSInit(12);
+	//}
+
 
 	while (renderWindow->isOpen)
 	{
 		prepDraw(renderWindow, blendState);
 		//renderWindow->Draw(skySphere, false);
 
-		renderWindow->Draw(sphere1);
+		//renderWindow->Draw(sphere1);
+
+		//for (int i = 0; i < spheresCount; i++)
+		//{
+		//	renderWindow->Draw(spheres[i]);
+		//}
+
+		for (int y = 0; y < spheresCountY; y++)
+			for (int x = 0; x < spheresCountX; x++)
+			{
+				renderWindow->Draw(spheres[x][y]);
+			}
 
 		renderWindow->Draw(pointLight1);
-		//renderWindow->Draw(pointLight2);
-		//renderWindow->Draw(pointLight3);
-		//renderWindow->Draw(pointLight4);
+		renderWindow->Draw(pointLight2);
+		renderWindow->Draw(pointLight3);
+		renderWindow->Draw(pointLight4);
 
 		drawUI(renderWindow, mainCamera, fpsCounter);
 

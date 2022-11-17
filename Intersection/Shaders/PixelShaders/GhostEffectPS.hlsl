@@ -21,12 +21,6 @@ cbuffer sdfsdf : register(b11)
 	float4 color;
 };
 
-cbuffer constPbr : register(b12)
-{
-	float roughness;
-	float metallic;
-}
-
 Texture2D texture0 : register(t0);
 Texture2D normalMap : register(t1);
 Texture2D textureSky : register(t2);
@@ -105,76 +99,23 @@ float3 myReflect(float3 i, float3 n)
 	return i - n * dot(i, n);
 }
 
-
-//const float PI = 3.14; // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-float DistributionGGX(float3 N, float3 H, float roughness)
-{
-	const float PI = 3.14159265359;
-	float a = roughness * roughness;
-	float a2 = a * a;
-	float NdotH = max(dot(N, H), 0.0);
-	float NdotH2 = NdotH * NdotH;
-	
-	float num = a2;
-	float denom = (NdotH2 * (a2 - 1.0) + 1.0);
-	denom = PI * denom * denom;
-	
-	return num / denom;
-}
-
-float GeometrySchlickGGX(float NdotV, float roughness)
-{
-	float r = (roughness + 1.0);
-	float k = (r * r) / 8.0;
-
-	float num = NdotV;
-	float denom = NdotV * (1.0 - k) + k;
-	
-	return num / denom;
-}
-
-float GeometrySmith(float3 N, float3 V, float3 L, float roughness)
-{
-	float NdotV = max(dot(N, V), 0.0);
-	float NdotL = max(dot(N, L), 0.0);
-	float ggx2 = GeometrySchlickGGX(NdotV, roughness);
-	float ggx1 = GeometrySchlickGGX(NdotL, roughness);
-	
-	return ggx1 * ggx2;
-}
-
-float3 fresnelSchlick(float cosTheta, float3 F0)
-{
-	return F0 + (1.0 - F0) * pow(1.0 - cosTheta, 5.0);
-}
-
-
 float4 main(Input input) : SV_TARGET
 {
-	const float PI = 3.14;
-	
-	//float metallic = 0;
-	//float roughness = 0.3f;
-
-	
 	float3 lightDirection = normalize(float3(0.5f, 1.0f, -0.2f));
 	float4 lightColor = float4(1, 1, 1, 1);
-	float3 viewDir = normalize(input.camPos.xyz - input.worldPos.xyz);
+	float3 viewDir = normalize(input.worldPos.xyz - input.camPos.xyz);
 	float4 specularColor = float4(1.0f, 1.0f, 1.0f, 1.0f);
 
 	float3 normalMapColor = normalMap.Sample(samplerState, input.texCoord.xy) * 2.0f - 1.0f;
 	float3 normal = normalize(normalMapColor.x * normalize(input.bitangent.xyz) + normalMapColor.y * normalize(input.tangent.xyz) + normalMapColor.z * normalize(input.normal.xyz));
 	//float3 normal = input.normal.xyz;
 
-	//float4 albedo = texture0.Sample(samplerState, input.texCoord.xy);
-	float4 albedo = float4(0, 0, 1, 1);
+	float4 texColor = texture0.Sample(samplerState, input.texCoord.xy);
 	//float4 texColor = float4(1, 1, 1, 1);
 	float4 specular = pow(max(dot(reflect(lightDirection.xyz, normal.xyz), viewDir), 0), 32) * specularColor;
 	//float4 specular = 0;
 
-	//float4 ambient = 0;
-	//float4 ambient = float4(0.4f, 0.6f, 1.0f, 1.0f) * 0.4f;
+	float4 ambient = float4(0.4f, 0.6f, 1.0f, 1.0f) * 0.4f;
 	//float4 ambient = float4(0.8f, 0.8f, 1, 1.0f) * 0.8f;
 
 	//float4 ambient = float4(0.4f, 0.6f, 1.0f, 1.0f) * 0.4f;
@@ -191,14 +132,8 @@ float4 main(Input input) : SV_TARGET
 	float4 aura = pow(1 - max(dot(normal.xyz, normalize(input.camPos.xyz - input.worldPos.xyz)), 0), 4) * float4(0.8, 0.8, 1, 1);
 
 	
-	float4 Lo = float4(0, 0, 0, 1);
-	
 	//if (pow(1 - max(dot(normal.xyz, normalize(input.camPos.xyz - input.worldPos.xyz)), 0), 3.5) > 0.3)
 	//	aura = float4(0, 0, 1, 1);
-	
-	float4 F0 = 0.04;
-	//F0 = F0 + (albedo - F0) * metallic;
-	F0 = lerp(F0, albedo, metallic);
 	
 	for (int i = 0; i < pointLightsCount; i++)
 	{
@@ -209,41 +144,16 @@ float4 main(Input input) : SV_TARGET
 			float distance = length(direction);
 
 			float k = 1.0 / (pointLights[i].kc + pointLights[i].kl * distance + pointLights[i].kq * pointLights[i].kq * distance);
-			//float4 radiance = pointLights[i].color * k;
-			float4 radiance = pointLights[i].color * k;
-			
-			float3 H = normalize(viewDir + pointLightDir);
-			
-			float NDF = DistributionGGX(normal, H, roughness);
-			float G = GeometrySmith(normal, viewDir, pointLightDir, roughness);
-			float3 F = fresnelSchlick(max(dot(H, pointLightDir), 0.0), F0.xyz);
-			
-			float4 kS = float4(F, 1);
-			float4 kD = 1.0 - kS;
-			kD *= (1.0 - metallic);
-			
-			float3 numerator = NDF * G * F;
-			float denominator = 4.0 * max(dot(normal, viewDir), 0) * max(dot(normal, pointLightDir), 0);
-			specular = float4(numerator / max(denominator, 0.001), 1);
-			
-			
-			//specular = pow(max(dot(reflect(pointLightDir.xyz, normal.xyz), viewDir), 0), 32) * radiance * texColor;
-			
-			float NdotL = max(dot(pointLightDir.xyz, normal.xyz), 0);
-			
-			diffusion = albedo / PI;
-			//diffusion = 0;
-			
-			Lo += (kD * diffusion + specular) * radiance * NdotL;
+
+			specular += pow(max(dot(reflect(pointLightDir.xyz, normal.xyz), viewDir), 0), 32) * pointLights[i].color * k;
+			//float3 medianVec = normalize((pointLightDir.xyz + viewDir));
+			//specular += pow(dot(medianVec, normal.xyz), 32) * pointLights[i].color * k;
+			diffusion += max(dot(normal.xyz, pointLightDir), 0) * pointLights[i].color * k;
 		}
 	}
-	
-	float4 ambient = 0.03 * albedo;
-	float4 color = Lo + ambient;
-	
-	color = color / (color + 1.0);
-	color = pow(color, 1.0 / 2.2);
 
-	//return float4((diffusion.xyz * texColor.xyz + specular.xyz * texColor.xyz + ambient.xyz * texColor.xyz), 1); // For tranparency to work
-	return float4(color.xyz, 1); // For tranparency to work
+	return float4((diffusion.xyz * texColor.xyz + specular.xyz * texColor.xyz + ambient.xyz * texColor.xyz) * float3(0.6, 0.6, 0.8) + float3(0.1505, 0.15, 0.20) + aura.xyz
+	
+	, 1); // For tranparency to work
+	//return color; // For tranparency to work
 }
